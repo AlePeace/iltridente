@@ -11,26 +11,26 @@ export default async function Page({ params }) {
   }
   return <BlockRenderer blocks={data} />;
 }
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const seo = await getSeo(slug.join("/"));
-  return {
-    title: seo?.title || "",
-    description: seo?.description || "",
-    robots: seo?.robots || "",
-    canonical: seo?.canonicalUrl || "",
-    openGraph: {
-      locale: seo?.openGraph?.locale || "",
-      siteName: seo?.openGraph?.siteName || "",
-      type: seo?.openGraph?.type || "",
-      title: seo?.openGraph?.title || "",
-      description: seo?.openGraph?.description || "",
-      url: seo?.openGraph?.url || "",
-    },
-    twitter: {
-      card: seo?.openGraph?.twitterMeta?.card || "",
-      title: seo?.openGraph?.twitterMeta?.title || "",
-      description: seo?.openGraph?.twitterMeta?.description || "",
-    },
-  };
-}
+// export async function generateMetadata({ params }) {
+//   const { slug } = await params;
+//   const seo = await getSeo(slug.join("/"));
+//   return {
+//     title: seo?.title || "",
+//     description: seo?.description || "",
+//     robots: seo?.robots || "",
+//     canonical: seo?.canonicalUrl || "",
+//     openGraph: {
+//       locale: seo?.openGraph?.locale || "",
+//       siteName: seo?.openGraph?.siteName || "",
+//       type: seo?.openGraph?.type || "",
+//       title: seo?.openGraph?.title || "",
+//       description: seo?.openGraph?.description || "",
+//       url: seo?.openGraph?.url || "",
+//     },
+//     twitter: {
+//       card: seo?.openGraph?.twitterMeta?.card || "",
+//       title: seo?.openGraph?.twitterMeta?.title || "",
+//       description: seo?.openGraph?.twitterMeta?.description || "",
+//     },
+//   };
+// }
