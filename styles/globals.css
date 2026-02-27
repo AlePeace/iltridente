@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* I tuoi custom colors, fonts, ecc. vanno definiti con @theme */
+@theme {
+  --color-terracotta: #ff9f51;
+  --color-red: #c53452;
+  --color-green: #57a691;
+  --color-ocra: #efac53;
+  --color-blue: #1f5189;
+  --color-lightgreen: #a0b898;
+  --color-lightocra: #ffab67;
+  --color-lightblue: #00abd5;
+  --color-orangelogo: #ee954c;
+  --color-gradientbrown: #f3eadf;
+  --color-gray: #434343;
+  --color-peach: #fcd2b0;
+  --color-card: #ff9e4e;
+
+  --font-montecatini: var(--font-montecatini), serif;
+  --font-nunito: var(--font-nunito), sans-serif;
+}
+@layer utilities {
+  .font-montecatini {
+    font-variant-ligatures: none;
+  }
+}
+::-webkit-scrollbar {
+  @apply lg:w-1;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply lg:bg-blue;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply lg:bg-lightblue lg:rounded-full lg:transition-all lg:duration-300 lg:ease-in-out;
+}
