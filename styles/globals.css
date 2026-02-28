@@ -2,25 +2,20 @@
 
 /* I tuoi custom colors, fonts, ecc. vanno definiti con @theme */
 @theme {
-  --color-terracotta: #ff9f51;
-  --color-red: #c53452;
-  --color-green: #57a691;
-  --color-ocra: #efac53;
-  --color-blue: #1f5189;
-  --color-lightgreen: #a0b898;
-  --color-lightocra: #ffab67;
-  --color-lightblue: #00abd5;
-  --color-orangelogo: #ee954c;
-  --color-gradientbrown: #f3eadf;
-  --color-gray: #434343;
-  --color-peach: #fcd2b0;
-  --color-card: #ff9e4e;
+  --color-red: #a61932;
+  --color-brown: #7a6f6c;
+  --color-ocean: #0080ad;
+  --color-lightblue: #9acddf;
+  --color-cardspranzo: #ebf5f9;
+  --color-borderbutton: #cad5e2;
+  --color-text: #1d293d;
+  --color-dust: #90a1b9;
 
-  --font-montecatini: var(--font-montecatini), serif;
+  --font-cinzel: var(--font-cinzel), serif;
   --font-nunito: var(--font-nunito), sans-serif;
 }
 @layer utilities {
-  .font-montecatini {
+  .font-cinzel {
     font-variant-ligatures: none;
   }
 }
@@ -30,10 +25,39 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply lg:bg-blue;
+  @apply lg:bg-red;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   @apply lg:bg-lightblue lg:rounded-full lg:transition-all lg:duration-300 lg:ease-in-out;
+}
+.st0 {
+  stroke-width: 0.7px;
+}
+
+.st0,
+.st1 {
+  stroke-linecap: round;
+}
+
+.st0,
+.st1,
+.st2 {
+  fill: none;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+}
+
+.st1,
+.st2 {
+  stroke-width: 0.7px;
+}
+.onde0 {
+  fill: none;
+}
+
+.onde1 {
+  fill: #ecf5f9;
+  fill-rule: evenodd;
 }

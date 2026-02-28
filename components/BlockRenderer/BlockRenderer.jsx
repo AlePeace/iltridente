@@ -1,3 +1,5 @@
+import { CardsPranzoHome } from "components/CardsPranzoHome";
+import { DescriptionHome } from "components/DescriptionHome";
 import { HeroHome } from "components/HeroHome";
 
 
@@ -12,6 +14,12 @@ export const BlockRenderer = ({ blocks }) => {
         switch (groupName) {
           case "HeroHome":
             return <HeroHome key={block.id} blocks={block} />;
+
+          case "DescriptionHome":
+            return <DescriptionHome key={block.id} blocks={block} />;
+
+          case "CardsPranzoHome":
+            return <CardsPranzoHome key={block.id} blocks={block} />;
 
           default:
             return null;
