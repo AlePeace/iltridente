@@ -26,6 +26,10 @@ export const Buttons = ({
     if (variant === "cards") {
       return "font-nunito !rounded-none bg-transparent text-black font-regular text-xs underline lg:text-base transition-all duration-300 hover:text-red";
     }
+
+    if (variant === "cardsNight") {
+      return "font-nunito !rounded-none bg-transparent text-white font-regular text-xs underline lg:text-base transition-all duration-300 hover:text-red";
+    }
   };
 
   return (

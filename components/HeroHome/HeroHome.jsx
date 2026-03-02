@@ -114,6 +114,8 @@ export const HeroHome = ({ blocks }) => {
             src={imgDay.attributes?.url}
             alt={imgDay.attributes?.alt || ""}
             quality={100}
+            priority
+            fetchPriority="high"
             className="absolute inset-0 z-10 w-full h-screen object-cover"
           />
         )}
@@ -125,17 +127,11 @@ export const HeroHome = ({ blocks }) => {
             src={imgNight.attributes?.url}
             alt={imgNight.attributes?.alt || ""}
             quality={100}
+            priority
+            fetchPriority="high"
             className="absolute inset-0 z-10 w-full h-screen object-cover"
           />
         )}
-        <div
-          className="absolute inset-0
-           bg-linear-to-b
-           from-[rgba(166,25,50,0.231)]
-           to-[rgba(166,25,50,0.33)]
-           bg-blend-darken
-           transform-gpu z-10"
-        ></div>
       </div>
       {logo && (
         <div className="absolute top-1/2 left-1/2 z-20 lg:w-1/4 -translate-1/2">
