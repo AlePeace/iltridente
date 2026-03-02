@@ -105,7 +105,7 @@ export const HeroHome = ({ blocks }) => {
       ref={containerRef}
       className="h-screen w-full bg-[#411C19] relative overflow-hidden"
     >
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full transform-3d transform-gpu">
         {imgDay && (
           <Image
             ref={imgDayRef}
@@ -150,7 +150,7 @@ export const HeroHome = ({ blocks }) => {
           <Heading
             level={heading.attributes?.level}
             content={heading.attributes?.content}
-            className="uppercase font-nunito text-xs font-light text-white text-center"
+            className="uppercase tracking-[2.4px] font-nunito text-xs font-light text-white text-center"
           />
         </div>
       )}
@@ -174,7 +174,7 @@ export const HeroHome = ({ blocks }) => {
       </div>
       <button
         onClick={handleToggle}
-        className="absolute top-20 right-5 lg:right-20 z-20 w-10 h-10 cursor-pointer"
+        className="absolute top-26 right-5 lg:right-20 z-20 w-10 h-10 cursor-pointer"
         aria-label={isDay ? "Passa a notte" : "Passa a giorno"}
       >
         <svg

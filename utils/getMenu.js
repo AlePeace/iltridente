@@ -7,6 +7,8 @@ export const getMenu = async () => {
             nodes {
               uri
               label
+              cssClasses
+              target
             }
           }
         }

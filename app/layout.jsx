@@ -4,7 +4,7 @@ import "../styles/globals.css";
 import { getMenu } from "utils/getMenu";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
-
+import Script from "next/script";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -26,6 +26,27 @@ export default async function RootLayout({ children }) {
           <MainMenu menuData={menus} menus={menus} />
           {children}
         </SmoothScroll>
+        <Script
+          id="guestplan-widget"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+window._gstpln = {
+			accessKey: "3cb8485b4afa8777b92ba4a13d11ca93af2e2d4d",
+			open: false,
+			locale: "en"
+		};
+
+		(function(g, s, t, p, l, n) {
+			l = s.createElement(t);
+			n = s.getElementsByTagName(t)[0];
+			l.async = 1;
+			l.src = p;
+			n.parentNode.insertBefore(l, n);
+		})(window, document, "script", "https://cdn.guestplan.com/widget.js");
+          `,
+          }}
+        />
       </body>
     </html>
   );

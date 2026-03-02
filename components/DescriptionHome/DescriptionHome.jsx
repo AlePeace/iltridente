@@ -1,4 +1,5 @@
 import { Buttons } from "components/Buttons";
+import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 
@@ -51,7 +52,7 @@ export const DescriptionHome = ({ blocks }) => {
       )}
       {buttons && (
         <div className="pt-6 lg:pt-10 w-full flex justify-center items-center">
-          <Buttons blocks={buttons.innerBlocks} variant="border" />
+          <GuestplanButton innerBlocks={buttons.innerBlocks} />
         </div>
       )}
     </section>

@@ -20,7 +20,7 @@ export const Buttons = ({
 
   const getButtonStyles = () => {
     if (variant === "border") {
-      return "px-10 py-4 font-nunito !rounded-none border-[1px] border-borderbutton uppercase bg-transparent text-red font-regular transition-all duration-300 hover:bg-red hover:text-white";
+      return "px-10 py-4 font-nunito tracking-[3px] !rounded-none border-[1px] border-borderbutton uppercase bg-transparent text-red font-regular transition-all duration-300 hover:bg-red hover:text-white";
     }
 
     if (variant === "cards") {
