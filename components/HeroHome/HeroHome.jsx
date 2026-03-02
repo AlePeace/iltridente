@@ -103,7 +103,7 @@ export const HeroHome = ({ blocks }) => {
   return (
     <section
       ref={containerRef}
-      className="h-screen w-full relative overflow-hidden"
+      className="h-screen w-full bg-text relative overflow-hidden"
     >
       <div className="relative w-full h-full">
         {imgDay && (
