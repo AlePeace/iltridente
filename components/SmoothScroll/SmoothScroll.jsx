@@ -36,6 +36,35 @@ export const SmoothScroll = ({ children }) => {
     };
   }, []);
 
+  // Gestione scroll to anchor (#id)
+  useEffect(() => {
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+
+      e.preventDefault();
+
+      const targetId = href.slice(1);
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      const lenis = lenisRef.current?.lenis;
+      if (lenis) {
+        lenis.scrollTo(target, {
+          offset: -80, // offset per il menu fisso (adatta al tuo header)
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+    return () => document.removeEventListener("click", handleAnchorClick);
+  }, []);
+
   useEffect(() => {
     // Piccolo delay per aspettare che il nuovo DOM sia renderizzato
     const timeout = setTimeout(() => {

@@ -5,6 +5,7 @@ import { DescriptionHome } from "components/DescriptionHome";
 import { Footer } from "components/Footer";
 import { GalleryHome } from "components/GalleryHome/GalleryHome";
 import { HeroHome } from "components/HeroHome";
+import { HeroRisto } from "components/HeroRisto/HeroRisto";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
 
 export const BlockRenderer = ({ blocks }) => {
@@ -36,6 +37,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "GalleryHome":
             return <GalleryHome key={block.id} blocks={block} />;
+
+          case "HeroRisto":
+            return <HeroRisto key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;
