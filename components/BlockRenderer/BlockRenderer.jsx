@@ -2,6 +2,7 @@ import { BarHome } from "components/BarHome/BarHome";
 import { CardsCenaHome } from "components/CardsCenaHome";
 import { CardsPranzoHome } from "components/CardsPranzoHome";
 import { DescriptionHome } from "components/DescriptionHome";
+import { Footer } from "components/Footer";
 import { GalleryHome } from "components/GalleryHome/GalleryHome";
 import { HeroHome } from "components/HeroHome";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
@@ -35,6 +36,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "GalleryHome":
             return <GalleryHome key={block.id} blocks={block} />;
+
+          case "Footer":
+            return <Footer key={block.id} blocks={block} />;
 
           default:
             return null;
