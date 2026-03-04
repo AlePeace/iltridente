@@ -34,9 +34,9 @@ export default async function RootLayout({ children }) {
 window._gstpln = {
 			accessKey: "3cb8485b4afa8777b92ba4a13d11ca93af2e2d4d",
 			open: false,
-			locale: "en"
+			locale: "it"
 		};
-
+_gstpln.showFab = false;
 		(function(g, s, t, p, l, n) {
 			l = s.createElement(t);
 			n = s.getElementsByTagName(t)[0];

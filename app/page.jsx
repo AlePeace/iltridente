@@ -17,7 +17,7 @@ export async function generateMetadata() {
     title: seo?.title || "",
     description: seo?.description || "",
     robots: seo?.robots || "",
-    canonical: seo?.canonicalUrl || "",
+    canonical: seo?.canonicalUrl || "https://iltridentepositano.com/",
     openGraph: {
       locale: seo?.openGraph?.locale || "",
       siteName: seo?.openGraph?.siteName || "",

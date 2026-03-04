@@ -43,7 +43,7 @@ export const MobileMenu = ({ navItems, menuData, menus }) => {
         <div className="space-y-10 flex flex-col items-start justify-center">
           {navItems?.length > 0 && (
             <nav>
-              <ul className="flex flex-col gap-10">
+              <ul className="hidden flex-col gap-10">
                 {navItems.map((item, idx) => (
                   <li
                     className="font-nunito font-normal text-text text-2xl transition-all duration-300 ease-in-out hover:text-red"
