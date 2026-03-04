@@ -49,7 +49,7 @@ export const MainMenu = async ({ menuData, menus }) => {
           <div className="justify-self-center">
             {navItems.length > 0 && (
               <nav>
-                <ul className="hidden lg:gap-10">
+                <ul className="lg:flex lg:gap-10">
                   {navItems.map((item, idx) => (
                     <li
                       className="font-nunito font-normal text-text text-sm transition-all duration-300 ease-in-out hover:text-red"

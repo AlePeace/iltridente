@@ -38,12 +38,12 @@ export const MobileMenu = ({ navItems, menuData, menus }) => {
       <div
         id="fullMenu"
         className={`lg:hidden fixed left-0 top-0 w-full bg-white z-9995 overflow-hidden transition-all duration-500 ease-in-out
-          ${open ? "h-[100dvh] opacity-100 pt-28 px-10" : "h-0 opacity-0 pt-0 px-10 pointer-events-none"}`}
+          ${open ? "h-dvh opacity-100 pt-28 px-10" : "h-0 opacity-0 pt-0 px-10 pointer-events-none"}`}
       >
         <div className="space-y-10 flex flex-col items-start justify-center">
           {navItems?.length > 0 && (
             <nav>
-              <ul className="hidden flex-col gap-10">
+              <ul className="flex flex-col gap-10">
                 {navItems.map((item, idx) => (
                   <li
                     className="font-nunito font-normal text-text text-2xl transition-all duration-300 ease-in-out hover:text-red"

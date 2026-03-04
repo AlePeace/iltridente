@@ -1,36 +1,5 @@
 import { Heading } from "components/Heading";
 import Image from "next/image";
-import Link from "next/link";
-
-const ImageWithLink = ({ imgBlock, ...imageProps }) => {
-  const href = imgBlock?.attributes?.href;
-  const linkTarget = imgBlock?.attributes?.linkTarget || "_self";
-
-  const imageElement = (
-    <div className="h-full relative">
-        <Image
-          width={imgBlock?.attributes?.width || 1920}
-          height={imgBlock?.attributes?.height || 1080}
-          src={imgBlock?.attributes?.url}
-          alt={imgBlock?.attributes?.alt || ""}
-          quality={100}
-          priority
-          fetchPriority="high"
-          className="w-full h-full object-cover"
-        />
-    </div>
-  );
-
-  if (href) {
-    return (
-      <Link href={href} target={linkTarget} className="relative w-full h-full block cursor-pointer">
-        {imageElement}
-      </Link>
-    );
-  }
-
-  return imageElement;
-};
 
 export const HeroRisto = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -48,38 +17,82 @@ export const HeroRisto = ({ blocks }) => {
     <section>
       <div className="h-screen lg:h-[70vh] w-full flex flex-col lg:flex-row">
         <div className="relative h-[33vh] lg:basis-1/3 lg:h-[70vh]">
-          {imgLunch && <ImageWithLink imgBlock={imgLunch} />}
-          <div className="absolute bottom-0 flex justify-end items-end">
+          {imgLunch && (
+            <div className="h-full relative">
+              <Image
+                width={imgLunch?.attributes?.width || 1920}
+                height={imgLunch?.attributes?.height || 1080}
+                src={imgLunch?.attributes?.url}
+                alt={imgLunch?.attributes?.alt || ""}
+                quality={100}
+                priority
+                fetchPriority="high"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-[#A86F79] to-transparent mix-blend-multiply"></div>
+            </div>
+          )}
+          <div className="absolute w-full bottom-10 flex justify-center items-end">
             {headingLunch && (
               <Heading
                 level={headingLunch.attributes?.level}
                 content={headingLunch.attributes?.content}
-                className="uppercase tracking-[2.4px] font-nunito text-xs font-light text-white text-center"
+                className="uppercase tracking-[2.4px] font-cinzel text-xl font-light text-white text-center"
               />
             )}
           </div>
         </div>
         <div className="relative h-[33vh] lg:basis-1/3 lg:h-[70vh]">
-          {imgDinner && <ImageWithLink imgBlock={imgDinner} />}
-          <div className="absolute bottom-0 flex justify-end items-end">
+          {imgDinner && (
+            <div className="h-full relative">
+              <Image
+                width={imgDinner?.attributes?.width || 1920}
+                height={imgDinner?.attributes?.height || 1080}
+                src={imgDinner?.attributes?.url}
+                alt={imgDinner?.attributes?.alt || ""}
+                quality={100}
+                priority
+                fetchPriority="high"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-[#A86F79] to-transparent mix-blend-multiply"></div>
+            </div>
+          )}
+          <div className="absolute w-full bottom-10 flex justify-center items-end">
             {headingDinner && (
               <Heading
                 level={headingDinner.attributes?.level}
                 content={headingDinner.attributes?.content}
-                className="uppercase tracking-[2.4px] font-nunito text-xs font-light text-white text-center"
+                className="uppercase tracking-[2.4px] font-cinzel text-xl font-light text-white text-center"
               />
             )}
           </div>
         </div>
         <div className="relative h-[33vh] lg:basis-1/3 lg:h-[70vh]">
-          {imgBreakfast && <ImageWithLink imgBlock={imgBreakfast} />}
-          <div className="absolute bottom-0 flex justify-end items-end">
-            {headingBreakfast && (
-              <Heading
-                level={headingBreakfast.attributes?.level}
-                content={headingBreakfast.attributes?.content}
-                className="uppercase tracking-[2.4px] font-nunito text-xs font-light text-white text-center"
+          {imgBreakfast && (
+            <div className="h-full relative">
+              <Image
+                width={imgBreakfast?.attributes?.width || 1920}
+                height={imgBreakfast?.attributes?.height || 1080}
+                src={imgBreakfast?.attributes?.url}
+                alt={imgBreakfast?.attributes?.alt || ""}
+                quality={100}
+                priority
+                fetchPriority="high"
+                className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-linear-to-t from-[#A86F79] to-transparent mix-blend-multiply"></div>
+            </div>
+          )}
+          <div className="absolute w-full bottom-10 flex justify-center items-end">
+            {headingBreakfast && (
+              <div>
+                <Heading
+                  level={headingBreakfast.attributes?.level}
+                  content={headingBreakfast.attributes?.content}
+                  className="uppercase tracking-[2.4px] font-cinzel text-xl font-light text-white text-center"
+                />
+              </div>
             )}
           </div>
         </div>
