@@ -1,0 +1,94 @@
+{
+  "redirects": [
+    {
+      "source": "/it",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cocktail-bar",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/lunch-menu",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-information",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/menu-dinner",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurants",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/weddings-and-events",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/giftcards",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/reservations",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/giftcards",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/reservations",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/weddings-and-events",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/informativa-sulla-privacy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/privacy-policy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/lunch-menu",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/cocktail-bar",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
