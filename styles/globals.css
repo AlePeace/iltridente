@@ -10,7 +10,7 @@
   --color-borderbutton: #cad5e2;
   --color-text: #1d293d;
   --color-dust: #90a1b9;
-  --color-pink: #FFD1D6;
+  --color-pink: #ffd1d6;
 
   --font-cinzel: var(--font-cinzel), serif;
   --font-nunito: var(--font-nunito), sans-serif;
@@ -61,4 +61,21 @@
 .onde1 {
   fill: #ecf5f9;
   fill-rule: evenodd;
+}
+.d {
+  mask: url(#b);
+}
+
+.e {
+  fill: #fff;
+}
+
+.f {
+  fill: #1d293d;
+}
+.clippathgluten {
+  clip-path: url(#clipgluten);
+}
+.clippathvegan {
+  clip-path: url(#pathvegan);
 }

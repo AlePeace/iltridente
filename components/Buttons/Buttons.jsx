@@ -30,6 +30,14 @@ export const Buttons = ({
     if (variant === "cardsNight") {
       return "font-nunito !rounded-none bg-transparent text-white font-regular text-xs underline lg:text-base transition-all duration-300 hover:text-red";
     }
+
+    if (variant === "menu") {
+      return "px-10 py-2 font-nunito tracking-[3px] !rounded-none border-[1px] border-red uppercase bg-transparent text-red font-regular transition-all duration-300 hover:bg-red hover:text-white after:content-['↓'] after:ml-2 after:inline-block after:transition-transform after:duration-300 hover:after:translate-y-2";
+    }
+
+    if (variant === "full") {
+      return "px-10 py-2 font-nunito tracking-[3px] !rounded-none border-[1px] border-red uppercase bg-red text-white font-regular transition-all duration-300 hover:bg-white hover:text-red after:content-['→'] after:ml-2 after:inline-block after:transition-transform after:duration-300 hover:after:translate-x-2";
+    }
   };
 
   return (
