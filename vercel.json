@@ -6,11 +6,6 @@
       "permanent": true
     },
     {
-      "source": "/cocktail-bar",
-      "destination": "/cocktail-bar",
-      "permanent": true
-    },
-    {
       "source": "/lunch-menu",
       "destination": "/",
       "permanent": true
