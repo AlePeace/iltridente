@@ -2,12 +2,19 @@ import { AccordionMenu } from "components/AccordionMenu";
 import { BarHome } from "components/BarHome/BarHome";
 import { CardsCenaHome } from "components/CardsCenaHome";
 import { CardsPranzoHome } from "components/CardsPranzoHome";
+import { ContactForm } from "components/ContactForm/ContactForm";
+import { DescriptionBar } from "components/DescriptionBar";
 import { DescriptionHome } from "components/DescriptionHome";
 import { DescriptionRisto } from "components/DescriptionRisto";
 import { Footer } from "components/Footer";
 import { GalleryHome } from "components/GalleryHome/GalleryHome";
+import { HeroBar } from "components/HeroBar";
 import { HeroHome } from "components/HeroHome";
 import { HeroRisto } from "components/HeroRisto/HeroRisto";
+import { IntroBreakfastRisto } from "components/IntroBreakfastRisto/IntroBreakfastRisto";
+import { IntroCenaRisto } from "components/IntroCenaRisto/IntroCenaRisto";
+import { IntroDrinkBar } from "components/IntroDrinkBar/IntroDrinkBar";
+import { IntroEasyBar } from "components/IntroEasyBar/IntroEasyBar";
 import { IntroPranzoRisto } from "components/IntroPranzoRisto";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
 
@@ -50,8 +57,29 @@ export const BlockRenderer = ({ blocks }) => {
           case "IntroPranzoRisto":
             return <IntroPranzoRisto key={block.id} blocks={block} />;
 
+          case "IntroCenaRisto":
+            return <IntroCenaRisto key={block.id} blocks={block} />;
+
+          case "IntroBreakfastRisto":
+            return <IntroBreakfastRisto key={block.id} blocks={block} />;
+
+          case "HeroBar":
+            return <HeroBar key={block.id} blocks={block} />;
+
+          case "DescriptionBar":
+            return <DescriptionBar key={block.id} blocks={block} />;
+
+          case "IntroDrinkBar":
+            return <IntroDrinkBar key={block.id} blocks={block} />;
+
+          case "IntroEasyBar":
+            return <IntroEasyBar key={block.id} blocks={block} />;
+
           case "AccordionMenu":
             return <AccordionMenu key={block.id} blocks={block} />;
+
+          case "ContactForm":
+            return <ContactForm key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;

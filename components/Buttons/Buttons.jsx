@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "components/Button";
 
 export const Buttons = ({
@@ -5,6 +7,7 @@ export const Buttons = ({
   className = "",
   variant = "default",
   decoration,
+  onClick
 }) => {
   const getVariantStyles = () => {
     switch (variant) {
@@ -50,6 +53,7 @@ export const Buttons = ({
               url={block.attributes.url}
               content={block.attributes.content}
               className={getButtonStyles()}
+              onClick={onClick}
             />
           );
         }

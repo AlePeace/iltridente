@@ -5,6 +5,7 @@ import { getMenu } from "utils/getMenu";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }) {
         <SmoothScroll>
           <MainMenu menuData={menus} menus={menus} />
           {children}
+          <Analytics />
         </SmoothScroll>
         <Script
           id="guestplan-widget"

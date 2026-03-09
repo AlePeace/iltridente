@@ -46,7 +46,7 @@ export const PrenotazioniHome = ({ blocks }) => {
       )}
       {buttons && (
         <div className="relative pt-6 lg:pt-10 w-full flex justify-center items-center">
-          <GuestplanButton innerBlocks={buttons.innerBlocks} />
+          <GuestplanButton innerBlocks={buttons.innerBlocks} variant="border" />
         </div>
       )}
     </section>

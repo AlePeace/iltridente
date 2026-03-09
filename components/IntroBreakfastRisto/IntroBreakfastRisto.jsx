@@ -6,23 +6,19 @@ import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
 
-export const IntroPranzoRisto = ({ blocks }) => {
+export const IntroBreakfastRisto = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
   const image = innerBlocks.find((block) => block.name === "core/image");
   const headings = innerBlocks.filter((block) => block.name === "core/heading");
   const paragraph = innerBlocks.find(
     (block) => block.name === "core/paragraph",
   );
-  const buttons = innerBlocks.filter((block) => block.name === "core/buttons");
 
   const titleSection = headings[0];
   const titleOpenHours = headings[1];
 
-  const buttonMenu = buttons[0];
-  const buttonPrenota = buttons[1];
-
   return (
-    <section id="lunch" className="pb-10 lg:pb-20 max-w-7xl mx-auto">
+    <section id="breakfast" className="pb-10 lg:pb-20 max-w-7xl mx-auto">
       <div className="px-5 lg:px-20">
         <div className="flex flex-col gap-5 lg:flex-row lg:gap-20 items-center">
           {image && (
@@ -43,7 +39,7 @@ export const IntroPranzoRisto = ({ blocks }) => {
                 <Heading
                   level={titleSection.attributes?.level}
                   content={titleSection.attributes?.content}
-                  className="font-cinzel uppercase text-red font-normal text-3xl"
+                  className="font-cinzel uppercase text-orange font-normal text-3xl"
                 />
               </div>
             )}
@@ -67,63 +63,63 @@ export const IntroPranzoRisto = ({ blocks }) => {
                   >
                     <path
                       d="M13.1955 17.5945C15.6248 17.5945 17.5941 15.6252 17.5941 13.1959C17.5941 10.7666 15.6248 8.79724 13.1955 8.79724C10.7662 8.79724 8.79688 10.7666 8.79688 13.1959C8.79688 15.6252 10.7662 17.5945 13.1955 17.5945Z"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M13.1953 2.19934V4.39865"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M13.1953 21.9932V24.1925"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M5.41992 5.42139L6.97044 6.9719"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M19.4199 19.4199L20.9704 20.9704"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M2.19922 13.1959H4.39853"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M21.9922 13.1959H24.1915"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M6.97044 19.4199L5.41992 20.9704"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M20.9704 5.42139L19.4199 6.9719"
-                      stroke="#A61932"
+                      stroke="#F59E0B"
                       strokeWidth="2.19931"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -137,41 +133,6 @@ export const IntroPranzoRisto = ({ blocks }) => {
                 />
               </div>
             )}
-            <div className="flex gap-5">
-              {buttonMenu && (
-                <Buttons
-                  blocks={buttonMenu.innerBlocks}
-                  variant="menu"
-                  onClick={() => {
-                    const accordionEl =
-                      document.querySelector(".accordion-lunch");
-                    if (accordionEl) {
-                      // Apre l'accordion cliccando il button interno
-                      const trigger = accordionEl.querySelector("button");
-                      const isAlreadyOpen =
-                        trigger?.getAttribute("aria-expanded") === "true";
-                      if (!isAlreadyOpen) trigger?.click();
-
-                      // Scroll con offset per averlo quasi in cima
-                      setTimeout(() => {
-                        const top =
-                          accordionEl.getBoundingClientRect().top +
-                          window.scrollY -
-                          80;
-                        window.scrollTo({ top, behavior: "smooth" });
-                      }, 100);
-                    }
-                  }}
-                />
-              )}
-              {buttonPrenota && (
-                <GuestplanButton
-                  className="w-fit"
-                  innerBlocks={buttonPrenota.innerBlocks}
-                  variant="full"
-                />
-              )}
-            </div>
           </div>
         </div>
       </div>
