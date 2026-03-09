@@ -7,7 +7,7 @@
     },
     {
       "source": "/cocktail-bar",
-      "destination": "/",
+      "destination": "/cocktail-bar",
       "permanent": true
     },
     {
