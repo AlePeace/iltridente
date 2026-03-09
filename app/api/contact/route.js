@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 // Rate limiting semplice in-memory
 const rateLimit = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000;
-const MAX_REQUESTS = 3;
+const MAX_REQUESTS = 1;
 
 function isRateLimited(ip) {
   const now = Date.now();

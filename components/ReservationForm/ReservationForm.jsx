@@ -257,14 +257,19 @@ export const ReservationForm = () => {
           <label htmlFor="requestedService" className={labelClasses}>
             Servizio richiesto *
           </label>
-          <textarea
+          <select
             name="requestedService"
             id="requestedService"
-            rows={4}
             required
-            placeholder="Si prega di scegliere se si desidera prenotare Pranzo o Cena. Come ospiti dell'hotel siete sempre i benvenuti al Cocktail Bar."
-            className={`${inputBaseNoIconClasses} resize-vertical border rounded-md p-3 ${errors.requestedService ? "border-red-500" : ""}`}
-          />
+            defaultValue=""
+            className={`${inputBaseNoIconClasses} ${errors.requestedService ? "border-red-500" : ""}`}
+          >
+            <option value="" disabled>
+              Seleziona un servizio
+            </option>
+            <option value="Pranzo">Pranzo</option>
+            <option value="Cena">Cena</option>
+          </select>
           {errors.requestedService && (
             <p className={errorClasses}>{errors.requestedService}</p>
           )}
@@ -290,17 +295,22 @@ export const ReservationForm = () => {
             <label htmlFor="numberOfAdults" className={labelClasses}>
               Numero di adulti *
             </label>
-            <div className="relative">
-              <HiOutlineUserGroup className={iconClasses} />
-              <input
-                type="number"
-                name="numberOfAdults"
-                id="numberOfAdults"
-                min="1"
-                max="20"
-                className={inputBaseClasses}
-              />
-            </div>
+            <select
+              name="numberOfAdults"
+              id="numberOfAdults"
+              required
+              defaultValue=""
+              className={`${inputBaseNoIconClasses} ${errors.numberOfAdults ? "border-red-500" : ""}`}
+            >
+              <option value="" disabled>
+                Seleziona il numero di adulti
+              </option>
+              {[...Array(8)].map((_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 

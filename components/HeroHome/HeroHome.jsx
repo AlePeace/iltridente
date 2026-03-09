@@ -146,7 +146,33 @@ export const HeroHome = ({ blocks }) => {
         </div>
       )}
       {heading && (
-        <div className="absolute bottom-5 w-full z-20">
+        <div className="absolute bottom-5 w-full z-20 flex gap-3 items-center justify-center">
+          <div>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.1977 8.49377L11.196 14.1119C11.2072 14.1781 11.1979 14.2461 11.1694 14.3068C11.1409 14.3676 11.0945 14.4182 11.0365 14.4518C10.9785 14.4855 10.9115 14.5006 10.8447 14.4953C10.7778 14.4899 10.7142 14.4642 10.6623 14.4216L8.30324 12.6511C8.18936 12.566 8.05102 12.52 7.90886 12.52C7.76671 12.52 7.62837 12.566 7.51448 12.6511L5.15151 14.421C5.09966 14.4634 5.0361 14.4891 4.96931 14.4945C4.90251 14.4999 4.83566 14.4848 4.77766 14.4512C4.71967 14.4176 4.67329 14.3672 4.64472 14.3066C4.61615 14.2459 4.60675 14.178 4.61776 14.1119L5.6154 8.49377"
+                stroke="white"
+                strokeOpacity="0.7"
+                strokeWidth="0.988418"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M7.9068 9.22522C10.0904 9.22522 11.8605 7.4551 11.8605 5.27154C11.8605 3.08799 10.0904 1.31787 7.9068 1.31787C5.72324 1.31787 3.95312 3.08799 3.95312 5.27154C3.95312 7.4551 5.72324 9.22522 7.9068 9.22522Z"
+                stroke="white"
+                strokeOpacity="0.7"
+                strokeWidth="0.988418"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
           <Heading
             level={heading.attributes?.level}
             content={heading.attributes?.content}

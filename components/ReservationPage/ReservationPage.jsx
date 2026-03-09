@@ -175,7 +175,6 @@ export const ReservationPage = ({ blocks }) => {
           </div>
         </div>
       </div>
-      <div></div>
     </section>
   );
 };
