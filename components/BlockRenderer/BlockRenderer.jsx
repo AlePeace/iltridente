@@ -2,7 +2,6 @@ import { AccordionMenu } from "components/AccordionMenu";
 import { BarHome } from "components/BarHome/BarHome";
 import { CardsCenaHome } from "components/CardsCenaHome";
 import { CardsPranzoHome } from "components/CardsPranzoHome";
-import { ContactForm } from "components/ContactForm/ContactForm";
 import { DescriptionBar } from "components/DescriptionBar";
 import { DescriptionHome } from "components/DescriptionHome";
 import { DescriptionRisto } from "components/DescriptionRisto";
@@ -17,6 +16,7 @@ import { IntroDrinkBar } from "components/IntroDrinkBar/IntroDrinkBar";
 import { IntroEasyBar } from "components/IntroEasyBar/IntroEasyBar";
 import { IntroPranzoRisto } from "components/IntroPranzoRisto";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
+import { ReservationPage } from "components/ReservationPage";
 
 export const BlockRenderer = ({ blocks }) => {
   return blocks.map((block) => {
@@ -78,8 +78,8 @@ export const BlockRenderer = ({ blocks }) => {
           case "AccordionMenu":
             return <AccordionMenu key={block.id} blocks={block} />;
 
-          case "ContactForm":
-            return <ContactForm key={block.id} blocks={block} />;
+          case "ReservationPage":
+            return <ReservationPage key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;

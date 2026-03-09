@@ -2,8 +2,8 @@ import nodemailer from "nodemailer";
 
 // Rate limiting semplice in-memory
 const rateLimit = new Map();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minuto
-const MAX_REQUESTS = 1; // max 3 invii per minuto per IP
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const MAX_REQUESTS = 3;
 
 function isRateLimited(ip) {
   const now = Date.now();
@@ -19,13 +19,12 @@ function isRateLimited(ip) {
   return false;
 }
 
-// Validazione email
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Sanitizzazione input
 function sanitize(str) {
+  if (!str) return "";
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -34,9 +33,72 @@ function sanitize(str) {
     .replace(/'/g, "&#039;");
 }
 
+// Genera l'HTML dell'email in base al tipo di form
+function buildEmailHTML(formType, fields) {
+  const headerText =
+    formType === "prenotazione"
+      ? "Nuova Richiesta di Prenotazione"
+      : "Nuovo Messaggio";
+
+  // Costruisci le righe della tabella dinamicamente
+  const rows = fields
+    .filter((f) => f.value)
+    .map(
+      (f) => `
+      <tr>
+        <td style="padding: 10px 0; font-weight: bold; color: #A86F79; width: 160px; vertical-align: top;">${f.label}:</td>
+        <td style="padding: 10px 0;">${f.value}</td>
+      </tr>`,
+    )
+    .join("");
+
+  return `
+    <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
+      <div style="background-color: #A86F79; padding: 20px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
+        <p style="color: #f0d0d6; margin: 5px 0 0;">${headerText}</p>
+      </div>
+      <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8;">
+        <table style="width: 100%; border-collapse: collapse;">
+          ${rows}
+        </table>
+      </div>
+      <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+        Messaggio inviato dal sito web Il Tridente
+      </div>
+    </div>
+  `;
+}
+
+function buildConfirmationHTML(formType, name) {
+  const messageText =
+    formType === "prenotazione"
+      ? "Abbiamo ricevuto la tua richiesta di prenotazione. Ti contatteremo al più presto per confermare la disponibilità."
+      : "Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.";
+
+  return `
+    <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
+      <div style="background-color: #A86F79; padding: 20px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
+      </div>
+      <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8;">
+        <p>Gentile <strong>${name}</strong>,</p>
+        <p>${messageText}</p>
+        <hr style="border: none; border-top: 1px solid #e8d5d8; margin: 20px 0;" />
+        <p style="font-size: 13px; color: #999;">
+          Si prega di notare che questa è solo una richiesta e che nessuna prenotazione è
+          confermata fino a una risposta positiva da parte de Il Tridente.
+        </p>
+      </div>
+      <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+        Il Tridente - Questa è un'email automatica, non rispondere a questo indirizzo.
+      </div>
+    </div>
+  `;
+}
+
 export async function POST(request) {
   try {
-    // Rate limiting
     const ip =
       request.headers.get("x-forwarded-for") ||
       request.headers.get("x-real-ip") ||
@@ -45,118 +107,124 @@ export async function POST(request) {
     if (isRateLimited(ip)) {
       return Response.json(
         { error: "Troppi invii. Riprova tra un minuto." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     const body = await request.json();
-    const { name, email, phone, message, honeypot } = body;
+    const { honeypot, formType = "contatto" } = body;
 
-    // Honeypot anti-bot: se compilato, è un bot
+    // Honeypot anti-bot
     if (honeypot) {
-      // Rispondi con successo falso per ingannare il bot
       return Response.json({ success: true });
     }
 
-    // Validazione
-    if (!name || !email || !message) {
+    // Validazione comune
+    const name = body.name || "";
+    const email = body.email || "";
+
+    if (!name.trim() || !email.trim()) {
       return Response.json(
-        { error: "I campi Nome, Email e Messaggio sono obbligatori." },
-        { status: 400 }
+        { error: "Nome ed Email sono obbligatori." },
+        { status: 400 },
       );
     }
 
-    if (name.length > 100 || message.length > 5000) {
-      return Response.json(
-        { error: "Input troppo lungo." },
-        { status: 400 }
-      );
-    }
-
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(email.trim())) {
       return Response.json(
         { error: "Indirizzo email non valido." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Sanitizza gli input
-    const safeName = sanitize(name.trim());
-    const safeEmail = sanitize(email.trim());
-    const safePhone = phone ? sanitize(phone.trim()) : "Non specificato";
-    const safeMessage = sanitize(message.trim());
+    // Prepara i campi in base al tipo di form
+    let fields = [];
+    let subject = "";
 
-    // Configura il trasporto SMTP per SiteGround
+    if (formType === "prenotazione") {
+      // Validazione specifica prenotazione
+      if (!body.requestedService?.trim()) {
+        return Response.json(
+          { error: "Il servizio richiesto è obbligatorio." },
+          { status: 400 },
+        );
+      }
+
+      subject = `🍽️ Nuova richiesta di prenotazione da ${sanitize(name.trim())}`;
+      fields = [
+        {
+          label: "Riferimento Hotel",
+          value: sanitize(body.hotelBookingRef?.trim()),
+        },
+        { label: "Nome", value: sanitize(body.name?.trim()) },
+        { label: "Cognome", value: sanitize(body.surname?.trim()) },
+        { label: "Email", value: sanitize(email.trim()) },
+        { label: "Telefono", value: sanitize(body.phone?.trim()) },
+        { label: "Data", value: sanitize(body.date?.trim()) },
+        {
+          label: "Servizio Richiesto",
+          value: sanitize(body.requestedService?.trim()),
+        },
+        {
+          label: "Orario Preferito",
+          value: sanitize(body.preferredTime?.trim()),
+        },
+        {
+          label: "Numero Adulti",
+          value: sanitize(body.numberOfAdults?.toString()),
+        },
+        {
+          label: "Info Aggiuntive",
+          value: sanitize(body.additionalInfo?.trim()),
+        },
+      ];
+    } else {
+      // Form contatto generico
+      if (!body.message?.trim()) {
+        return Response.json(
+          { error: "Il messaggio è obbligatorio." },
+          { status: 400 },
+        );
+      }
+
+      subject = `📩 Nuovo messaggio da ${sanitize(name.trim())}`;
+      fields = [
+        { label: "Nome", value: sanitize(name.trim()) },
+        { label: "Email", value: sanitize(email.trim()) },
+        { label: "Telefono", value: sanitize(body.phone?.trim()) },
+        { label: "Messaggio", value: sanitize(body.message?.trim()) },
+      ];
+    }
+
+    // Configura SMTP
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === "true", // true per porta 465
+      secure: process.env.SMTP_SECURE === "true",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
-    // Email che ricevi tu
+    // Email a te
     await transporter.sendMail({
       from: `"Il Tridente - Sito Web" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
-      replyTo: safeEmail,
-      subject: `📩 Nuovo messaggio da ${safeName}`,
-      html: `
-        <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
-          <div style="background-color: #A86F79; padding: 20px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
-            <p style="color: #f0d0d6; margin: 5px 0 0;">Nuovo messaggio dal sito</p>
-          </div>
-          <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8;">
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 10px 0; font-weight: bold; color: #A86F79; width: 120px;">Nome:</td>
-                <td style="padding: 10px 0;">${safeName}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; font-weight: bold; color: #A86F79;">Email:</td>
-                <td style="padding: 10px 0;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; font-weight: bold; color: #A86F79;">Telefono:</td>
-                <td style="padding: 10px 0;">${safePhone}</td>
-              </tr>
-            </table>
-            <hr style="border: none; border-top: 1px solid #e8d5d8; margin: 20px 0;" />
-            <p style="font-weight: bold; color: #A86F79;">Messaggio:</p>
-            <p style="line-height: 1.6; white-space: pre-wrap;">${safeMessage}</p>
-          </div>
-          <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-            Messaggio inviato dal sito web Il Tridente
-          </div>
-        </div>
-      `,
+      replyTo: email.trim(),
+      subject,
+      html: buildEmailHTML(formType, fields),
     });
 
-    // Email di conferma al cliente (opzionale ma professionale)
+    // Email di conferma al cliente
     await transporter.sendMail({
       from: `"Il Tridente" <${process.env.SMTP_USER}>`,
-      to: safeEmail,
-      subject: `Grazie per averci contattato, ${safeName}!`,
-      html: `
-        <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
-          <div style="background-color: #A86F79; padding: 20px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
-          </div>
-          <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8;">
-            <p>Gentile <strong>${safeName}</strong>,</p>
-            <p>Grazie per averci contattato! Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.</p>
-            <hr style="border: none; border-top: 1px solid #e8d5d8; margin: 20px 0;" />
-            <p style="font-size: 14px; color: #888;">Riepilogo del tuo messaggio:</p>
-            <p style="font-style: italic; color: #666;">"${safeMessage}"</p>
-          </div>
-          <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-            Il Tridente - Questa è un'email automatica, non rispondere a questo indirizzo.
-          </div>
-        </div>
-      `,
+      to: email.trim(),
+      subject: `Grazie per averci contattato, ${sanitize(name.trim())}!`,
+      html: buildConfirmationHTML(formType, sanitize(name.trim())),
     });
 
     return Response.json({ success: true });
@@ -164,7 +232,7 @@ export async function POST(request) {
     console.error("Errore invio email:", error);
     return Response.json(
       { error: "Errore nell'invio del messaggio. Riprova più tardi." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

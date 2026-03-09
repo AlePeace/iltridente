@@ -2,17 +2,17 @@
 import { useState } from "react";
 
 export const ContactForm = () => {
-  const [status, setStatus] = useState(""); // "success" | "error" | ""
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validate = (data) => {
     const errs = {};
-    if (!data.name.trim()) errs.name = "Il nome è obbligatorio";
-    if (!data.email.trim()) errs.email = "L'email è obbligatoria";
+    if (!data.name?.trim()) errs.name = "Il nome è obbligatorio";
+    if (!data.email?.trim()) errs.email = "L'email è obbligatoria";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
       errs.email = "Email non valida";
-    if (!data.message.trim()) errs.message = "Il messaggio è obbligatorio";
+    if (!data.message?.trim()) errs.message = "Il messaggio è obbligatorio";
     return errs;
   };
 
@@ -22,8 +22,8 @@ export const ContactForm = () => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    data.formType = "contatto";
 
-    // Validazione client-side
     const validationErrors = validate(data);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -62,7 +62,6 @@ export const ContactForm = () => {
   return (
     <div className="max-w-xl mx-auto p-8 pt-20">
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        {/* Honeypot - invisibile agli utenti, visibile ai bot */}
         <input
           type="text"
           name="honeypot"
@@ -176,7 +175,6 @@ export const ContactForm = () => {
           )}
         </button>
 
-        {/* Messaggi di stato */}
         {status === "success" && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4 text-green-700 text-sm text-center">
             ✅ Messaggio inviato con successo! Ti risponderemo al più presto.
