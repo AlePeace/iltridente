@@ -1,0 +1,49 @@
+{
+  "reservation": {
+    "hotelQuestion": "Hai una prenotazione all'Hotel Poseidon?",
+    "yes": "Sì",
+    "no": "No",
+    "goBack": "← Torna indietro"
+  },
+  "reservationForm": {
+    "referenceReservations": "Riferimento prenotazione alberghiera",
+    "titleForm": "Richieste di prenotazione",
+    "name": "Nome",
+    "surname": "Cognome",
+    "email": "Email",
+    "phone": "Telefono",
+    "date": "Data",
+    "time": "Ora",
+    "requestedService": "Servizio richiesto",
+    "selectService": "Seleziona un servizio",
+    "lunch": "Pranzo",
+    "dinner": "Cena",
+    "preferredTime": "Orario preferito",
+    "numberOfAdults": "Numero di adulti",
+    "selectNumberOfAdults": "Seleziona il numero di adulti",
+    "additionalInfoOrComments": "Informazioni aggiuntive o commenti",
+    "allergiesIntolerances": "Allergie, intolleranze...",
+    "guests": "Numero ospiti",
+    "notes": "Note aggiuntive",
+    "roomNumber": "Numero camera",
+    "allergies": "Allergie, intolleranze...",
+    "submit": "Invia prenotazione",
+    "sending": "Invio in corso...",
+    "required": "Campo obbligatorio",
+    "success": "Prenotazione inviata con successo!",
+    "error": "Errore nell'invio della prenotazione.",
+    "disclaimer": "Si precisa che questa è solo una richiesta e che nessuna prenotazione sarà confermata fino a quando non sarà pervenuta una risposta positiva da parte de Il Tridente.",
+    "errorName": "Il nome è obbligatorio",
+    "errorSurname": "Il cognome è obbligatorio",
+    "errorEmail": "L'email è obbligatoria",
+    "invalidEmail": "Email non valida",
+    "errorRequestedService": "Il servizio richiesto è obbligatorio"
+  },
+  "common": {
+    "home": "Home",
+    "restaurant": "Ristorante",
+    "bar": "Bar",
+    "reservations": "Prenotazioni",
+    "contacts": "Contatti"
+  }
+}
