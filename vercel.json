@@ -41,22 +41,12 @@
       "permanent": true
     },
     {
-      "source": "/reservations",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/it/giftcards",
       "destination": "/",
       "permanent": true
     },
     {
       "source": "/it/restaurant",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/it/reservations",
       "destination": "/",
       "permanent": true
     },
