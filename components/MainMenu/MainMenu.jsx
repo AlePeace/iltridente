@@ -70,7 +70,7 @@ export const MainMenu = async ({ menuData, menus }) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="lg:hidden flex items-center gap-2">
           <LanguageSwitcher />
           <MobileMenu navItems={navItems} menuData={menuData} menus={menus} />
         </div>
