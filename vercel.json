@@ -69,11 +69,6 @@
       "source": "/it/lunch-menu",
       "destination": "/",
       "permanent": true
-    },
-    {
-      "source": "/it/cocktail-bar",
-      "destination": "/",
-      "permanent": true
     }
   ]
 }
