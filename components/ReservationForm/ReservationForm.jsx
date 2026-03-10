@@ -8,8 +8,10 @@ import {
   HiOutlineClock,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 
 export const ReservationForm = () => {
+  const t = useTranslations("reservationForm");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -66,19 +68,18 @@ export const ReservationForm = () => {
 
   const validate = (data) => {
     const errs = {};
-    if (!data.name?.trim()) errs.name = "Il nome è obbligatorio";
-    if (!data.surname?.trim()) errs.surname = "Il cognome è obbligatorio";
-    if (!data.email?.trim()) errs.email = "L'email è obbligatoria";
+    if (!data.name?.trim()) errs.name = t("errorName");
+    if (!data.surname?.trim()) errs.surname = t("errorSurname");
+    if (!data.email?.trim()) errs.email = t("errorEmail");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
-      errs.email = "Email non valida";
+      errs.email = t("invalidEmail");
     if (!data.requestedService?.trim())
-      errs.requestedService = "Il servizio richiesto è obbligatorio";
+      errs.requestedService = t("errorRequestedService");
 
     // Validazione data: almeno 14 giorni da oggi
     if (data.date) {
       if (data.date < minDate) {
-        errs.date =
-          "La prenotazione deve essere effettuata con almeno 14 giorni di anticipo";
+        errs.date = t("dateValidation");
       }
     }
 
@@ -137,7 +138,7 @@ export const ReservationForm = () => {
     <div className="max-w-xl mx-auto px-6 py-10 bg-white border-4 border-red rounded-lg">
       {/* Titolo */}
       <h2 className="font-cinzel text-red text-2xl md:text-3xl mb-8 uppercase tracking-wider">
-        Richieste di Prenotazione
+        {t("titleForm")}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -153,7 +154,7 @@ export const ReservationForm = () => {
         {/* Hotel booking reference */}
         <div>
           <label htmlFor="hotelBookingRef" className={labelClasses}>
-            Riferimento prenotazione alberghiera
+            {t("referenceReservations")}
           </label>
           <input
             type="text"
@@ -167,7 +168,7 @@ export const ReservationForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label htmlFor="name" className={labelClasses}>
-              Nome *
+              {t("name")} *
             </label>
             <div className="relative">
               <HiOutlineUser className={iconClasses} />
@@ -184,7 +185,7 @@ export const ReservationForm = () => {
           </div>
           <div>
             <label htmlFor="surname" className={labelClasses}>
-              Cognome *
+              {t("surname")} *
             </label>
             <input
               type="text"
@@ -202,7 +203,7 @@ export const ReservationForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label htmlFor="email" className={labelClasses}>
-              Indirizzo email *
+              {t("email")} *
             </label>
             <div className="relative">
               <HiOutlineEnvelope className={iconClasses} />
@@ -218,7 +219,7 @@ export const ReservationForm = () => {
           </div>
           <div>
             <label htmlFor="phone" className={labelClasses}>
-              Numero di telefono
+              {t("phone")}
             </label>
             <div className="relative">
               <HiOutlinePhone className={iconClasses} />
@@ -235,7 +236,7 @@ export const ReservationForm = () => {
         {/* Date */}
         <div>
           <label htmlFor="date" className={labelClasses}>
-            Data
+            {t("date")}
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -255,7 +256,7 @@ export const ReservationForm = () => {
         {/* Requested service */}
         <div>
           <label htmlFor="requestedService" className={labelClasses}>
-            Servizio richiesto *
+            {t("requestedService")} *
           </label>
           <select
             name="requestedService"
@@ -265,10 +266,10 @@ export const ReservationForm = () => {
             className={`${inputBaseNoIconClasses} ${errors.requestedService ? "border-red-500" : ""}`}
           >
             <option value="" disabled>
-              Seleziona un servizio
+              {t("selectService")}
             </option>
-            <option value="Pranzo">Pranzo</option>
-            <option value="Cena">Cena</option>
+            <option value="Pranzo">{t("lunch")}</option>
+            <option value="Cena">{t("dinner")}</option>
           </select>
           {errors.requestedService && (
             <p className={errorClasses}>{errors.requestedService}</p>
@@ -279,7 +280,7 @@ export const ReservationForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label htmlFor="preferredTime" className={labelClasses}>
-              Orario preferito
+              {t("preferredTime")}
             </label>
             <div className="relative">
               <HiOutlineClock className={iconClasses} />
@@ -293,7 +294,7 @@ export const ReservationForm = () => {
           </div>
           <div>
             <label htmlFor="numberOfAdults" className={labelClasses}>
-              Numero di adulti *
+              {t("numberOfAdults")} *
             </label>
             <select
               name="numberOfAdults"
@@ -303,7 +304,7 @@ export const ReservationForm = () => {
               className={`${inputBaseNoIconClasses} ${errors.numberOfAdults ? "border-red-500" : ""}`}
             >
               <option value="" disabled>
-                Seleziona il numero di adulti
+                {t("selectNumberOfAdults")}
               </option>
               {[...Array(8)].map((_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -317,13 +318,13 @@ export const ReservationForm = () => {
         {/* Additional info or comments */}
         <div>
           <label htmlFor="additionalInfo" className={labelClasses}>
-            Informazioni aggiuntive o commenti
+            {t("additionalInfoOrComments")}
           </label>
           <textarea
             name="additionalInfo"
             id="additionalInfo"
             rows={3}
-            placeholder="Allergie, intolleranze..."
+            placeholder={t("allergiesIntolerances")}
             className={`${inputBaseNoIconClasses} resize-vertical border rounded-md p-3`}
           />
         </div>
@@ -331,9 +332,7 @@ export const ReservationForm = () => {
         {/* Disclaimer */}
         <div className="bg-cardspranzo/50 border-2 border-cardspranzo rounded-md p-4 text-center">
           <p className="text-sm text-text leading-relaxed">
-            Si precisa che <strong>questa è solo una richiesta</strong> e che
-            nessuna prenotazione sarà confermata fino a quando non sarà
-            pervenuta una risposta positiva da parte de Il Tridente.
+            {t("disclaimer")}
           </p>
         </div>
 

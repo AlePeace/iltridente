@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 export const ButtonHeader = ({ menuData, menus }) => {
   const data = menuData ?? menus;
 
-  // gestisce il caso: data = [{ menuItems: { nodes: [...] } }]
   const first = Array.isArray(data) ? data[0] : data;
 
   const rawItems =
@@ -25,20 +26,16 @@ export const ButtonHeader = ({ menuData, menus }) => {
     return false;
   });
 
-  const bookingLabel = ctaItem?.label || "";
-
-  console.log("ButtonHeader data:", data);
-  console.log("ButtonHeader nodes:", nodes);
-  console.log("ButtonHeader ctaItem:", ctaItem);
+  if (!ctaItem) return null;
 
   return (
     <div>
-      <button
-        onClick={() => window._gstpln?.openWidget()}
-        className="cursor-pointer py-2.5 px-5 bg-red text-sm text-white font-nunito font-normal rounded-lg border border-red hover:bg-red/90"
+      <Link
+        href={ctaItem.uri ?? "#"}
+        className="cursor-pointer py-2.5 px-5 bg-red text-sm text-white font-nunito font-normal rounded-lg border border-red hover:bg-red/90 inline-block"
       >
-        {bookingLabel}
-      </button>
+        {ctaItem.label}
+      </Link>
     </div>
   );
 };

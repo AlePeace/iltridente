@@ -1,0 +1,49 @@
+{
+  "reservation": {
+    "hotelQuestion": "Do you have a reservation at Hotel Poseidon?",
+    "yes": "Yes",
+    "no": "No",
+    "goBack": "← Go back"
+  },
+  "reservationForm": {
+    "referenceReservations": "Hotel booking reference",
+    "titleForm": "Reservation Requests",
+    "name": "Name",
+    "surname": "Surname",
+    "email": "Email",
+    "phone": "Phone",
+    "date": "Date",
+    "requestedService": "Requested service",
+    "selectService": "Select a service",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "preferredTime": "Preferred time",
+    "numberOfAdults": "Number of adults",
+    "selectNumberOfAdults": "Select the number of adults",
+    "additionalInfoOrComments": "Additional information or comments",
+    "allergiesIntolerances": "Allergies, intolerances...",
+    "time": "Time",
+    "guests": "Number of guests",
+    "notes": "Additional notes",
+    "roomNumber": "Room number",
+    "allergies": "Allergies, intolerances...",
+    "submit": "Submit reservation",
+    "sending": "Sending...",
+    "required": "Required field",
+    "success": "Reservation sent successfully!",
+    "error": "Error sending the reservation.",
+    "disclaimer": "Please note that this is only a request and no reservation will be confirmed until a positive response has been received from Il Tridente.",
+    "errorName": "Name is required",
+    "errorSurname": "Surname is required",
+    "errorEmail": "Email is required",
+    "invalidEmail": "Invalid email",
+    "errorRequestedService": "Requested service is required"
+  },
+  "common": {
+    "home": "Home",
+    "restaurant": "Restaurant",
+    "bar": "Bar",
+    "reservations": "Reservations",
+    "contacts": "Contacts"
+  }
+}

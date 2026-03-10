@@ -1,4 +1,5 @@
 import { ButtonHeader } from "components/ButtonHeader";
+import { LanguageSwitcher } from "components/LanguageSwitcher";
 import { MobileMenu } from "components/MobileMenu/MobileMenu";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,7 +64,10 @@ export const MainMenu = async ({ menuData, menus }) => {
             )}
           </div>
           <div className="hidden lg:block justify-self-end">
-            <ButtonHeader menuData={menuData} menus={menus} />
+            <div className="flex gap-3 items-center">
+              <LanguageSwitcher />
+              <ButtonHeader menuData={menuData} menus={menus} />
+            </div>
           </div>
         </div>
         <MobileMenu navItems={navItems} menuData={menuData} menus={menus} />

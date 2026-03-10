@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ReservationForm } from "../ReservationForm/ReservationForm";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 
 export const ReservationPage = ({ blocks }) => {
+  const t = useTranslations("reservation");
   const [showForm, setShowForm] = useState(false);
   const [showQuestion, setShowQuestion] = useState(true);
 
@@ -55,7 +57,6 @@ export const ReservationPage = ({ blocks }) => {
       </div>
       <div className="flex flex-col gap-10 lg:flex-row max-w-7xl">
         <div className="lg:basis-1/2 lg:mt-20 bg-cardspranzo/50 border-cardspranzo border-4 py-10 px-5 rounded-lg h-fit">
-          {/* Contenuto da WordPress (testo introduttivo) */}
           {titleForm && (
             <Heading
               key={titleForm.id}
@@ -71,11 +72,10 @@ export const ReservationPage = ({ blocks }) => {
               content={introText.attributes?.content}
             />
           )}
-          {/* Domanda Hotel Poseidon */}
           {showQuestion && !showForm && (
             <div className="mt-8 rounded-lg p-8 text-center">
               <p className="font-nunito text-lg font-semibold text-text mb-6">
-                Hai una prenotazione all&apos;Hotel Poseidon?
+                {t("hotelQuestion")}
               </p>
               <div className="flex w-full gap-4 justify-center">
                 <button
@@ -85,43 +85,21 @@ export const ReservationPage = ({ blocks }) => {
                   }}
                   className="bg-red text-white px-10 py-3 rounded-md
                                  hover:bg-[#8a5a63] transition-colors duration-300
-                                 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full"
+                                 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full cursor-pointer"
                 >
-                  Sì
+                  {t("yes")}
                 </button>
                 <button
-                  onClick={() => {
-                    setShowQuestion(false);
-                  }}
+                  onClick={() => window._gstpln?.openWidget()}
                   className="bg-buttonno text-white px-10 py-3 rounded-md
                                  hover:bg-[#2a3a4f] transition-colors duration-300
-                                 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full"
+                                 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full cursor-pointer"
                 >
-                  No
+                  {t("no")}
                 </button>
               </div>
             </div>
           )}
-          {/* Messaggio dopo aver cliccato "No" */}
-          {!showQuestion && !showForm && (
-            <div className="mt-8 border rounded-lg p-8 text-center">
-              <p className="font-nunito text-text leading-relaxed mb-4">
-                I tavoli possono essere prenotati con un massimo di{" "}
-                <strong>14 giorni d&apos;anticipo</strong> tramite il calendario
-                presente in basso, che mostra in tempo reale le disponibilità
-                per le successive due settimane.
-              </p>
-              <button
-                onClick={() => {
-                  setShowQuestion(true);
-                }}
-                className="text-[#A86F79] underline hover:text-[#8a5a63] text-sm mt-4 transition-colors"
-              >
-                ← Torna indietro
-              </button>
-            </div>
-          )}
-          {/* Form di prenotazione (appare dopo "Sì") */}
           {showForm && (
             <div className="mt-8 animate-fadeIn">
               <ReservationForm />
@@ -133,7 +111,7 @@ export const ReservationPage = ({ blocks }) => {
                   }}
                   className="text-[#A86F79] underline hover:text-[#8a5a63] text-sm transition-colors"
                 >
-                  ← Torna indietro
+                  {t("goBack")}
                 </button>
               </div>
             </div>
@@ -162,7 +140,6 @@ export const ReservationPage = ({ blocks }) => {
                     content={title.attributes?.content}
                     className="font-nunito text-base font-medium text-text"
                   />
-                  {/* Accoppia ogni titolo al paragrafo con lo stesso indice */}
                   {listParagraphs[index] && (
                     <Paragraph
                       content={listParagraphs[index].attributes?.content}

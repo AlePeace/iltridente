@@ -150,14 +150,13 @@ export async function POST(request) {
         );
       }
 
-      subject = `🍽️ Nuova richiesta di prenotazione da ${sanitize(name.trim())}`;
+      subject = `🍽️ ${sanitize(body.date?.trim())} ${sanitize(body.requestedService?.trim())} ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} (HP)`;
       fields = [
         {
           label: "Riferimento Hotel",
           value: sanitize(body.hotelBookingRef?.trim()),
         },
-        { label: "Nome", value: sanitize(body.name?.trim()) },
-        { label: "Cognome", value: sanitize(body.surname?.trim()) },
+        { label: "Nome", value: `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim() },
         { label: "Email", value: sanitize(email.trim()) },
         { label: "Telefono", value: sanitize(body.phone?.trim()) },
         { label: "Data", value: sanitize(body.date?.trim()) },
