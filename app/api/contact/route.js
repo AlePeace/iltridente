@@ -33,6 +33,13 @@ function sanitize(str) {
     .replace(/'/g, "&#039;");
 }
 
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const [year, month, day] = dateStr.split("-");
+  if (!year || !month || !day) return dateStr;
+  return `${day}-${month}-${year}`;
+}
+
 // Genera l'HTML dell'email in base al tipo di form
 function buildEmailHTML(formType, fields) {
   const headerText =
@@ -70,32 +77,36 @@ function buildEmailHTML(formType, fields) {
   `;
 }
 
-function buildConfirmationHTML(formType, name) {
-  const messageText =
-    formType === "prenotazione"
-      ? "Abbiamo ricevuto la tua richiesta di prenotazione. Ti contatteremo al più presto per confermare la disponibilità."
-      : "Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.";
-
-  return `
-    <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
-      <div style="background-color: #A86F79; padding: 20px; text-align: center;">
-        <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
-      </div>
-      <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8;">
-        <p>Gentile <strong>${name}</strong>,</p>
-        <p>${messageText}</p>
-        <hr style="border: none; border-top: 1px solid #e8d5d8; margin: 20px 0;" />
-        <p style="font-size: 13px; color: #999;">
-          Si prega di notare che questa è solo una richiesta e che nessuna prenotazione è
-          confermata fino a una risposta positiva da parte de Il Tridente.
-        </p>
-      </div>
-      <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-        Il Tridente - Questa è un'email automatica, non rispondere a questo indirizzo.
-      </div>
-    </div>
-  `;
-}
+const emailLabels = {
+  it: {
+    bookingRef: "Riferimento Hotel",
+    name: "Nome",
+    email: "Email",
+    phone: "Telefono",
+    date: "Data",
+    service: "Servizio Richiesto",
+    time: "Orario",
+    adults: "Numero Adulti",
+    info: "Info Aggiuntive",
+    message: "Messaggio",
+    header_booking: "Nuova Richiesta di Prenotazione",
+    header_contact: "Nuovo Messaggio",
+  },
+  en: {
+    bookingRef: "Hotel Reference",
+    name: "Name",
+    email: "Email",
+    phone: "Phone",
+    date: "Date",
+    service: "Requested Service",
+    time: "Time",
+    adults: "Number of Adults",
+    info: "Additional Info",
+    message: "Message",
+    header_booking: "New Booking Request",
+    header_contact: "New Message",
+  },
+};
 
 export async function POST(request) {
   try {
@@ -112,7 +123,8 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { honeypot, formType = "contatto" } = body;
+    const { honeypot, formType = "contatto", locale = "it" } = body;
+    const l = emailLabels[locale] || emailLabels["it"]; // fallback a italiano
 
     // Honeypot anti-bot
     if (honeypot) {
@@ -122,6 +134,10 @@ export async function POST(request) {
     // Validazione comune
     const name = body.name || "";
     const email = body.email || "";
+    const phone = [body.phonePrefix, body.phone]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
 
     if (!name.trim() || !email.trim()) {
       return Response.json(
@@ -150,30 +166,34 @@ export async function POST(request) {
         );
       }
 
-      subject = `🍽️ ${sanitize(body.date?.trim())} ${sanitize(body.requestedService?.trim())} ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} (HP)`;
+      subject = `🍽️ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} (HP)`;
       fields = [
         {
-          label: "Riferimento Hotel",
+          label: l.bookingRef,
           value: sanitize(body.hotelBookingRef?.trim()),
         },
-        { label: "Nome", value: `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim() },
-        { label: "Email", value: sanitize(email.trim()) },
-        { label: "Telefono", value: sanitize(body.phone?.trim()) },
-        { label: "Data", value: sanitize(body.date?.trim()) },
         {
-          label: "Servizio Richiesto",
+          label: l.name,
+          value:
+            `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim(),
+        },
+        { label: l.email, value: sanitize(email.trim()) },
+        { label: l.phone, value: sanitize(phone) },
+        { label: l.date, value: formatDate(sanitize(body.date?.trim())) },
+        {
+          label: l.service,
           value: sanitize(body.requestedService?.trim()),
         },
         {
-          label: "Orario Preferito",
+          label: l.time,
           value: sanitize(body.preferredTime?.trim()),
         },
         {
-          label: "Numero Adulti",
+          label: l.adults,
           value: sanitize(body.numberOfAdults?.toString()),
         },
         {
-          label: "Info Aggiuntive",
+          label: l.info,
           value: sanitize(body.additionalInfo?.trim()),
         },
       ];
@@ -186,12 +206,12 @@ export async function POST(request) {
         );
       }
 
-      subject = `📩 Nuovo messaggio da ${sanitize(name.trim())}`;
+      subject = `📩 ${l.header_contact} ${sanitize(name.trim())}`;
       fields = [
-        { label: "Nome", value: sanitize(name.trim()) },
-        { label: "Email", value: sanitize(email.trim()) },
-        { label: "Telefono", value: sanitize(body.phone?.trim()) },
-        { label: "Messaggio", value: sanitize(body.message?.trim()) },
+        { label: l.name, value: sanitize(name.trim()) },
+        { label: l.email, value: sanitize(email.trim()) },
+        { label: l.phone, value: sanitize(body.phone?.trim()) },
+        { label: l.message, value: sanitize(body.message?.trim()) },
       ];
     }
 
@@ -211,19 +231,11 @@ export async function POST(request) {
 
     // Email a te
     await transporter.sendMail({
-      from: `"Il Tridente - Sito Web" <${process.env.SMTP_USER}>`,
+      from: `"Il Tridente Positano" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
       replyTo: email.trim(),
       subject,
       html: buildEmailHTML(formType, fields),
-    });
-
-    // Email di conferma al cliente
-    await transporter.sendMail({
-      from: `"Il Tridente" <${process.env.SMTP_USER}>`,
-      to: email.trim(),
-      subject: `Grazie per averci contattato, ${sanitize(name.trim())}!`,
-      html: buildConfirmationHTML(formType, sanitize(name.trim())),
     });
 
     return Response.json({ success: true });

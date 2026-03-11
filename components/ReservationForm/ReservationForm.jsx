@@ -9,9 +9,11 @@ import {
   HiOutlineUserGroup,
 } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 export const ReservationForm = () => {
   const t = useTranslations("reservationForm");
+  const locale = useLocale();
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -93,6 +95,7 @@ export const ReservationForm = () => {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
     data.formType = "prenotazione";
+    data.locale = locale;
 
     const validationErrors = validate(data);
     if (Object.keys(validationErrors).length > 0) {
@@ -221,8 +224,34 @@ export const ReservationForm = () => {
             <label htmlFor="phone" className={labelClasses}>
               {t("phone")}
             </label>
-            <div className="relative">
+            <div className="relative flex">
               <HiOutlinePhone className={iconClasses} />
+              <select
+                name="phonePrefix"
+                className="border border-red rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
+                defaultValue="+39"
+              >
+                <option value="+39">🇮🇹 +39</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+41">🇨🇭 +41</option>
+                <option value="+43">🇦🇹 +43</option>
+                <option value="+32">🇧🇪 +32</option>
+                <option value="+31">🇳🇱 +31</option>
+                <option value="+351">🇵🇹 +351</option>
+                <option value="+48">🇵🇱 +48</option>
+                <option value="+7">🇷🇺 +7</option>
+                <option value="+81">🇯🇵 +81</option>
+                <option value="+86">🇨🇳 +86</option>
+                <option value="+55">🇧🇷 +55</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+971">🇦🇪 +971</option>
+              </select>
               <input
                 type="tel"
                 name="phone"
@@ -331,9 +360,7 @@ export const ReservationForm = () => {
 
         {/* Disclaimer */}
         <div className="bg-cardspranzo/50 border-2 border-cardspranzo rounded-md p-4 text-center">
-          <p className="text-sm text-text leading-relaxed">
-            {t("disclaimer")}
-          </p>
+          <p className="text-sm text-text leading-relaxed">{t("disclaimer")}</p>
         </div>
 
         {/* Submit */}
@@ -363,18 +390,18 @@ export const ReservationForm = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              Invio in corso...
+              {t("sending")}
             </span>
           ) : (
-            "Invia Richiesta"
+            <span>{t("submit")}</span>
           )}
         </button>
 
         {/* Privacy */}
         <p className="text-center text-sm text-red">
-          Inviando questo accetto e comprendo
+          {t("disclaimerPrivacy1")}
           <br />
-          le politiche del ristorante e la{" "}
+          {t("disclaimerPrivacy2")}{" "}
           <a href="/privacy-policy" className="underline hover:text-[#8a5a63]">
             privacy policy
           </a>
@@ -384,8 +411,7 @@ export const ReservationForm = () => {
         {/* Status messages */}
         {status === "success" && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4 text-green-700 text-sm text-center">
-            ✅ Richiesta di prenotazione inviata con successo! Ti contatteremo
-            al più presto.
+            ✅ {t("success")}
           </div>
         )}
         {status && status !== "success" && status !== "" && (
@@ -393,7 +419,7 @@ export const ReservationForm = () => {
             ❌{" "}
             {typeof status === "string" && status !== "error"
               ? status
-              : "Errore nell'invio. Riprova più tardi."}
+              : t("error")}
           </div>
         )}
       </form>

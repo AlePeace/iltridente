@@ -281,7 +281,7 @@ export const AccordionMenu = ({ blocks }) => {
                 <Paragraph
                   content={footerDescription.attributes?.content}
                   textColor={footerDescription.attributes?.textColor}
-                  className={`flex items-center gap-2 text-base font-nunito font-light text-center ${theme.footerTextDescription} m-0`}
+                  className={`hidden items-center gap-2 text-base font-nunito font-light text-center flex-wrap ${theme.footerTextDescription} m-0`}
                 />
               )}
             </div>

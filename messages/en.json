@@ -30,14 +30,16 @@
     "submit": "Submit reservation",
     "sending": "Sending...",
     "required": "Required field",
-    "success": "Reservation sent successfully!",
+    "success": "Thank you for your request! We will be in touch within the next 48-72 hours. Urgent requests will have priority. Thank you for understanding and see you soon!",
     "error": "Error sending the reservation.",
     "disclaimer": "Please note that this is only a request and no reservation will be confirmed until a positive response has been received from Il Tridente.",
     "errorName": "Name is required",
     "errorSurname": "Surname is required",
     "errorEmail": "Email is required",
     "invalidEmail": "Invalid email",
-    "errorRequestedService": "Requested service is required"
+    "errorRequestedService": "Requested service is required",
+    "disclaimerPrivacy1": "By submitting this, I accept and understand",
+    "disclaimerPrivacy2": "the restaurant's policies and the"
   },
   "common": {
     "home": "Home",

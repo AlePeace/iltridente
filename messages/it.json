@@ -30,14 +30,16 @@
     "submit": "Invia prenotazione",
     "sending": "Invio in corso...",
     "required": "Campo obbligatorio",
-    "success": "Prenotazione inviata con successo!",
+    "success": "Richiesta di prenotazione inviata con successo. Ci metteremo in contatto nel più breve tempo possibile, grazie!",
     "error": "Errore nell'invio della prenotazione.",
     "disclaimer": "Si precisa che questa è solo una richiesta e che nessuna prenotazione sarà confermata fino a quando non sarà pervenuta una risposta positiva da parte de Il Tridente.",
     "errorName": "Il nome è obbligatorio",
     "errorSurname": "Il cognome è obbligatorio",
     "errorEmail": "L'email è obbligatoria",
     "invalidEmail": "Email non valida",
-    "errorRequestedService": "Il servizio richiesto è obbligatorio"
+    "errorRequestedService": "Il servizio richiesto è obbligatorio",
+    "disclaimerPrivacy1": "Inviando questo accetto e comprendo",
+    "disclaimerPrivacy2": "le politiche del ristorante e la"
   },
   "common": {
     "home": "Home",
