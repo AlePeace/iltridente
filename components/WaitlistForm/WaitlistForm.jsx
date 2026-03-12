@@ -11,8 +11,8 @@ import {
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
-export const ReservationForm = () => {
-  const t = useTranslations("reservationForm");
+export const WaitlistForm = () => {
+  const t = useTranslations("waitlistForm");
   const locale = useLocale();
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -77,8 +77,9 @@ export const ReservationForm = () => {
       errs.email = t("invalidEmail");
     if (!data.requestedService?.trim())
       errs.requestedService = t("errorRequestedService");
+    if (!data.numberOfAdults?.trim())
+      errs.numberOfAdults = t("errorNumberOfAdults");
 
-    // Validazione data: almeno 14 giorni da oggi
     if (data.date) {
       if (data.date < minDate) {
         errs.date = t("dateValidation");
@@ -94,7 +95,7 @@ export const ReservationForm = () => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    data.formType = "prenotazione";
+    data.formType = "waitlist";
     data.locale = locale;
 
     const validationErrors = validate(data);
@@ -153,19 +154,6 @@ export const ReservationForm = () => {
           tabIndex="-1"
           autoComplete="off"
         />
-
-        {/* Hotel booking reference */}
-        <div>
-          <label htmlFor="hotelBookingRef" className={labelClasses}>
-            {t("referenceReservations")}
-          </label>
-          <input
-            type="text"
-            name="hotelBookingRef"
-            id="hotelBookingRef"
-            className={inputBaseNoIconClasses}
-          />
-        </div>
 
         {/* Name + Surname */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -297,8 +285,10 @@ export const ReservationForm = () => {
             <option value="" disabled>
               {t("selectService")}
             </option>
-            <option value="Pranzo">{t("lunch")}</option>
-            <option value="Cena">{t("dinner")}</option>
+            <option value="Breakfast">{t("breakfast")}</option>
+            <option value="Lunch">{t("lunch")}</option>
+            <option value="Dinner">{t("dinner")}</option>
+            <option value="Bar">{t("bar")}</option>
           </select>
           {errors.requestedService && (
             <p className={errorClasses}>{errors.requestedService}</p>
@@ -341,6 +331,9 @@ export const ReservationForm = () => {
                 </option>
               ))}
             </select>
+            {errors.numberOfAdults && (
+              <p className={errorClasses}>{errors.numberOfAdults}</p>
+            )}
           </div>
         </div>
 

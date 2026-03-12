@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ReservationForm } from "../ReservationForm/ReservationForm";
+import { WaitlistForm } from "../WaitlistForm/WaitlistForm";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 
@@ -9,6 +10,8 @@ export const ReservationPage = ({ blocks }) => {
   const t = useTranslations("reservation");
   const [showForm, setShowForm] = useState(false);
   const [showQuestion, setShowQuestion] = useState(true);
+  const [showOptions, setShowOptions] = useState(false);
+  const [showWaitlist, setShowWaitlist] = useState(false);
 
   // Estrai il contenuto creato in WordPress (il testo introduttivo)
   const innerBlocks = blocks?.innerBlocks || [];
@@ -90,12 +93,46 @@ export const ReservationPage = ({ blocks }) => {
                   {t("yes")}
                 </button>
                 <button
-                  onClick={() => window._gstpln?.openWidget()}
-                  className="bg-buttonno text-white px-10 py-3 rounded-md
-                                 hover:bg-[#2a3a4f] transition-colors duration-300
-                                 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full cursor-pointer"
+                  onClick={() => {
+                    setShowQuestion(false);
+                    setShowOptions(true);
+                  }}
+                  className="bg-buttonno text-white px-10 py-3 rounded-md hover:bg-[#2a3a4f] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full cursor-pointer"
                 >
                   {t("no")}
+                </button>
+              </div>
+            </div>
+          )}
+          {/* NEW — two options after clicking No */}
+          {showOptions && (
+            <div className="mt-8 rounded-lg p-8 text-center animate-fadeIn">
+              <div className="flex w-full gap-4 justify-center flex-col sm:flex-row">
+                <button
+                  onClick={() => window._gstpln?.openWidget()}
+                  className="bg-buttonno text-white px-10 py-3 rounded-md hover:bg-[#2a3a4f] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer"
+                >
+                  {t("bookNow")}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowOptions(false);
+                    setShowWaitlist(true);
+                  }}
+                  className="bg-red text-white px-10 py-3 rounded-md hover:bg-[#8a5a63] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer"
+                >
+                  {t("waitlist")}
+                </button>
+              </div>
+              <div className="text-center mt-4">
+                <button
+                  onClick={() => {
+                    setShowOptions(false);
+                    setShowQuestion(true);
+                  }}
+                  className="text-[#A86F79] underline hover:text-[#8a5a63] text-sm transition-colors"
+                >
+                  {t("goBack")}
                 </button>
               </div>
             </div>
@@ -108,6 +145,22 @@ export const ReservationPage = ({ blocks }) => {
                   onClick={() => {
                     setShowForm(false);
                     setShowQuestion(true);
+                  }}
+                  className="text-[#A86F79] underline hover:text-[#8a5a63] text-sm transition-colors"
+                >
+                  {t("goBack")}
+                </button>
+              </div>
+            </div>
+          )}
+          {showWaitlist && (
+            <div className="mt-8 animate-fadeIn">
+              <WaitlistForm />
+              <div className="text-center mt-4">
+                <button
+                  onClick={() => {
+                    setShowWaitlist(false);
+                    setShowOptions(true);
                   }}
                   className="text-[#A86F79] underline hover:text-[#8a5a63] text-sm transition-colors"
                 >

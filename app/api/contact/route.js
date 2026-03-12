@@ -41,12 +41,7 @@ function formatDate(dateStr) {
 }
 
 // Genera l'HTML dell'email in base al tipo di form
-function buildEmailHTML(formType, fields) {
-  const headerText =
-    formType === "prenotazione"
-      ? "Nuova Richiesta di Prenotazione"
-      : "Nuovo Messaggio";
-
+function buildEmailHTML(headerText, fields) {
   // Costruisci le righe della tabella dinamicamente
   const rows = fields
     .filter((f) => f.value)
@@ -60,7 +55,7 @@ function buildEmailHTML(formType, fields) {
     .join("");
 
   return `
-    <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto;">
+    <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background-color: #A86F79; padding: 20px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
         <p style="color: #f0d0d6; margin: 5px 0 0;">${headerText}</p>
@@ -90,12 +85,14 @@ const emailLabels = {
     info: "Info Aggiuntive",
     message: "Messaggio",
     header_booking: "Nuova Richiesta di Prenotazione",
+    header_waitlist: "Nuova Richiesta Lista d'attesa",
     header_contact: "Nuovo Messaggio",
-    event_request: "Event Request",
+    header_event: "Richiesta Evento",
+    event_request: "Richiesta Evento",
     eventType: "Tipologia Evento",
     guests: "Numero Ospiti",
     header_giftcard: "Richiesta Gift Card",
-    giftcardHow: "Come vuoi utilizzarla",
+    giftcardHow: "Come vuoi riceverla",
     giftcardDateUse: "Date di utilizzo preferite",
   },
   en: {
@@ -110,12 +107,14 @@ const emailLabels = {
     info: "Additional Info",
     message: "Message",
     header_booking: "New Booking Request",
+    header_waitlist: "New Waitlist Request",
+    header_event: "Event Request",
     header_contact: "New Message",
     event_request: "Event Request",
     eventType: "Event Type",
     guests: "Number of Guests",
     header_giftcard: "Gift Card Request",
-    giftcardHow: "How would you like to use it",
+    giftcardHow: "How would you like to receive it",
     giftcardDateUse: "Preferred use dates",
   },
 };
@@ -178,7 +177,7 @@ export async function POST(request) {
         );
       }
 
-      subject = `🍽️ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} (HP)`;
+      subject = `🍽️ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} (HP)`;
       fields = [
         {
           label: l.bookingRef,
@@ -225,7 +224,14 @@ export async function POST(request) {
         { label: l.info, value: sanitize(body.additionalInfo?.trim()) }, // fix
       ];
     } else if (formType === "waitlist") {
-      subject = `⏳ ${l.header_waitlist} - ${sanitize(name.trim())}`;
+      if (!body.requestedService?.trim()) {
+        return Response.json(
+          { error: "Il servizio richiesto è obbligatorio." },
+          { status: 400 },
+        );
+      }
+
+      subject = `⏳ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} WAITLIST`;
       fields = [
         {
           label: l.name,
@@ -234,19 +240,14 @@ export async function POST(request) {
         },
         { label: l.email, value: sanitize(email.trim()) },
         { label: l.phone, value: sanitize(phone) },
-        {
-          label: l.waitlistService,
-          value: sanitize(body.waitlistService?.trim()),
-        },
-        {
-          label: l.waitlistDate,
-          value: formatDate(sanitize(body.waitlistDate?.trim())),
-        },
+        { label: l.date, value: formatDate(sanitize(body.date?.trim())) },
+        { label: l.service, value: sanitize(body.requestedService?.trim()) },
+        { label: l.time, value: sanitize(body.preferredTime?.trim()) },
+        { label: l.adults, value: sanitize(body.numberOfAdults?.toString()) },
         { label: l.info, value: sanitize(body.additionalInfo?.trim()) },
       ];
     } else if (formType === "giftCard") {
-      subject = `🎁 ${l.header_giftcard} - ${sanitize(name.trim())}`;
-      subject = `🎁 ${l.header_giftcard} - ${sanitize(name.trim())}`;
+      subject = `🎁 ${formatDate(sanitize(body.date?.trim()))} ${l.event_request} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
       fields = [
         {
           label: l.name,
@@ -295,13 +296,24 @@ export async function POST(request) {
       },
     });
 
+    const emailHeader =
+      formType === "prenotazione"
+        ? l.header_booking
+        : formType === "event"
+          ? l.header_event
+          : formType === "waitlist"
+            ? l.header_waitlist
+            : formType === "giftCard"
+              ? l.header_giftcard
+              : l.header_contact;
+
     // Email a te
     await transporter.sendMail({
       from: `"Il Tridente Positano" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
       replyTo: email.trim(),
       subject,
-      html: buildEmailHTML(formType, fields),
+      html: buildEmailHTML(emailHeader, fields),
     });
 
     return Response.json({ success: true });
