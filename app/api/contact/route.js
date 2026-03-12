@@ -91,6 +91,12 @@ const emailLabels = {
     message: "Messaggio",
     header_booking: "Nuova Richiesta di Prenotazione",
     header_contact: "Nuovo Messaggio",
+    event_request: "Event Request",
+    eventType: "Tipologia Evento",
+    guests: "Numero Ospiti",
+    header_giftcard: "Richiesta Gift Card",
+    giftcardHow: "Come vuoi utilizzarla",
+    giftcardDateUse: "Date di utilizzo preferite",
   },
   en: {
     bookingRef: "Hotel Reference",
@@ -105,6 +111,12 @@ const emailLabels = {
     message: "Message",
     header_booking: "New Booking Request",
     header_contact: "New Message",
+    event_request: "Event Request",
+    eventType: "Event Type",
+    guests: "Number of Guests",
+    header_giftcard: "Gift Card Request",
+    giftcardHow: "How would you like to use it",
+    giftcardDateUse: "Preferred use dates",
   },
 };
 
@@ -196,6 +208,60 @@ export async function POST(request) {
           label: l.info,
           value: sanitize(body.additionalInfo?.trim()),
         },
+      ];
+    } else if (formType === "event") {
+      subject = `🎉 ${formatDate(sanitize(body.date?.trim()))} ${l.event_request} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
+      fields = [
+        {
+          label: l.name,
+          value:
+            `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim(),
+        },
+        { label: l.email, value: sanitize(email.trim()) },
+        { label: l.phone, value: sanitize(phone) },
+        { label: l.date, value: formatDate(sanitize(body.date?.trim())) },
+        { label: l.eventType, value: sanitize(body.tipologiaEvento?.trim()) }, // fix
+        { label: l.guests, value: sanitize(body.numberOfGuests?.toString()) }, // fix
+        { label: l.info, value: sanitize(body.additionalInfo?.trim()) }, // fix
+      ];
+    } else if (formType === "waitlist") {
+      subject = `⏳ ${l.header_waitlist} - ${sanitize(name.trim())}`;
+      fields = [
+        {
+          label: l.name,
+          value:
+            `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim(),
+        },
+        { label: l.email, value: sanitize(email.trim()) },
+        { label: l.phone, value: sanitize(phone) },
+        {
+          label: l.waitlistService,
+          value: sanitize(body.waitlistService?.trim()),
+        },
+        {
+          label: l.waitlistDate,
+          value: formatDate(sanitize(body.waitlistDate?.trim())),
+        },
+        { label: l.info, value: sanitize(body.additionalInfo?.trim()) },
+      ];
+    } else if (formType === "giftCard") {
+      subject = `🎁 ${l.header_giftcard} - ${sanitize(name.trim())}`;
+      subject = `🎁 ${l.header_giftcard} - ${sanitize(name.trim())}`;
+      fields = [
+        {
+          label: l.name,
+          value:
+            `${sanitize(body.name?.trim())} ${sanitize(body.surname?.trim())}`.trim(),
+        },
+        { label: l.email, value: sanitize(email.trim()) },
+        { label: l.phone, value: sanitize(phone) },
+        { label: l.date, value: formatDate(sanitize(body.date?.trim())) },
+        { label: l.giftcardHow, value: sanitize(body.how?.trim()) },
+        {
+          label: l.giftcardDateUse,
+          value: sanitize(body.dateUseGiftCards?.trim()),
+        },
+        { label: l.info, value: sanitize(body.additionalInfo?.trim()) },
       ];
     } else {
       // Form contatto generico

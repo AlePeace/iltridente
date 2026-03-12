@@ -1,10 +1,12 @@
 import { AccordionMenu } from "components/AccordionMenu";
 import { BarHome } from "components/BarHome/BarHome";
 import { CardsCenaHome } from "components/CardsCenaHome";
+import { CardsPage } from "components/CardsPage/CardsPage";
 import { CardsPranzoHome } from "components/CardsPranzoHome";
 import { DescriptionBar } from "components/DescriptionBar";
 import { DescriptionHome } from "components/DescriptionHome";
 import { DescriptionRisto } from "components/DescriptionRisto";
+import { EventFormPage } from "components/EventFormPage/EventFormPage";
 import { Footer } from "components/Footer";
 import { GalleryHome } from "components/GalleryHome/GalleryHome";
 import { HeroBar } from "components/HeroBar";
@@ -80,6 +82,12 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "ReservationPage":
             return <ReservationPage key={block.id} blocks={block} />;
+
+          case "EventFormPage":
+            return <EventFormPage key={block.id} blocks={block} />;
+
+          case "CardsPage":
+            return <CardsPage key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;
