@@ -297,8 +297,8 @@ export const ReservationForm = () => {
             <option value="" disabled>
               {t("selectService")}
             </option>
-            <option value="Pranzo">{t("lunch")}</option>
-            <option value="Cena">{t("dinner")}</option>
+            <option value={t("lunch")}>{t("lunch")}</option>
+            <option value={t("dinner")}>{t("dinner")}</option>
           </select>
           {errors.requestedService && (
             <p className={errorClasses}>{errors.requestedService}</p>

@@ -127,18 +127,18 @@ export const EventForm = () => {
   };
 
   const inputBaseClasses =
-    "w-full border rounded-lg border-red py-3 pl-10 pr-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
+    "w-full border rounded-lg border-ocean py-3 pl-10 pr-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
   const inputBaseNoIconClasses =
-    "w-full border border-red rounded-lg py-3 px-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
+    "w-full border border-ocean rounded-lg py-3 px-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
   const labelClasses = "block font-nunito font-semibold text-sm text-text mb-1";
   const errorClasses = "text-red-500 text-xs mt-1";
   const iconClasses =
-    "absolute left-2 top-1/2 -translate-y-1/2 text-red w-5 h-5";
+    "absolute left-2 top-1/2 -translate-y-1/2 text-ocean w-5 h-5";
 
   return (
-    <div className="w-full mx-auto px-6 py-10 bg-white border-4 border-red rounded-lg">
+    <div className="w-full mx-auto px-6 py-10 bg-white border-4 border-ocean rounded-lg">
       {/* Titolo */}
-      <h2 className="font-cinzel text-center text-red text-2xl md:text-3xl mb-8 uppercase tracking-wider">
+      <h2 className="font-cinzel text-center text-ocean text-2xl md:text-3xl mb-8 uppercase tracking-wider">
         {t("titleFormEvent")}
       </h2>
 
@@ -213,7 +213,7 @@ export const EventForm = () => {
               <HiOutlinePhone className={iconClasses} />
               <select
                 name="phonePrefix"
-                className="border border-red rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
+                className="border border-ocean rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-lightblue text-sm shrink-0"
                 defaultValue="+39"
               >
                 <option value="+39">🇮🇹 +39</option>
@@ -332,8 +332,8 @@ export const EventForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-red text-white px-6 py-4 rounded-md 
-                     hover:bg-[#8a5a63] transition-colors duration-300 
+          className="w-full bg-ocean text-white px-6 py-4 rounded-md 
+                     hover:bg-lightblue transition-colors duration-300 
                      disabled:opacity-50 disabled:cursor-not-allowed
                      font-normal tracking-[0.2em] uppercase text-sm"
         >
@@ -363,7 +363,7 @@ export const EventForm = () => {
         </button>
 
         {/* Privacy */}
-        <p className="text-center text-sm text-red">
+        <p className="text-center text-sm text-ocean">
           {t("disclaimerPrivacy1")}
           <br />
           {t("disclaimerPrivacy2")}{" "}

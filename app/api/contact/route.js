@@ -41,14 +41,14 @@ function formatDate(dateStr) {
 }
 
 // Genera l'HTML dell'email in base al tipo di form
-function buildEmailHTML(headerText, fields) {
+function buildEmailHTML(headerText, fields, accentColor = "#A86F79") {
   // Costruisci le righe della tabella dinamicamente
   const rows = fields
     .filter((f) => f.value)
     .map(
       (f) => `
       <tr>
-        <td style="padding: 10px 0; font-weight: bold; color: #A86F79; width: 160px; vertical-align: top;">${f.label}:</td>
+        <td style="padding: 10px 0; font-weight: bold; color: ${accentColor}; width: 160px; vertical-align: top;">${f.label}:</td>
         <td style="padding: 10px 0;">${f.value}</td>
       </tr>`,
     )
@@ -56,7 +56,7 @@ function buildEmailHTML(headerText, fields) {
 
   return `
     <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto;">
-      <div style="background-color: #A86F79; padding: 20px; text-align: center;">
+      <div style="background-color: ${accentColor}; padding: 20px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
         <p style="color: #f0d0d6; margin: 5px 0 0;">${headerText}</p>
       </div>
@@ -64,6 +64,66 @@ function buildEmailHTML(headerText, fields) {
         <table style="width: 100%; border-collapse: collapse;">
           ${rows}
         </table>
+      </div>
+      <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+        Messaggio inviato dal sito web Il Tridente
+      </div>
+    </div>
+  `;
+}
+function buildWaitlistConfirmHTML(
+  locale,
+  name,
+  service,
+  formattedDate,
+  accentColor = "#5B7FA6",
+) {
+  const isEn = locale === "en";
+
+  const content = isEn
+    ? `
+    <p>Dear <strong>${name}</strong>,</p>
+    <p>Thank you for filling in this form! You have been placed on the waitlist.</p>
+    <p>We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for <strong>${service}</strong> on <strong>${formattedDate}</strong>.</p>
+    <p>If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again <a href="https://iltridentepositano.com" style="color: ${accentColor};">here</a>.</p>
+    <p><strong>Make your stay on the Amalfi Coast memorable:</strong></p>
+    <ul style="padding-left: 20px;">
+      <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. The perfect escape from the summer heat!</li>
+      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="https://www.poesea.it" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
+    </ul>
+    <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
+    <p>Best Regards,<br><strong>Il Tridente team</strong></p>
+    <p style="font-size: 13px; color: #888;">
+      <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
+      @hotelposeidonpositano
+    </p>
+  `
+    : `
+    <p>Caro/a <strong>${name}</strong>,</p>
+    <p>Grazie per aver compilato il modulo! Sei stato inserito nella lista d'attesa.</p>
+    <p>Ci dispiace che non abbia trovato disponibilità nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilità per <strong>${service}</strong> in data <strong>${formattedDate}</strong>.</p>
+    <p>Se desideri iscriverti alla lista d'attesa per più date o servizi, compila nuovamente il modulo sul sito <a href="https://iltridentepositano.com" style="color: ${accentColor};">qui</a>.</p>
+    <p><strong>Rendi indimenticabile il tuo soggiorno sulla Costiera Amalfitana:</strong></p>
+    <ul style="padding-left: 20px;">
+      <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. La fuga perfetta dal caldo estivo!</li>
+      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="https://www.poesea.it" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
+    </ul>
+    <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
+    <p>Cordiali saluti,<br><strong>Il team del Tridente</strong></p>
+    <p style="font-size: 13px; color: #888;">
+      <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
+      @hotelposeidonpositano
+    </p>
+  `;
+
+  return `
+    <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto;">
+      <div style="background-color: ${accentColor}; padding: 20px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
+        <p style="color: #f0d0d6; margin: 5px 0 0;">${isEn ? "Waitlist Confirmation" : "Conferma Lista d'attesa"}</p>
+      </div>
+      <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8; line-height: 1.7; color: #333;">
+        ${content}
       </div>
       <div style="background-color: #f0e8ea; padding: 15px; text-align: center; font-size: 12px; color: #888;">
         Messaggio inviato dal sito web Il Tridente
@@ -231,7 +291,7 @@ export async function POST(request) {
         );
       }
 
-      subject = `⏳ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} WAITLIST`;
+      subject = `⏳ ${formatDate(sanitize(body.date?.trim()))} ${sanitize(body.requestedService?.trim())} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())} - WAITLIST`;
       fields = [
         {
           label: l.name,
@@ -306,15 +366,58 @@ export async function POST(request) {
             : formType === "giftCard"
               ? l.header_giftcard
               : l.header_contact;
+    const accentColor =
+      formType === "event"
+        ? "#0080ad"
+        : formType === "waitlist"
+          ? "#7a6f6c"
+          : formType === "giftCard"
+            ? "#F59E0B"
+            : "#a61932";
 
     // Email a te
     await transporter.sendMail({
       from: `"Il Tridente Positano" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL,
+      to:
+        formType === "waitlist"
+          ? process.env.WAITLIST_EMAIL || process.env.CONTACT_EMAIL
+          : process.env.CONTACT_EMAIL,
       replyTo: email.trim(),
       subject,
-      html: buildEmailHTML(emailHeader, fields),
+      html: buildEmailHTML(emailHeader, fields, accentColor),
     });
+
+    if (formType === "waitlist") {
+      const transporter2 = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: {
+          user: process.env.WAITLIST_EMAIL,
+          pass: process.env.WAITLIST_EMAIL_PASS,
+        },
+        tls: { rejectUnauthorized: false },
+      });
+      const confirmSubject =
+        locale === "en"
+          ? "Il Tridente, Positano - You have been placed on the waitlist!"
+          : "Il Tridente, Positano - Sei stato inserito nella lista d'attesa!";
+
+      const confirmHTML = buildWaitlistConfirmHTML(
+        locale,
+        sanitize(`${body.name?.trim()} ${body.surname?.trim()}`.trim()),
+        sanitize(body.requestedService?.trim()),
+        formatDate(sanitize(body.date?.trim())),
+        accentColor,
+      );
+
+      await transporter2.sendMail({
+        from: `"Il Tridente Positano" <${process.env.WAITLIST_EMAIL}>`,
+        to: email.trim(),
+        subject: confirmSubject,
+        html: confirmHTML,
+      });
+    }
 
     return Response.json({ success: true });
   } catch (error) {

@@ -17,6 +17,7 @@ import { IntroCenaRisto } from "components/IntroCenaRisto/IntroCenaRisto";
 import { IntroDrinkBar } from "components/IntroDrinkBar/IntroDrinkBar";
 import { IntroEasyBar } from "components/IntroEasyBar/IntroEasyBar";
 import { IntroPranzoRisto } from "components/IntroPranzoRisto";
+import { ParagraphGroup } from "components/ParagraphGroup/ParagraphGroup";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
 import { ReservationPage } from "components/ReservationPage";
 
@@ -88,6 +89,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "CardsPage":
             return <CardsPage key={block.id} blocks={block} />;
+
+          case "ParagraphGroup":
+            return <ParagraphGroup key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;

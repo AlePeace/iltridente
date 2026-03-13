@@ -130,20 +130,25 @@ export const WaitlistForm = () => {
   };
 
   const inputBaseClasses =
-    "w-full border rounded-lg border-red py-3 pl-10 pr-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
+    "w-full border rounded-lg border-brown py-3 pl-10 pr-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
   const inputBaseNoIconClasses =
-    "w-full border border-red rounded-lg py-3 px-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
+    "w-full border border-brown rounded-lg py-3 px-3 focus:outline-none focus:border-[#A86F79] transition-all bg-transparent text-[#333] placeholder:text-[#bbb]";
   const labelClasses = "block font-nunito font-semibold text-sm text-text mb-1";
-  const errorClasses = "text-red-500 text-xs mt-1";
+  const errorClasses = "text-brown-500 text-xs mt-1";
   const iconClasses =
-    "absolute left-2 top-1/2 -translate-y-1/2 text-red w-5 h-5";
+    "absolute left-2 top-1/2 -translate-y-1/2 text-brown w-5 h-5";
 
   return (
-    <div className="max-w-xl mx-auto px-6 py-10 bg-white border-4 border-red rounded-lg">
+    <div className="max-w-xl mx-auto px-6 py-10 bg-white border-4 border-brown rounded-lg">
       {/* Titolo */}
-      <h2 className="font-cinzel text-red text-2xl md:text-3xl mb-8 uppercase tracking-wider">
-        {t("titleForm")}
-      </h2>
+      <div className="pb-8">
+        <h2 className="font-cinzel text-brown text-2xl md:text-3xl mb-8 uppercase tracking-wider">
+          {t("titleForm")}
+        </h2>
+        <p className="font-nunito text-base font-light text-text">
+          {t("infoWaitlist")}
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6" noValidate>
         {/* Honeypot */}
@@ -216,7 +221,7 @@ export const WaitlistForm = () => {
               <HiOutlinePhone className={iconClasses} />
               <select
                 name="phonePrefix"
-                className="border border-red rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
+                className="border border-brown rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
                 defaultValue="+39"
               >
                 <option value="+39">🇮🇹 +39</option>
@@ -254,6 +259,9 @@ export const WaitlistForm = () => {
         <div>
           <label htmlFor="date" className={labelClasses}>
             {t("date")}
+            <p className="font-nunito text-base font-light text-text">
+              {t("dateWarning")}
+            </p>
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -285,10 +293,10 @@ export const WaitlistForm = () => {
             <option value="" disabled>
               {t("selectService")}
             </option>
-            <option value="Breakfast">{t("breakfast")}</option>
-            <option value="Lunch">{t("lunch")}</option>
-            <option value="Dinner">{t("dinner")}</option>
-            <option value="Bar">{t("bar")}</option>
+            <option value={t("breakfast")}>{t("breakfast")}</option>
+            <option value={t("lunch")}>{t("lunch")}</option>
+            <option value={t("dinner")}>{t("dinner")}</option>
+            <option value={t("bar")}>{t("bar")}</option>
           </select>
           {errors.requestedService && (
             <p className={errorClasses}>{errors.requestedService}</p>
@@ -353,14 +361,18 @@ export const WaitlistForm = () => {
 
         {/* Disclaimer */}
         <div className="bg-cardspranzo/50 border-2 border-cardspranzo rounded-md p-4 text-center">
-          <p className="text-sm text-text leading-relaxed">{t("disclaimer")}</p>
+          <p className="text-sm text-text leading-relaxed">
+            {t.rich("disclaimer", {
+              b: (chunks) => <strong>{chunks}</strong>,
+            })}
+          </p>
         </div>
 
         {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-red text-white px-6 py-4 rounded-md 
+          className="w-full bg-brown text-white px-6 py-4 rounded-md 
                      hover:bg-[#8a5a63] transition-colors duration-300 
                      disabled:opacity-50 disabled:cursor-not-allowed
                      font-normal tracking-[0.2em] uppercase text-sm"
@@ -391,7 +403,7 @@ export const WaitlistForm = () => {
         </button>
 
         {/* Privacy */}
-        <p className="text-center text-sm text-red">
+        <p className="text-center text-sm text-brown">
           {t("disclaimerPrivacy1")}
           <br />
           {t("disclaimerPrivacy2")}{" "}

@@ -14,17 +14,21 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="flex gap-2 items-center">
-      {routing.locales.map((loc) => (
-        <button
-          key={loc}
-          onClick={() => handleChange(loc)}
-          className={`text-sm uppercase font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${
-            locale === loc ? "bg-red text-white" : "text-red hover:bg-red/10"
-          }`}
-        >
-          {loc}
-        </button>
+    <div className="flex items-center">
+      {routing.locales.map((loc, index) => (
+        <div  key={loc} className="flex items-center">
+          {index > 0 && <span className="text-text/50 -mt-1 select-none">|</span>}
+          <button
+            onClick={() => handleChange(loc)}
+            className={`font-nunito font-light text-sm uppercase px-2 py-1 rounded transition-colors cursor-pointer ${
+              locale === loc
+                ? "!font-bold text-text"
+                : "text-text hover:bg-text/10"
+            }`}
+          >
+            {loc}
+          </button>
+        </div>
       ))}
     </div>
   );
