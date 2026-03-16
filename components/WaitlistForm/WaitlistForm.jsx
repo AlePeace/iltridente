@@ -21,21 +21,33 @@ export const WaitlistForm = () => {
   const [maxDate, setMaxDate] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
-  // Calcola la data minima (oggi) e massima (oggi + 14 giorni)
+  // Calcola la data minima (oggi) e massima (oggi + 14 giorni) nel fuso orario italiano
   useEffect(() => {
-    const today = new Date();
-    const min = new Date();
-    min.setDate(today.getDate() + 14);
+    const now = new Date();
+
+    // Ottieni la data odierna nel fuso orario italiano (Europe/Rome)
+    const italianDateStr = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Rome",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(now);
+
+    // Parsa la stringa "YYYY-MM-DD" per calcolare i 14 giorni successivi
+    const [year, month, day] = italianDateStr.split("-").map(Number);
+    const italianDate = new Date(year, month - 1, day);
+    const max = new Date(italianDate);
+    max.setDate(max.getDate() + 14);
 
     const formatDate = (d) => {
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${dd}`;
     };
 
-    setMinDate(formatDate(min));
-    // Nessun maxDate: può prenotare qualsiasi data dopo i 14 giorni
+    setMinDate(italianDateStr);
+    setMaxDate(formatDate(max));
   }, []);
 
   const handleDateChange = (e) => {
@@ -50,8 +62,7 @@ export const WaitlistForm = () => {
       return;
     }
 
-    // Controlla se la data è almeno 14 giorni da oggi
-    if (value < minDate) {
+    if (value < minDate || value > maxDate) {
       setSelectedDate("");
       e.target.value = "";
       setErrors((prev) => ({
@@ -81,7 +92,7 @@ export const WaitlistForm = () => {
       errs.numberOfAdults = t("errorNumberOfAdults");
 
     if (data.date) {
-      if (data.date < minDate) {
+      if (data.date < minDate || data.date > maxDate) {
         errs.date = t("dateValidation");
       }
     }
@@ -259,9 +270,6 @@ export const WaitlistForm = () => {
         <div>
           <label htmlFor="date" className={labelClasses}>
             {t("date")}
-            <p className="font-nunito text-base font-light text-text">
-              {t("dateWarning")}
-            </p>
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -270,6 +278,7 @@ export const WaitlistForm = () => {
               name="date"
               id="date"
               min={minDate}
+              max={maxDate}
               value={selectedDate}
               onChange={handleDateChange}
               onKeyDown={(e) => e.preventDefault()}

@@ -17,56 +17,6 @@ export const EventForm = () => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [minDate, setMinDate] = useState("");
-  const [maxDate, setMaxDate] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-
-  // Calcola la data minima (oggi) e massima (oggi + 14 giorni)
-  useEffect(() => {
-    const today = new Date();
-    const min = new Date();
-    min.setDate(today.getDate() + 14);
-
-    const formatDate = (d) => {
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-
-    setMinDate(formatDate(min));
-    // Nessun maxDate: può prenotare qualsiasi data dopo i 14 giorni
-  }, []);
-
-  const handleDateChange = (e) => {
-    const value = e.target.value;
-
-    if (!value) {
-      setSelectedDate("");
-      setErrors((prev) => {
-        const { date, ...rest } = prev;
-        return rest;
-      });
-      return;
-    }
-
-    // Controlla se la data è almeno 14 giorni da oggi
-    if (value < minDate) {
-      setSelectedDate("");
-      e.target.value = "";
-      setErrors((prev) => ({
-        ...prev,
-        date: "La prenotazione deve essere effettuata con almeno 14 giorni di anticipo",
-      }));
-      return;
-    }
-
-    setSelectedDate(value);
-    setErrors((prev) => {
-      const { date, ...rest } = prev;
-      return rest;
-    });
-  };
 
   const validate = (data) => {
     const errs = {};
@@ -78,10 +28,6 @@ export const EventForm = () => {
     if (!data.tipologiaEvento?.trim())
       // <-- era requestedService
       errs.tipologiaEvento = t("errorRequestedService"); // <-- era errs.requestedService
-
-    if (data.date && data.date < minDate) {
-      errs.date = t("dateValidation");
-    }
 
     return errs;
   };
@@ -258,11 +204,7 @@ export const EventForm = () => {
               type="date"
               name="date"
               id="date"
-              min={minDate}
-              value={selectedDate}
-              onChange={handleDateChange}
-              onKeyDown={(e) => e.preventDefault()}
-              className={`${inputBaseClasses} ${errors.date ? "border-red-500" : ""}`}
+              className={inputBaseClasses}
             />
           </div>
         </div>

@@ -269,7 +269,7 @@ export async function POST(request) {
         },
       ];
     } else if (formType === "event") {
-      subject = `🎉 ${formatDate(sanitize(body.date?.trim()))} ${l.event_request} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
+      subject = `🎉 ${formatDate(sanitize(body.date?.trim()))} Event Request - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
       fields = [
         {
           label: l.name,
@@ -307,7 +307,7 @@ export async function POST(request) {
         { label: l.info, value: sanitize(body.additionalInfo?.trim()) },
       ];
     } else if (formType === "giftCard") {
-      subject = `🎁 ${formatDate(sanitize(body.date?.trim()))} ${l.event_request} - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
+      subject = `🎁 ${formatDate(sanitize(body.date?.trim()))} Gift Voucher - ${sanitize(name.trim())} ${sanitize(body.surname?.trim())}`;
       fields = [
         {
           label: l.name,

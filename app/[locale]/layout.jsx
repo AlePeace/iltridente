@@ -4,11 +4,11 @@ import { getMenu } from "utils/getMenu";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
+import CookieConsentBanner from "components/CookieConsent/CookieConsent";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -44,7 +44,7 @@ export default async function LocaleLayout({ children, params }) {
           <SmoothScroll>
             <MainMenu menuData={menus} menus={menus} />
             {children}
-            <Analytics />
+            <CookieConsentBanner />
           </SmoothScroll>
           <Script
             id="guestplan-widget"

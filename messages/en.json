@@ -1,4 +1,7 @@
 {
+  "cookieConsent": {
+    "manageConsent": "Manage Consent"
+  },
   "reservation": {
     "hotelQuestion": "Do you have a reservation at Hotel Poseidon?",
     "yes": "Yes",

@@ -1,4 +1,7 @@
 {
+  "cookieConsent": {
+    "manageConsent": "Gestisci Consenso"
+  },
   "reservation": {
     "hotelQuestion": "Hai una prenotazione all'Hotel Poseidon?",
     "yes": "Sì",
