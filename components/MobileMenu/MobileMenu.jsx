@@ -57,7 +57,7 @@ export const MobileMenu = ({ navItems, menuData, menus }) => {
               </ul>
             </nav>
           )}
-          <ButtonHeader menuData={menuData} menus={menus} />
+          <ButtonHeader menuData={menuData} menus={menus} onClose={() => setOpen(false)} />
         </div>
       </div>
     </>

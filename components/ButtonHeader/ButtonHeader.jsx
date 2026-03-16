@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export const ButtonHeader = ({ menuData, menus }) => {
+export const ButtonHeader = ({ menuData, menus, onClose }) => {
   const data = menuData ?? menus;
 
   const first = Array.isArray(data) ? data[0] : data;
@@ -33,6 +33,7 @@ export const ButtonHeader = ({ menuData, menus }) => {
       <Link
         href={ctaItem.uri ?? "#"}
         className="cursor-pointer py-2.5 px-5 bg-red text-sm text-white font-nunito font-normal rounded-lg border border-red hover:bg-red/90 inline-block"
+        onClick={onClose}
       >
         {ctaItem.label}
       </Link>
