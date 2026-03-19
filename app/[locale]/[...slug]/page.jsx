@@ -41,7 +41,7 @@ export async function generateMetadata({ params }) {
 
   // Fallback SEO
   if (!seo && locale !== "it") {
-    seo = await getSeo(`/${slugPath}/`, "it");
+    seo = await getSeo(`/${slugPath}/`, locale);
   }
 
   return {

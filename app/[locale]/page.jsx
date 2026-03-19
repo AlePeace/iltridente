@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
   let seo = await getSeo(uri, locale);
 
   if (!seo && locale !== "it") {
-    seo = await getSeo("/", "it");
+    seo = await getSeo("/", locale);
   }
 
   return {

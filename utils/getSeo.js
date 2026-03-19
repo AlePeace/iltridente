@@ -1,3 +1,21 @@
+const processSeoUrls = (seo) => {
+  if (!seo) return seo;
+  const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+  if (!wpUrl || !siteUrl) return seo;
+
+  return {
+    ...seo,
+    canonicalUrl: seo.canonicalUrl?.replace(wpUrl, siteUrl),
+    openGraph: seo.openGraph
+      ? {
+          ...seo.openGraph,
+          url: seo.openGraph.url?.replace(wpUrl, siteUrl),
+        }
+      : seo.openGraph,
+  };
+};
+
 export const getSeo = async (uri, locale = "it") => {
   const params = {
     query: `
@@ -67,6 +85,17 @@ export const getSeo = async (uri, locale = "it") => {
   });
 
   const { data } = await response.json();
+  console.log(`[getSeo] uri="${uri}" locale="${locale}"`, 
+  JSON.stringify({
+    found: !!data?.nodeByUri,
+    pageLanguage: data?.nodeByUri?.language?.code,
+    seoTitle: data?.nodeByUri?.seo?.title,
+    translations: data?.nodeByUri?.translations?.map(t => ({
+      lang: t.language?.code,
+      title: t.seo?.title
+    }))
+  })
+);
 
   if (!data?.nodeByUri) {
     return null;
@@ -77,7 +106,7 @@ export const getSeo = async (uri, locale = "it") => {
 
   // Se la pagina è già nella lingua richiesta
   if (pageLanguage === locale) {
-    return page.seo;
+    return processSeoUrls(page.seo);
   }
 
   // Cerca tra le traduzioni
@@ -86,9 +115,9 @@ export const getSeo = async (uri, locale = "it") => {
   );
 
   if (translation) {
-    return translation.seo;
+    return processSeoUrls(translation.seo);
   }
 
   // Fallback
-  return page.seo;
+  return processSeoUrls(page.seo);
 };
