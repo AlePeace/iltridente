@@ -4,6 +4,7 @@ import { getMenu } from "utils/getMenu";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
 import Script from "next/script";
+import { GoogleTagManager } from "next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -39,6 +40,7 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <html lang={locale}>
+      <GoogleTagManager gtmId="GTM-WQ4HXDCW" />
       <body className={`${nunito.variable} ${cinzel.variable}`}>
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
