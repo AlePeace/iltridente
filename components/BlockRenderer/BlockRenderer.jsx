@@ -9,6 +9,9 @@ import { DescriptionRisto } from "components/DescriptionRisto";
 import { EventFormPage } from "components/EventFormPage/EventFormPage";
 import { Footer } from "components/Footer";
 import { GalleryHome } from "components/GalleryHome/GalleryHome";
+import { BackButton } from "components/BackButton";
+import { ButtonsGateway } from "components/ButtonsGateway";
+import { GroupGateway } from "components/GroupGateway";
 import { HeroBar } from "components/HeroBar";
 import { HeroHome } from "components/HeroHome";
 import { HeroRisto } from "components/HeroRisto/HeroRisto";
@@ -89,6 +92,15 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "CardsPage":
             return <CardsPage key={block.id} blocks={block} />;
+
+          case "BackButton":
+            return <BackButton key={block.id} blocks={block} />;
+
+          case "ButtonsGateway":
+            return <ButtonsGateway key={block.id} blocks={block} />;
+
+          case "GroupGateway":
+            return <GroupGateway key={block.id} blocks={block} />;
 
           case "ParagraphGroup":
             return <ParagraphGroup key={block.id} blocks={block} />;
