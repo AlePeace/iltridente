@@ -38,10 +38,15 @@
     "success": "Richiesta di prenotazione inviata con successo. Ci metteremo in contatto nel più breve tempo possibile, grazie!",
     "error": "Errore nell'invio della prenotazione.",
     "disclaimer": "Si precisa che questa è solo una richiesta e che nessuna prenotazione sarà confermata fino a quando non sarà pervenuta una risposta positiva da parte de Il Tridente.",
+    "errorHotelBookingRef": "Il riferimento prenotazione alberghiera è obbligatorio",
     "errorName": "Il nome è obbligatorio",
     "errorSurname": "Il cognome è obbligatorio",
     "errorEmail": "L'email è obbligatoria",
     "invalidEmail": "Email non valida",
+    "errorPhone": "Il telefono è obbligatorio",
+    "errorDate": "La data è obbligatoria",
+    "errorPreferredTime": "L'orario preferito è obbligatorio",
+    "errorNumberOfAdults": "Il numero di adulti è obbligatorio",
     "errorRequestedService": "Il servizio richiesto è obbligatorio",
     "disclaimerPrivacy1": "Inviando questo accetto e comprendo",
     "disclaimerPrivacy2": "le politiche del ristorante e la"
@@ -77,6 +82,9 @@
     "errorSurname": "Il cognome è obbligatorio",
     "errorEmail": "L'email è obbligatoria",
     "invalidEmail": "Email non valida",
+    "errorPhone": "Il telefono è obbligatorio",
+    "errorDate": "La data è obbligatoria",
+    "errorNumberOfGuests": "Il numero di ospiti è obbligatorio",
     "errorRequestedService": "Il servizio richiesto è obbligatorio",
     "disclaimerPrivacy1": "Inviando questo accetto e comprendo",
     "disclaimerPrivacy2": "le politiche del ristorante e la"
@@ -106,6 +114,9 @@
   "errorSurname": "Il cognome è obbligatorio",
   "errorEmail": "L'email è obbligatoria",
   "invalidEmail": "Email non valida",
+  "errorPhone": "Il telefono è obbligatorio",
+  "errorDate": "La data di consegna è obbligatoria",
+  "errorDateUseGiftCards": "La data di utilizzo è obbligatoria",
   "errorHow": "Questo campo è obbligatorio",
   "dateValidation": "La data deve essere almeno 14 giorni da oggi",
   "disclaimerPrivacy1": "Inviando questo accetto e comprendo",
@@ -138,6 +149,9 @@
   "errorSurname": "Il cognome è obbligatorio",
   "errorEmail": "L'email è obbligatoria",
   "invalidEmail": "Email non valida",
+  "errorPhone": "Il telefono è obbligatorio",
+  "errorDate": "La data è obbligatoria",
+  "errorPreferredTime": "L'orario preferito è obbligatorio",
   "errorRequestedService": "Il servizio richiesto è obbligatorio",
   "errorNumberOfAdults": "Il numero di adulti è obbligatorio",
   "dateValidation": "La data deve essere almeno 14 giorni da oggi",
@@ -152,5 +166,10 @@
     "bar": "Bar",
     "reservations": "Prenotazioni",
     "contacts": "Contatti"
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "description": "La pagina che stai cercando non esiste o è stata spostata.",
+    "backHome": "Torna alla Home"
   }
 }

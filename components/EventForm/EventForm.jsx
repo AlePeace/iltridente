@@ -25,9 +25,11 @@ export const EventForm = () => {
     if (!data.email?.trim()) errs.email = t("errorEmail");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
       errs.email = t("invalidEmail");
+    if (!data.phone?.trim()) errs.phone = t("errorPhone");
+    if (!data.date?.trim()) errs.date = t("errorDate");
     if (!data.tipologiaEvento?.trim())
-      // <-- era requestedService
-      errs.tipologiaEvento = t("errorRequestedService"); // <-- era errs.requestedService
+      errs.tipologiaEvento = t("errorRequestedService");
+    if (!data.numberOfGuests?.trim()) errs.numberOfGuests = t("errorNumberOfGuests");
 
     return errs;
   };
@@ -153,14 +155,15 @@ export const EventForm = () => {
           </div>
           <div>
             <label htmlFor="phone" className={labelClasses}>
-              {t("phone")}
+              {t("phone")} *
             </label>
             <div className="relative flex">
               <HiOutlinePhone className={iconClasses} />
               <select
                 name="phonePrefix"
-                className="border border-ocean rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-lightblue text-sm shrink-0"
+                className={`border border-ocean rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-lightblue text-sm shrink-0 ${errors.phone ? "border-red-500" : ""}`}
                 defaultValue="+39"
+                required
               >
                 <option value="+39">🇮🇹 +39</option>
                 <option value="+1">🇺🇸 +1</option>
@@ -176,6 +179,7 @@ export const EventForm = () => {
                 <option value="+48">🇵🇱 +48</option>
                 <option value="+7">🇷🇺 +7</option>
                 <option value="+81">🇯🇵 +81</option>
+                <option value="+82">🇰🇷 +82</option>
                 <option value="+86">🇨🇳 +86</option>
                 <option value="+55">🇧🇷 +55</option>
                 <option value="+54">🇦🇷 +54</option>
@@ -187,16 +191,18 @@ export const EventForm = () => {
                 type="tel"
                 name="phone"
                 id="phone"
-                className={`${inputBaseClasses} !rounded-l-none !border-l-0`}
+                required
+                className={`${inputBaseClasses} !rounded-l-none !border-l-0 ${errors.phone ? "border-red-500" : ""}`}
               />
             </div>
+            {errors.phone && <p className={errorClasses}>{errors.phone}</p>}
           </div>
         </div>
 
         {/* Date */}
         <div>
           <label htmlFor="date" className={labelClasses}>
-            {t("date")}
+            {t("date")} *
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -204,9 +210,11 @@ export const EventForm = () => {
               type="date"
               name="date"
               id="date"
-              className={inputBaseClasses}
+              required
+              className={`${inputBaseClasses} ${errors.date ? "border-red-500" : ""}`}
             />
           </div>
+          {errors.date && <p className={errorClasses}>{errors.date}</p>}
         </div>
 
         {/* Requested service */}
@@ -274,8 +282,8 @@ export const EventForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-ocean text-white px-6 py-4 rounded-md 
-                     hover:bg-lightblue transition-colors duration-300 
+          className="w-full bg-ocean text-white px-6 py-4 rounded-md
+                     hover:bg-lightblue transition-colors duration-300
                      disabled:opacity-50 disabled:cursor-not-allowed
                      font-normal tracking-[0.2em] uppercase text-sm"
         >

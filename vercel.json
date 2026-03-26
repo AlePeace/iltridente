@@ -7,66 +7,301 @@
     },
     {
       "source": "/lunch-menu",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/privacy-policy",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/privacy-information",
-      "destination": "/",
+      "destination": "/il-ristorante",
       "permanent": true
     },
     {
       "source": "/menu-dinner",
-      "destination": "/",
+      "destination": "/il-ristorante",
       "permanent": true
     },
     {
-      "source": "/restaurants",
-      "destination": "/",
+      "source": "/restaurant",
+      "destination": "/il-ristorante",
       "permanent": true
     },
     {
       "source": "/weddings-and-events",
-      "destination": "/",
+      "destination": "/eventi",
+      "permanent": true
+    },
+    {
+      "source": "en/weddings-and-events",
+      "destination": "/events",
       "permanent": true
     },
     {
       "source": "/giftcards",
-      "destination": "/",
+      "destination": "/en/gift-cards",
       "permanent": true
     },
     {
       "source": "/it/giftcards",
+      "destination": "/gift-cards",
+      "permanent": true
+    },
+    {
+      "source": "/lunch-is-on-the-table",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/it/restaurant",
+      "source": "/it/lunch-is-on-the-table",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/it/weddings-and-events",
+      "source": "/great-recipes-the-chefs-recommendations",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/it/informativa-sulla-privacy",
+      "source": "/it/great-recipes-the-chefs-recommendations",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/it/privacy-policy",
+      "source": "/new-meals-in-attika",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/it/lunch-menu",
+      "source": "/it/new-meals-in-attika",
+      "destination": "/new-meals-in-attika",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-be-healthier-with-a-balanced-plate",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/how-to-be-healthier-with-a-balanced-plate",
+      "destination": "/how-to-be-healthier-with-a-balanced-plate",
+      "permanent": true
+    },
+    {
+      "source": "/nouveau-dessert-exotique",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/nouveau-dessert-exotique",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/salad-restaurant-design",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/salad-restaurant-design",
+      "destination": "/salad-restaurant-design",
+      "permanent": true
+    },
+    {
+      "source": "/our-goal-history",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/our-goal-history",
+      "destination": "/our-goal-history",
+      "permanent": true
+    },
+    {
+      "source": "/fine-dinning-concept",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/fine-dinning-concept",
+      "destination": "/fine-dinning-concept",
+      "permanent": true
+    },
+    {
+      "source": "/curabitur-ullamcorper-ultricies-nisi-nam-eget-dui",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/curabitur-ullamcorper-ultricies-nisi-nam-eget-dui",
+      "destination": "/curabitur-ullamcorper-ultricies-nisi-nam-eget-dui",
+      "permanent": true
+    },
+    {
+      "source": "/big-chefs-recomend",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/big-chefs-recomend/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/daily-menu-drinks",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/daily-menu-drinks",
+      "destination": "/daily-menu-drinks",
+      "permanent": true
+    },
+    {
+      "source": "/some-fresh-recepies",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/some-fresh-recepies",
+      "destination": "/some-fresh-recepies",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world-2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/hello-world-2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/hello-world",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/category/healthy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/category/healthy",
+      "destination": "/category/healthy",
+      "permanent": true
+    },
+    {
+      "source": "/category/recepies",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/category/recepies",
+      "destination": "/category/recepies",
+      "permanent": true
+    },
+    {
+      "source": "/category/uncategorized",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/category/uncategorized",
+      "destination": "/category/uncategorized",
+      "permanent": true
+    },
+    {
+      "source": "/testimonials-category/testimonials-1",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/testimonials-category/testimonials-1",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/afterdinner-cocktails",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/afterdinner-cocktails",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/appetizers",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/appetizers",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/beer",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/beer",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/cocktails",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/cocktails",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/desserts",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/desserts",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/drink",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/drink/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/maindish",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/maindish",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/restaurant-menu-category/wine",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/it/restaurant-menu-category/wine",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/author/mascololiliana",
       "destination": "/",
       "permanent": true
     }

@@ -89,13 +89,13 @@ function buildWaitlistConfirmHTML(
     <p><strong>Make your stay on the Amalfi Coast memorable:</strong></p>
     <ul style="padding-left: 20px;">
       <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. The perfect escape from the summer heat!</li>
-      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="https://www.poesea.it" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
+      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
     </ul>
     <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
     <p>Best Regards,<br><strong>Il Tridente team</strong></p>
     <p style="font-size: 13px; color: #888;">
       <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      @hotelposeidonpositano
+      <a href="http://www.instagram.com/hotelposeidonpositano" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
     </p>
   `
     : `
@@ -106,13 +106,13 @@ function buildWaitlistConfirmHTML(
     <p><strong>Rendi indimenticabile il tuo soggiorno sulla Costiera Amalfitana:</strong></p>
     <ul style="padding-left: 20px;">
       <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. La fuga perfetta dal caldo estivo!</li>
-      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="https://www.poesea.it" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
+      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
     </ul>
     <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
     <p>Cordiali saluti,<br><strong>Il team del Tridente</strong></p>
     <p style="font-size: 13px; color: #888;">
       <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      @hotelposeidonpositano
+      <a href="http://www.instagram.com/hotelposeidonpositano" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
     </p>
   `;
 
@@ -120,7 +120,6 @@ function buildWaitlistConfirmHTML(
     <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background-color: ${accentColor}; padding: 20px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
-        <p style="color: #f0d0d6; margin: 5px 0 0;">${isEn ? "Waitlist Confirmation" : "Conferma Lista d'attesa"}</p>
       </div>
       <div style="padding: 30px; background-color: #faf8f8; border: 1px solid #e8d5d8; line-height: 1.7; color: #333;">
         ${content}

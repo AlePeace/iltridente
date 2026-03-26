@@ -86,16 +86,18 @@ export const WaitlistForm = () => {
     if (!data.email?.trim()) errs.email = t("errorEmail");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
       errs.email = t("invalidEmail");
+    if (!data.phone?.trim()) errs.phone = t("errorPhone");
+    if (!data.date?.trim()) {
+      errs.date = t("errorDate");
+    } else if (data.date < minDate || data.date > maxDate) {
+      errs.date = t("dateValidation");
+    }
     if (!data.requestedService?.trim())
       errs.requestedService = t("errorRequestedService");
+    if (!data.preferredTime?.trim())
+      errs.preferredTime = t("errorPreferredTime");
     if (!data.numberOfAdults?.trim())
       errs.numberOfAdults = t("errorNumberOfAdults");
-
-    if (data.date) {
-      if (data.date < minDate || data.date > maxDate) {
-        errs.date = t("dateValidation");
-      }
-    }
 
     return errs;
   };
@@ -226,14 +228,15 @@ export const WaitlistForm = () => {
           </div>
           <div>
             <label htmlFor="phone" className={labelClasses}>
-              {t("phone")}
+              {t("phone")} *
             </label>
             <div className="relative flex">
               <HiOutlinePhone className={iconClasses} />
               <select
                 name="phonePrefix"
-                className="border border-brown rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
+                className={`border border-brown rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0 ${errors.phone ? "border-red-500" : ""}`}
                 defaultValue="+39"
+                required
               >
                 <option value="+39">🇮🇹 +39</option>
                 <option value="+1">🇺🇸 +1</option>
@@ -249,6 +252,7 @@ export const WaitlistForm = () => {
                 <option value="+48">🇵🇱 +48</option>
                 <option value="+7">🇷🇺 +7</option>
                 <option value="+81">🇯🇵 +81</option>
+                <option value="+82">🇰🇷 +82</option>
                 <option value="+86">🇨🇳 +86</option>
                 <option value="+55">🇧🇷 +55</option>
                 <option value="+54">🇦🇷 +54</option>
@@ -260,16 +264,18 @@ export const WaitlistForm = () => {
                 type="tel"
                 name="phone"
                 id="phone"
-                className={`${inputBaseClasses} !rounded-l-none !border-l-0`}
+                required
+                className={`${inputBaseClasses} !rounded-l-none !border-l-0 ${errors.phone ? "border-red-500" : ""}`}
               />
             </div>
+            {errors.phone && <p className={errorClasses}>{errors.phone}</p>}
           </div>
         </div>
 
         {/* Date */}
         <div>
           <label htmlFor="date" className={labelClasses}>
-            {t("date")}
+            {t("date")} *
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -285,6 +291,7 @@ export const WaitlistForm = () => {
               className={`${inputBaseClasses} ${errors.date ? "border-red-500" : ""}`}
             />
           </div>
+          {errors.date && <p className={errorClasses}>{errors.date}</p>}
         </div>
 
         {/* Requested service */}
@@ -316,7 +323,7 @@ export const WaitlistForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label htmlFor="preferredTime" className={labelClasses}>
-              {t("preferredTime")}
+              {t("preferredTime")} *
             </label>
             <div className="relative">
               <HiOutlineClock className={iconClasses} />
@@ -324,9 +331,13 @@ export const WaitlistForm = () => {
                 type="time"
                 name="preferredTime"
                 id="preferredTime"
-                className={inputBaseClasses}
+                required
+                className={`${inputBaseClasses} ${errors.preferredTime ? "border-red-500" : ""}`}
               />
             </div>
+            {errors.preferredTime && (
+              <p className={errorClasses}>{errors.preferredTime}</p>
+            )}
           </div>
           <div>
             <label htmlFor="numberOfAdults" className={labelClasses}>
@@ -381,8 +392,8 @@ export const WaitlistForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-brown text-white px-6 py-4 rounded-md 
-                     hover:bg-[#8a5a63] transition-colors duration-300 
+          className="w-full bg-brown text-white px-6 py-4 rounded-md
+                     hover:bg-[#8a5a63] transition-colors duration-300
                      disabled:opacity-50 disabled:cursor-not-allowed
                      font-normal tracking-[0.2em] uppercase text-sm"
         >

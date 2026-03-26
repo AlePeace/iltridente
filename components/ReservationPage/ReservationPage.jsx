@@ -58,7 +58,7 @@ export const ReservationPage = ({ blocks }) => {
           />
         </svg>
       </div>
-      <div className="relative flex flex-col gap-10 lg:flex-row max-w-7xl">
+      <div className="relative flex flex-col gap-10 lg:flex-row lg:justify-center mx-auto max-w-7xl">
         <div className="lg:basis-1/2 lg:mt-20 bg-cardspranzo/50 border-cardspranzo border-4 py-10 px-5 rounded-lg h-fit">
           {titleForm && (
             <Heading

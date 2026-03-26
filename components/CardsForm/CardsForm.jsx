@@ -22,10 +22,13 @@ export const CardsForm = () => {
     const errs = {};
     if (!data.name?.trim()) errs.name = t("errorName");
     if (!data.surname?.trim()) errs.surname = t("errorSurname");
+    if (!data.phone?.trim()) errs.phone = t("errorPhone");
+    if (!data.date?.trim()) errs.date = t("errorDate");
     if (!data.email?.trim()) errs.email = t("errorEmail");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
       errs.email = t("invalidEmail");
     if (!data.how?.trim()) errs.how = t("errorHow");
+    if (!data.dateUseGiftCards?.trim()) errs.dateUseGiftCards = t("errorDateUseGiftCards");
 
     return errs;
   };
@@ -151,7 +154,7 @@ export const CardsForm = () => {
           </div>
           <div>
             <label htmlFor="phone" className={labelClasses}>
-              {t("phone")}
+              {t("phone")} *
             </label>
             <div className="relative flex">
               <HiOutlinePhone className={iconClasses} />
@@ -159,6 +162,7 @@ export const CardsForm = () => {
                 name="phonePrefix"
                 className="border border-orange rounded-l-lg pl-9 pr-2 py-3 bg-transparent text-[#333] focus:outline-none focus:border-[#A86F79] text-sm shrink-0"
                 defaultValue="+39"
+                required
               >
                 <option value="+39">🇮🇹 +39</option>
                 <option value="+1">🇺🇸 +1</option>
@@ -174,6 +178,7 @@ export const CardsForm = () => {
                 <option value="+48">🇵🇱 +48</option>
                 <option value="+7">🇷🇺 +7</option>
                 <option value="+81">🇯🇵 +81</option>
+                <option value="+82">🇰🇷 +82</option>
                 <option value="+86">🇨🇳 +86</option>
                 <option value="+55">🇧🇷 +55</option>
                 <option value="+54">🇦🇷 +54</option>
@@ -185,16 +190,18 @@ export const CardsForm = () => {
                 type="tel"
                 name="phone"
                 id="phone"
-                className={`${inputBaseClasses} !rounded-l-none !border-l-0`}
+                required
+                className={`${inputBaseClasses} !rounded-l-none !border-l-0 ${errors.phone ? "border-red-500" : ""}`}
               />
             </div>
+            {errors.phone && <p className={errorClasses}>{errors.phone}</p>}
           </div>
         </div>
 
         {/* Date */}
         <div>
           <label htmlFor="date" className={labelClasses}>
-            {t("date")}
+            {t("date")} *
           </label>
           <div className="relative">
             <HiOutlineCalendarDays className={iconClasses} />
@@ -202,9 +209,11 @@ export const CardsForm = () => {
               type="date"
               name="date"
               id="date"
-              className={inputBaseClasses}
+              required
+              className={`${inputBaseClasses} ${errors.date ? "border-red-500" : ""}`}
             />
           </div>
+          {errors.date && <p className={errorClasses}>{errors.date}</p>}
         </div>
 
         {/* How to receive */}
@@ -234,15 +243,17 @@ export const CardsForm = () => {
         {/* Additional info or comments */}
         <div>
           <label htmlFor="dateUseGiftCards" className={labelClasses}>
-            {t("dateUseGiftCards")}
+            {t("dateUseGiftCards")} *
           </label>
           <textarea
             name="dateUseGiftCards"
             id="dateUseGiftCards"
+            required
             rows={3}
             placeholder={t("dateUseGiftCardsPlaceholder")}
-            className={`${inputBaseNoIconClasses} resize-vertical border rounded-md p-3`}
+            className={`${inputBaseNoIconClasses} resize-vertical border rounded-md p-3 ${errors.dateUseGiftCards ? "border-red-500" : ""}`}
           />
+          {errors.dateUseGiftCards && <p className={errorClasses}>{errors.dateUseGiftCards}</p>}
         </div>
         {/* Additional info or comments */}
         <div>
@@ -267,8 +278,8 @@ export const CardsForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-orange text-white px-6 py-4 rounded-md 
-                     hover:bg-[#8a5a63] transition-colors duration-300 
+          className="w-full bg-orange text-white px-6 py-4 rounded-md
+                     hover:bg-[#8a5a63] transition-colors duration-300
                      disabled:opacity-50 disabled:cursor-not-allowed
                      font-normal tracking-[0.2em] uppercase text-sm"
         >
