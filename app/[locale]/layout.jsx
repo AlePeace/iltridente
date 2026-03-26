@@ -22,6 +22,12 @@ const cinzel = Cinzel({
   variable: "--font-cinzel",
 });
 
+export const metadata = {
+  verification: {
+    google: "I33u1kCjJTa-b-2yZ8F_hdYOVlloNpxJyOmyoghUCjA",
+  },
+};
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
