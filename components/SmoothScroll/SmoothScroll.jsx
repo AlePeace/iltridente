@@ -83,6 +83,11 @@ export const SmoothScroll = ({ children }) => {
         lerp: 0.07,
         duration: 1.2,
         smoothTouch: false,
+        prevent: (node) =>
+          node.hasAttribute("data-lenis-prevent") ||
+          !!node.closest?.(
+            "#gp-ml7w79pe-widget-container, #gp-ml7w79pe-calendar-container",
+          ),
       }}
     >
       {children}
