@@ -36,13 +36,29 @@ const buttonThemes = [
     hover: "hover:bg-cardspranzo/50",
     arrow: "text-dust",
   },
+  {
+    // Button 5
+    bg: "bg-cardspranzo",
+    border: "border-cardspranzo",
+    text: "text-ocean",
+    hover: "hover:bg-cardspranzo/70",
+    arrow: "text-ocean",
+  },
+  {
+    // Button 6
+    bg: "bg-ocean",
+    border: "border-ocean",
+    text: "text-white",
+    hover: "hover:bg-ocean/80",
+    arrow: "text-white",
+  },
 ];
 
 export const ButtonsGateway = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
   const buttons = innerBlocks
     .filter((block) => block.name === "core/button")
-    .slice(0, 4);
+    .slice(0, 6);
 
   // Supporta anche struttura annidata: core/buttons > core/button
   const flatButtons =
@@ -52,7 +68,7 @@ export const ButtonsGateway = ({ blocks }) => {
           .filter((block) => block.name === "core/buttons")
           .flatMap((b) => b.innerBlocks || [])
           .filter((b) => b.name === "core/button")
-          .slice(0, 4);
+          .slice(0, 6);
 
   const items = flatButtons.length > 0 ? flatButtons : [];
 
