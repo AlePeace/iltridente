@@ -6,8 +6,8 @@ import { Link } from "i18n/navigation";
 export default async function NotFound() {
   const t = await getTranslations("notFound");
 
-  const blocks = await getPage("/", "it");
-  const footerBlock = blocks?.find(
+  const result = await getPage("/", "it");
+  const footerBlock = result?.blocks?.find(
     (block) =>
       block.name === "core/group" &&
       (block.attributes?.metadata?.name === "Footer" ||
