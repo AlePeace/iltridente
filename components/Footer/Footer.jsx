@@ -32,6 +32,7 @@ export const Footer = ({ blocks }) => {
     "hoursBar",
     "linkPrivacy",
     "linkCookies",
+    "linkAccessibility",
     "iconInsta",
     "iconFacebook",
     "iconYoutube",
@@ -321,6 +322,13 @@ export const Footer = ({ blocks }) => {
               <Heading
                 level={headingMap.linkCookies.attributes?.level}
                 content={headingMap.linkCookies.attributes?.content}
+                className="font-nunito text-base font-medium text-white"
+              />
+            )}
+            {headingMap.linkAccessibility && (
+              <Heading
+                level={headingMap.linkAccessibility.attributes?.level}
+                content={headingMap.linkAccessibility.attributes?.content}
                 className="font-nunito text-base font-medium text-white"
               />
             )}
