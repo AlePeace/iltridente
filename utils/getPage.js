@@ -1,5 +1,16 @@
 import { cleanAndTransformBlocks } from "./cleanAndTransformBlocks";
 
+const buildAlternates = (page) => {
+  const alternates = {};
+  const locale = page.language?.code?.toLowerCase();
+  if (locale && page.uri) alternates[locale] = page.uri;
+  for (const t of page.translations ?? []) {
+    const loc = t.language?.code?.toLowerCase();
+    if (loc && t.uri) alternates[loc] = t.uri;
+  }
+  return alternates;
+};
+
 export const getPage = async (uri, locale = "it") => {
   console.log(`[getPage] Fetching URI: "${uri}", locale: "${locale}"`);
 
@@ -69,12 +80,12 @@ export const getPage = async (uri, locale = "it") => {
 
   const page = data.nodeByUri;
   const pageLanguage = page.language?.code?.toLowerCase();
+  const alternates = buildAlternates(page);
 
   // Se la pagina trovata è già nella lingua richiesta, usala direttamente
   if (pageLanguage === locale) {
     console.log(`[getPage] ✅ Page is already in requested locale "${locale}"`);
-    const blocks = cleanAndTransformBlocks(page.blocks);
-    return blocks;
+    return { blocks: cleanAndTransformBlocks(page.blocks), alternates };
   }
 
   // Altrimenti cerca tra le traduzioni
@@ -86,14 +97,11 @@ export const getPage = async (uri, locale = "it") => {
     console.log(
       `[getPage] ✅ Found translation in "${locale}": "${translation.title}"`,
     );
-    const blocks = cleanAndTransformBlocks(translation.blocks);
-    return blocks;
+    return { blocks: cleanAndTransformBlocks(translation.blocks), alternates };
   }
 
   console.log(
     `[getPage] ⚠️ No translation found for "${locale}", using fallback (${pageLanguage})`,
   );
-  // Fallback: usa la pagina originale
-  const blocks = cleanAndTransformBlocks(page.blocks);
-  return blocks;
+  return { blocks: cleanAndTransformBlocks(page.blocks), alternates };
 };

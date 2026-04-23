@@ -22,6 +22,16 @@ export const getSeo = async (uri, locale = "it") => {
       query SeoQuery($uri: String!) {
         nodeByUri(uri: $uri) {
           ... on Page {
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
             seo {
               title
               description
@@ -45,6 +55,16 @@ export const getSeo = async (uri, locale = "it") => {
               code
             }
             translations {
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                  mediaDetails {
+                    width
+                    height
+                  }
+                }
+              }
               seo {
                 title
                 description
@@ -104,9 +124,20 @@ export const getSeo = async (uri, locale = "it") => {
   const page = data.nodeByUri;
   const pageLanguage = page.language?.code?.toLowerCase();
 
+  const extractOgImage = (node, featuredImage) => {
+    const img = featuredImage?.node;
+    if (!img?.sourceUrl) return null;
+    return {
+      url: img.sourceUrl,
+      width: img.mediaDetails?.width || null,
+      height: img.mediaDetails?.height || null,
+      alt: img.altText || "",
+    };
+  };
+
   // Se la pagina è già nella lingua richiesta
   if (pageLanguage === locale) {
-    return processSeoUrls(page.seo);
+    return { ...processSeoUrls(page.seo), ogImage: extractOgImage(page, page.featuredImage) };
   }
 
   // Cerca tra le traduzioni
@@ -115,9 +146,9 @@ export const getSeo = async (uri, locale = "it") => {
   );
 
   if (translation) {
-    return processSeoUrls(translation.seo);
+    return { ...processSeoUrls(translation.seo), ogImage: extractOgImage(translation, translation.featuredImage) };
   }
 
   // Fallback
-  return processSeoUrls(page.seo);
+  return { ...processSeoUrls(page.seo), ogImage: extractOgImage(page, page.featuredImage) };
 };

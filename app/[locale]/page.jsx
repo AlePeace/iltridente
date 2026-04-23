@@ -3,30 +3,36 @@ import { getPage } from "utils/getPage";
 import { notFound } from "next/navigation";
 import { getSeo } from "utils/getSeo";
 import { setRequestLocale } from "next-intl/server";
+import { AlternatesSync } from "components/AlternatesSync/AlternatesSync";
 
 export default async function Home({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  // Homepage: italiano "/", inglese "/en/" o prova anche "/"
   const uri = locale === "it" ? "/" : `/${locale}/`;
-  let data = await getPage(uri, locale);
+  let result = await getPage(uri, locale);
 
-  // Fallback: cerca la homepage italiana e usa le translations
-  if (!data && locale !== "it") {
+  if (!result && locale !== "it") {
     console.log(`[Home] Trying Italian homepage fallback`);
-    data = await getPage("/", locale);
+    result = await getPage("/", locale);
   }
 
-  // Ultimo fallback: mostra contenuto italiano
-  if (!data && locale !== "it") {
-    data = await getPage("/", "it");
+  if (!result && locale !== "it") {
+    result = await getPage("/", "it");
   }
 
-  if (!data) {
+  if (!result) {
     notFound();
   }
-  return <BlockRenderer blocks={data} />;
+
+  const { blocks, alternates } = result;
+
+  return (
+    <>
+      <AlternatesSync alternates={alternates} />
+      <BlockRenderer blocks={blocks} />
+    </>
+  );
 }
 
 export async function generateMetadata({ params }) {
@@ -50,6 +56,7 @@ export async function generateMetadata({ params }) {
       title: seo?.openGraph?.title || "",
       description: seo?.openGraph?.description || "",
       url: seo?.openGraph?.url || "",
+      images: seo?.ogImage ? [seo.ogImage] : [],
     },
     twitter: {
       card: seo?.openGraph?.twitterMeta?.card || "",

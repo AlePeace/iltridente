@@ -1,36 +1,55 @@
 import { BlockRenderer } from "components/BlockRenderer";
 import { getPage } from "utils/getPage";
+import { getAllPages } from "utils/getAllPages";
 import { notFound } from "next/navigation";
 import { getSeo } from "utils/getSeo";
 import { setRequestLocale } from "next-intl/server";
+import { AlternatesSync } from "components/AlternatesSync/AlternatesSync";
+
+export async function generateStaticParams() {
+  const pages = await getAllPages();
+  return pages
+    .map((page) => {
+      const locale = page.language?.code?.toLowerCase() || "it";
+      let uri = (page.uri || "").replace(/^\//, "").replace(/\/$/, "");
+      if (uri.startsWith(`${locale}/`)) uri = uri.slice(`${locale}/`.length);
+      const slug = uri.split("/").filter(Boolean);
+      return slug.length > 0 ? { locale, slug } : null;
+    })
+    .filter(Boolean);
+}
 
 export default async function Page({ params }) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
 
   const slugPath = slug.join("/");
-
-  // Prova l'URI nella lingua richiesta
   const uri = locale === "it" ? `/${slugPath}/` : `/${locale}/${slugPath}/`;
-  let data = await getPage(uri, locale);
 
-  // Se non trovata e non è italiano, prova l'URI italiano come fallback
-  // (la pagina potrebbe non essere ancora tradotta ma getPage cercherà nelle translations)
-  if (!data && locale !== "it") {
+  let result = await getPage(uri, locale);
+
+  if (!result && locale !== "it") {
     console.log(`[Page] Trying Italian fallback for "/${slugPath}/"`);
-    data = await getPage(`/${slugPath}/`, locale);
+    result = await getPage(`/${slugPath}/`, locale);
   }
 
-  // Se ancora non trovata, prova con l'URI italiano e accetta la lingua italiana
-  if (!data && locale !== "it") {
+  if (!result && locale !== "it") {
     console.log(`[Page] Trying Italian content as last fallback`);
-    data = await getPage(`/${slugPath}/`, "it");
+    result = await getPage(`/${slugPath}/`, "it");
   }
 
-  if (!data) {
+  if (!result) {
     notFound();
   }
-  return <BlockRenderer blocks={data} />;
+
+  const { blocks, alternates } = result;
+
+  return (
+    <>
+      <AlternatesSync alternates={alternates} />
+      <BlockRenderer blocks={blocks} />
+    </>
+  );
 }
 
 export async function generateMetadata({ params }) {
@@ -39,7 +58,6 @@ export async function generateMetadata({ params }) {
   const uri = locale === "it" ? `/${slugPath}/` : `/${locale}/${slugPath}/`;
   let seo = await getSeo(uri, locale);
 
-  // Fallback SEO
   if (!seo && locale !== "it") {
     seo = await getSeo(`/${slugPath}/`, locale);
   }
@@ -56,6 +74,7 @@ export async function generateMetadata({ params }) {
       title: seo?.openGraph?.title || "",
       description: seo?.openGraph?.description || "",
       url: seo?.openGraph?.url || "",
+      images: seo?.ogImage ? [seo.ogImage] : [],
     },
     twitter: {
       card: seo?.openGraph?.twitterMeta?.card || "",

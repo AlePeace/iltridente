@@ -10,6 +10,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import CookieConsentBanner from "components/CookieConsent/CookieConsent";
+import { AlternatesProvider } from "context/AlternatesContext";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -49,11 +50,13 @@ export default async function LocaleLayout({ children, params }) {
       <GoogleTagManager gtmId="GTM-WQ4HXDCW" />
       <body className={`${nunito.variable} ${cinzel.variable}`}>
         <NextIntlClientProvider messages={messages}>
+          <AlternatesProvider>
           <SmoothScroll>
             <MainMenu menuData={menus} menus={menus} />
             {children}
             <CookieConsentBanner />
           </SmoothScroll>
+          </AlternatesProvider>
           <Script
             id="guestplan-widget"
             strategy="afterInteractive"
