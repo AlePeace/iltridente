@@ -95,14 +95,18 @@ export const getSeo = async (uri, locale = "it") => {
     variables: { uri },
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
+  let response;
+  try {
+    response = await fetch(process.env.WP_GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(params),
+      next: { revalidate: 86400 },
+    });
+  } catch (err) {
+    console.error(`[getSeo] fetch failed for "${uri}":`, err?.message);
+    return null;
+  }
 
   const { data } = await response.json();
   console.log(`[getSeo] uri="${uri}" locale="${locale}"`, 

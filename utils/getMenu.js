@@ -21,12 +21,18 @@ export const getMenu = async (locale = "it") => {
     }
   `;
 
-  const res = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { language: locale } }),
-    next: { revalidate: 86400 },
-  });
+  let res;
+  try {
+    res = await fetch(process.env.WP_GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables: { language: locale } }),
+      next: { revalidate: 86400 },
+    });
+  } catch (err) {
+    console.error(`[getMenu] fetch failed for locale "${locale}":`, err?.message);
+    return [];
+  }
 
   const json = await res.json();
   const nodes = json?.data?.menus?.nodes || [];
