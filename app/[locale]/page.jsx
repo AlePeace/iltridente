@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       locale: seo?.openGraph?.locale || "",
       siteName: seo?.openGraph?.siteName || "",
-      type: seo?.openGraph?.type || "",
+      type: seo?.openGraph?.type || "website",
       title: seo?.openGraph?.title || "",
       description: seo?.openGraph?.description || "",
       url: seo?.openGraph?.url || "",
