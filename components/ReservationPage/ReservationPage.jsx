@@ -5,6 +5,7 @@ import { ReservationForm } from "../ReservationForm/ReservationForm";
 import { WaitlistForm } from "../WaitlistForm/WaitlistForm";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { Link } from "i18n/navigation";
 
 export const ReservationPage = ({ blocks }) => {
   const t = useTranslations("reservation");
@@ -123,6 +124,12 @@ export const ReservationPage = ({ blocks }) => {
                 >
                   {t("waitlist")}
                 </button>
+                <Link
+                  href={t("eventsSlug")}
+                  className="bg-ocean text-white px-10 py-3 rounded-md hover:bg-lightblue transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer flex items-center justify-center"
+                >
+                  {t("events")}
+                </Link>
               </div>
               <div className="text-center mt-4">
                 <button
