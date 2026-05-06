@@ -89,6 +89,8 @@ function buildWaitlistConfirmHTML(
     <p><strong>Make your stay on the Amalfi Coast memorable:</strong></p>
     <ul style="padding-left: 20px;">
       <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. The perfect escape from the summer heat!</li>
+      <li style="margin-bottom: 12px;">Looking for a place to have a drink or two? Positano now has its very own Secret Bar, surrounded by greens and offering the best views, with Signature Cocktails that make the walk worth it.
+      Have a look at <strong>EdEra Secret Bar</strong> on <a href="https://www.ederapositano.com" style="color: ${accentColor};">www.ederapositano.com</a> or on Instagram on <a href="https://www.instagram.com/ederapositano" style="color: ${accentColor};">@ederapositano</a>. No reservations needed.</li>
       <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
     </ul>
     <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
@@ -106,6 +108,8 @@ function buildWaitlistConfirmHTML(
     <p><strong>Rendi indimenticabile il tuo soggiorno sulla Costiera Amalfitana:</strong></p>
     <ul style="padding-left: 20px;">
       <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. La fuga perfetta dal caldo estivo!</li>
+      <li style="margin-bottom: 12px;">Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret Bar, immerso nel verde e con una vista mozzafiato, dove potrai gustare cocktail esclusivi che renderanno la passeggiata davvero memorabile.
+      Scopri <strong>EdEra Secret Bar</strong> su <a href="https://www.ederapositano.com" style="color: ${accentColor};">www.ederapositano.com</a> o su Instagram <a href="https://www.instagram.com/ederapositano" style="color: ${accentColor};">@ederapositano</a>. Non è necessaria la prenotazione.</li>
       <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
     </ul>
     <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
