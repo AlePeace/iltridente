@@ -161,9 +161,9 @@ export default function EderaPopup() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center justify-center gap-3 w-full max-w-sm border border-white/70 rounded-none py-3.5 px-6 font-fauna text-sm sm:text-base text-white hover:bg-white hover:text-edera transition-colors duration-300"
+              className="mt-3 inline-flex items-center justify-center gap-3 w-full max-w-sm border border-white/70 rounded-none py-3.5 px-6 font-fauna text-sm sm:text-base text-white hover:bg-white hover:text-[#0F5744] group transition-colors duration-300"
             >
-              <FiInstagram className="w-5 h-5 shrink-0 text-edera" />
+              <FiInstagram className="w-5 h-5 shrink-0 text-edera  group-hover:text-[#0F5744]" />
               <span>{t("cta")}</span>
             </a>
 
