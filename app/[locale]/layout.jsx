@@ -1,4 +1,4 @@
-import { Nunito_Sans, Cinzel } from "next/font/google";
+import { Nunito_Sans, Cinzel, Fauna_One } from "next/font/google";
 import "../../styles/globals.css";
 import { getMenu } from "utils/getMenu";
 import { MainMenu } from "components/MainMenu";
@@ -10,6 +10,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import CookieConsentBanner from "components/CookieConsent/CookieConsent";
+import { EderaPopup } from "components/EderaPopup";
 import { AlternatesProvider } from "context/AlternatesContext";
 
 const nunito = Nunito_Sans({
@@ -21,6 +22,11 @@ const cinzel = Cinzel({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-cinzel",
+});
+const fauna = Fauna_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-fauna",
 });
 
 export const metadata = {
@@ -48,12 +54,15 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <html lang={locale}>
       <GoogleTagManager gtmId="GTM-WQ4HXDCW" />
-      <body className={`${nunito.variable} ${cinzel.variable}`}>
+      <body
+        className={`${nunito.variable} ${cinzel.variable} ${fauna.variable}`}
+      >
         <NextIntlClientProvider messages={messages}>
           <AlternatesProvider>
           <SmoothScroll>
             <MainMenu menuData={menus} menus={menus} />
             {children}
+            <EderaPopup />
             <CookieConsentBanner />
           </SmoothScroll>
           </AlternatesProvider>

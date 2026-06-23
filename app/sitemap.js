@@ -1,9 +1,10 @@
+import { fetchGraphQL } from "utils/fetchGraphQL";
+
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://iltridentepositano.com";
 
 async function getAllPages() {
-  const params = {
-    query: `
+  const query = `
       query SitemapQuery {
         pages(first: 100, where: { status: PUBLISH }) {
           nodes {
@@ -22,18 +23,10 @@ async function getAllPages() {
           }
         }
       }
-    `,
-  };
+    `;
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
-  return data?.pages?.nodes || [];
+  const json = await fetchGraphQL(query, undefined, { tag: "sitemap" });
+  return json?.data?.pages?.nodes || [];
 }
 
 function uriToUrl(uri) {

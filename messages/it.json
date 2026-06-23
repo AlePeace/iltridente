@@ -2,6 +2,17 @@
   "cookieConsent": {
     "manageConsent": "Gestisci Consenso"
   },
+  "ederaPopup": {
+    "titleLine1": "EDERA",
+    "titleLine2": "SECRET BAR",
+    "isOpen": "ORA APERTO",
+    "description": "Un nuovissimo cocktail bar a Positano con la vista più bella e cocktail straordinari. A pochi passi dal centro del paese.",
+    "timeframe": "DAL POMERIGGIO AL TRAMONTO",
+    "infoLine": "informazioni e orari di apertura su",
+    "cta": "@ederapositano",
+    "website": "www.ederapositano.com",
+    "closeLabel": "Chiudi"
+  },
   "reservation": {
     "hotelQuestion": "Hai una prenotazione all'Hotel Poseidon?",
     "yes": "Sì",

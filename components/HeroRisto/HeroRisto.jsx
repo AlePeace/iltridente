@@ -43,6 +43,7 @@ export const HeroRisto = ({ blocks }) => {
                   src={imgLunch?.attributes?.url}
                   alt={imgLunch?.attributes?.alt || ""}
                   quality={100}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
                   priority
                   fetchPriority="high"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-3600"
@@ -146,6 +147,7 @@ export const HeroRisto = ({ blocks }) => {
                   src={imgDinner?.attributes?.url}
                   alt={imgDinner?.attributes?.alt || ""}
                   quality={100}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
                   priority
                   fetchPriority="high"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-3600"
@@ -193,6 +195,7 @@ export const HeroRisto = ({ blocks }) => {
                   src={imgBreakfast?.attributes?.url}
                   alt={imgBreakfast?.attributes?.alt || ""}
                   quality={100}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
                   priority
                   fetchPriority="high"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-3600"

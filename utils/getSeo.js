@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 const processSeoUrls = (seo) => {
   if (!seo) return seo;
   const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "";
@@ -17,8 +19,7 @@ const processSeoUrls = (seo) => {
 };
 
 export const getSeo = async (uri, locale = "it") => {
-  const params = {
-    query: `
+  const query = `
       query SeoQuery($uri: String!) {
         nodeByUri(uri: $uri) {
           ... on Page {
@@ -91,35 +92,10 @@ export const getSeo = async (uri, locale = "it") => {
           }
         }
       }
-    `,
-    variables: { uri },
-  };
+    `;
 
-  let response;
-  try {
-    response = await fetch(process.env.WP_GRAPHQL_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params),
-      next: { revalidate: 86400 },
-    });
-  } catch (err) {
-    console.error(`[getSeo] fetch failed for "${uri}":`, err?.message);
-    return null;
-  }
-
-  const { data } = await response.json();
-  console.log(`[getSeo] uri="${uri}" locale="${locale}"`, 
-  JSON.stringify({
-    found: !!data?.nodeByUri,
-    pageLanguage: data?.nodeByUri?.language?.code,
-    seoTitle: data?.nodeByUri?.seo?.title,
-    translations: data?.nodeByUri?.translations?.map(t => ({
-      lang: t.language?.code,
-      title: t.seo?.title
-    }))
-  })
-);
+  const json = await fetchGraphQL(query, { uri }, { tag: `getSeo ${uri}` });
+  const data = json?.data;
 
   if (!data?.nodeByUri) {
     return null;

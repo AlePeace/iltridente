@@ -1,6 +1,6 @@
-export const getMenu = async (locale = "it") => {
-  console.log(`[getMenu] Fetching menu for locale: "${locale}"`);
+import { fetchGraphQL } from "./fetchGraphQL";
 
+export const getMenu = async (locale = "it") => {
   const query = `
     query MenusQuery($language: String!) {
       menus(where: {language: $language}) {
@@ -21,29 +21,15 @@ export const getMenu = async (locale = "it") => {
     }
   `;
 
-  let res;
-  try {
-    res = await fetch(process.env.WP_GRAPHQL_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, variables: { language: locale } }),
-      next: { revalidate: 86400 },
-    });
-  } catch (err) {
-    console.error(`[getMenu] fetch failed for locale "${locale}":`, err?.message);
-    return [];
-  }
-
-  const json = await res.json();
+  const json = await fetchGraphQL(
+    query,
+    { language: locale },
+    { tag: `getMenu ${locale}` },
+  );
   const nodes = json?.data?.menus?.nodes || [];
-
-  console.log(`[getMenu] Found ${nodes.length} menus for locale "${locale}"`);
 
   // Se non ci sono menu per questa lingua, fallback all'italiano
   if (nodes.length === 0 && locale !== "it") {
-    console.log(
-      `[getMenu] ⚠️ No menu found for "${locale}", falling back to "it"`,
-    );
     return getMenu("it");
   }
 

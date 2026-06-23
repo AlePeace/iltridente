@@ -13,7 +13,6 @@ export default async function Home({ params }) {
   let result = await getPage(uri, locale);
 
   if (!result && locale !== "it") {
-    console.log(`[Home] Trying Italian homepage fallback`);
     result = await getPage("/", locale);
   }
 

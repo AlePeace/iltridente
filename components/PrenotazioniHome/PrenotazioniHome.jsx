@@ -23,6 +23,7 @@ export const PrenotazioniHome = ({ blocks }) => {
             src={image.attributes?.url}
             alt={image.attributes?.alt || ""}
             quality={100}
+            sizes="100vw"
             className="w-full h-full lg:max-h-96 will-change-transform transform-gpu pointer-events-none"
           />
         </div>

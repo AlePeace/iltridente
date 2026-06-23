@@ -16,6 +16,7 @@ export const HeroBar = ({ blocks }) => {
                 src={images?.attributes?.url}
                 alt={images?.attributes?.alt || ""}
                 quality={100}
+                sizes="100vw"
                 priority
                 fetchPriority="high"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-3600"

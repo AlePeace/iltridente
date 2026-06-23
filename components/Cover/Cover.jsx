@@ -42,6 +42,7 @@ export const Cover = ({
           src={img.url}
           alt={img.alt || "Cover background"}
           {...imgProps}
+          sizes="100vw"
           style={{ objectFit: "cover" }}
           className="z-0"
           priority

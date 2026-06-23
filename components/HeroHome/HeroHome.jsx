@@ -114,8 +114,10 @@ export const HeroHome = ({ blocks }) => {
             src={imgDay.attributes?.url}
             alt={imgDay.attributes?.alt || ""}
             quality={100}
-            priority
-            fetchPriority="high"
+            sizes="100vw"
+            priority={isDay}
+            loading="eager"
+            fetchPriority={isDay ? "high" : "low"}
             className="absolute inset-0 z-10 w-full h-screen object-cover"
           />
         )}
@@ -127,8 +129,10 @@ export const HeroHome = ({ blocks }) => {
             src={imgNight.attributes?.url}
             alt={imgNight.attributes?.alt || ""}
             quality={100}
-            priority
-            fetchPriority="high"
+            sizes="100vw"
+            priority={!isDay}
+            loading="eager"
+            fetchPriority={!isDay ? "high" : "low"}
             className="absolute inset-0 z-10 w-full h-screen object-cover"
           />
         )}

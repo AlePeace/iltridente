@@ -1,6 +1,7 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 export const getAllPages = async () => {
-  const params = {
-    query: `
+  const query = `
       query AllPagesQuery {
         pages(first: 200, where: { status: PUBLISH }) {
           nodes {
@@ -9,22 +10,8 @@ export const getAllPages = async () => {
           }
         }
       }
-    `,
-  };
+    `;
 
-  let response;
-  try {
-    response = await fetch(process.env.WP_GRAPHQL_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params),
-      next: { revalidate: 86400 },
-    });
-  } catch (err) {
-    console.error(`[getAllPages] fetch failed:`, err?.message);
-    return [];
-  }
-
-  const { data } = await response.json();
-  return data?.pages?.nodes ?? [];
+  const json = await fetchGraphQL(query, undefined, { tag: "getAllPages" });
+  return json?.data?.pages?.nodes ?? [];
 };

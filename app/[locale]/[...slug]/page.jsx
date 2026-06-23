@@ -29,12 +29,10 @@ export default async function Page({ params }) {
   let result = await getPage(uri, locale);
 
   if (!result && locale !== "it") {
-    console.log(`[Page] Trying Italian fallback for "/${slugPath}/"`);
     result = await getPage(`/${slugPath}/`, locale);
   }
 
   if (!result && locale !== "it") {
-    console.log(`[Page] Trying Italian content as last fallback`);
     result = await getPage(`/${slugPath}/`, "it");
   }
 

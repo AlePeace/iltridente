@@ -14,9 +14,11 @@
   --color-green: #359d2f;
   --color-orange: #F59E0B;
   --color-buttonno: #62748E;
+  --color-edera: #A4F4CF;
 
   --font-cinzel: var(--font-cinzel), serif;
   --font-nunito: var(--font-nunito), sans-serif;
+  --font-fauna: var(--font-fauna), serif;
 }
 @layer utilities {
   .font-cinzel {

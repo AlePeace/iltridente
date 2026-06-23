@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 export const getHeaderLogo = async () => {
   const query = `
     query HeaderLogo {
@@ -12,13 +14,6 @@ export const getHeaderLogo = async () => {
     }
   `;
 
-  const res = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-    next: { revalidate: 86400 },
-  });
-
-  const json = await res.json();
+  const json = await fetchGraphQL(query, undefined, { tag: "getHeaderLogo" });
   return json?.data?.mediaItem || null;
 };
