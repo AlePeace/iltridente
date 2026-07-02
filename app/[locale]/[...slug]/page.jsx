@@ -1,7 +1,7 @@
 import { BlockRenderer } from "components/BlockRenderer";
 import { getPage } from "utils/getPage";
 import { getAllPages } from "utils/getAllPages";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getSeo } from "utils/getSeo";
 import { setRequestLocale } from "next-intl/server";
 import { AlternatesSync } from "components/AlternatesSync/AlternatesSync";
@@ -34,6 +34,30 @@ export default async function Page({ params }) {
 
   if (!result && locale !== "it") {
     result = await getPage(`/${slugPath}/`, "it");
+  }
+
+  // Fallback gateway: molti clienti digitano l'URL "corto" (es. /room-services)
+  // invece di quello reale sotto /gateway (es. /gateway/room-services). Se la
+  // pagina corta non esiste ma esiste la versione gateway, redirect a quella.
+  // Funziona in automatico per qualsiasi sottopagina gateway (anche future).
+  if (!result && slug[0] !== "gateway") {
+    const gatewayPath = `gateway/${slugPath}`;
+    const gatewayUri =
+      locale === "it" ? `/${gatewayPath}/` : `/${locale}/${gatewayPath}/`;
+
+    let gateway = await getPage(gatewayUri, locale);
+    if (!gateway && locale !== "it") {
+      gateway = await getPage(`/${gatewayPath}/`, locale);
+    }
+    if (!gateway && locale !== "it") {
+      gateway = await getPage(`/${gatewayPath}/`, "it");
+    }
+
+    if (gateway) {
+      redirect(
+        locale === "it" ? `/${gatewayPath}` : `/${locale}/${gatewayPath}`,
+      );
+    }
   }
 
   if (!result) {
