@@ -33,6 +33,47 @@ function sanitize(str) {
     .replace(/'/g, "&#039;");
 }
 
+// Inverso di sanitize(): serve a ricostruire la parte text/plain dell'email
+// partendo dai valori già preparati per l'HTML.
+function unescape(str) {
+  if (!str) return "";
+  return str
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&amp;/g, "&");
+}
+
+// Registra l'esito SMTP. Senza questo non si distingue un rifiuto del server
+// destinatario (bounce 5xx) da una consegna accettata e poi finita in Junk:
+// sono due problemi diversi con due soluzioni diverse.
+function logDelivery(label, info) {
+  if (!info) return;
+  console.log(
+    `[mail] ${label} — accepted: ${JSON.stringify(info.accepted)} | rejected: ${JSON.stringify(
+      info.rejected,
+    )} | messageId: ${info.messageId} | response: ${info.response}`,
+  );
+}
+
+// Tutti i link in uscita, in un unico posto e sempre in HTTPS: i link http://
+// sono un segnale negativo per i filtri antispam.
+//
+// NOTA DELIVERABILITY: più domini esterni diversi dal mittente ci sono nel
+// corpo, più il messaggio somiglia a spam/affiliate — iCloud è severissimo su
+// questo. La soluzione è far puntare i consigli a UNA pagina su
+// iltridentepositano.com: basta valorizzare RECOMMENDATIONS_PAGE qui sotto.
+const LINKS = {
+  site: "https://iltridentepositano.com",
+  onda: "https://www.londapositano.com",
+  ondaMail: "info@londapositano.com",
+  edera: "https://www.ederapositano.com",
+  ederaIg: "https://www.instagram.com/ederapositano",
+  poesea: "https://www.poeseaboats.com/",
+  tridenteIg: "https://www.instagram.com/hotelposeidonpositano",
+};
+
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const [year, month, day] = dateStr.split("-");
@@ -71,7 +112,19 @@ function buildEmailHTML(headerText, fields, accentColor = "#A86F79") {
     </div>
   `;
 }
-function buildWaitlistConfirmHTML(
+
+// Versione text/plain della notifica interna. Un'email HTML-only (senza
+// multipart/alternative) è uno dei segnali di spam più pesanti in assoluto.
+function buildEmailText(headerText, fields) {
+  const rows = fields
+    .filter((f) => f.value)
+    .map((f) => `${f.label}: ${unescape(f.value)}`)
+    .join("\n");
+
+  return `IL TRIDENTE — ${headerText}\n\n${rows}\n\n---\nMessaggio inviato dal sito web Il Tridente`;
+}
+
+function buildWaitlistConfirm(
   locale,
   name,
   service,
@@ -79,48 +132,50 @@ function buildWaitlistConfirmHTML(
   accentColor = "#5B7FA6",
 ) {
   const isEn = locale === "en";
+  // name/service/formattedDate arrivano grezzi: l'HTML li escapa, il text no.
+  const s = { name: sanitize(name), service: sanitize(service), date: sanitize(formattedDate) };
 
   const content = isEn
     ? `
-    <p>Dear <strong>${name}</strong>,</p>
+    <p>Dear <strong>${s.name}</strong>,</p>
     <p>Thank you for filling in this form! You have been placed on the waitlist.</p>
-    <p>We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for <strong>${service}</strong> on <strong>${formattedDate}</strong>.</p>
-    <p>If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again <a href="https://iltridentepositano.com" style="color: ${accentColor};">here</a>.</p>
+    <p>We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for <strong>${s.service}</strong> on <strong>${s.date}</strong>.</p>
+    <p>If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again <a href="${LINKS.site}" style="color: ${accentColor};">here</a>.</p>
     <p><strong>Make your stay on the Amalfi Coast memorable:</strong></p>
     <ul style="padding-left: 20px;">
-      <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. The perfect escape from the summer heat!</li>
+      <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="${LINKS.onda}" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:${LINKS.ondaMail}" style="color: ${accentColor};">${LINKS.ondaMail}</a>. The perfect escape from the summer heat!</li>
       <li style="margin-bottom: 12px;">Looking for a place to have a drink or two? Positano now has its very own Secret Bar, surrounded by greens and offering the best views, with Signature Cocktails that make the walk worth it.
-      Have a look at <strong>EdEra Secret Bar</strong> on <a href="https://www.ederapositano.com" style="color: ${accentColor};">www.ederapositano.com</a> or on Instagram on <a href="https://www.instagram.com/ederapositano" style="color: ${accentColor};">@ederapositano</a>. No reservations needed.</li>
-      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
+      Have a look at <strong>EdEra Secret Bar</strong> on <a href="${LINKS.edera}" style="color: ${accentColor};">www.ederapositano.com</a> or on Instagram on <a href="${LINKS.ederaIg}" style="color: ${accentColor};">@ederapositano</a>. No reservations needed.</li>
+      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="${LINKS.poesea}" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
     </ul>
     <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
     <p>Best Regards,<br><strong>Il Tridente team</strong></p>
     <p style="font-size: 13px; color: #888;">
-      <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      <a href="http://www.instagram.com/hotelposeidonpositano" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
+      <a href="${LINKS.site}" style="color: ${accentColor};">iltridentepositano.com</a><br>
+      <a href="${LINKS.tridenteIg}" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
     </p>
   `
     : `
-    <p>Caro/a <strong>${name}</strong>,</p>
+    <p>Caro/a <strong>${s.name}</strong>,</p>
     <p>Grazie per aver compilato il modulo! Sei stato inserito nella lista d'attesa.</p>
-    <p>Ci dispiace che non abbia trovato disponibilità nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilità per <strong>${service}</strong> in data <strong>${formattedDate}</strong>.</p>
-    <p>Se desideri iscriverti alla lista d'attesa per più date o servizi, compila nuovamente il modulo sul sito <a href="https://iltridentepositano.com" style="color: ${accentColor};">qui</a>.</p>
+    <p>Ci dispiace che non abbia trovato disponibilità nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilità per <strong>${s.service}</strong> in data <strong>${s.date}</strong>.</p>
+    <p>Se desideri iscriverti alla lista d'attesa per più date o servizi, compila nuovamente il modulo sul sito <a href="${LINKS.site}" style="color: ${accentColor};">qui</a>.</p>
     <p><strong>Rendi indimenticabile il tuo soggiorno sulla Costiera Amalfitana:</strong></p>
     <ul style="padding-left: 20px;">
-      <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="https://www.londapositano.com" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:info@londapositano.com" style="color: ${accentColor};">info@londapositano.com</a>. La fuga perfetta dal caldo estivo!</li>
+      <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="${LINKS.onda}" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:${LINKS.ondaMail}" style="color: ${accentColor};">${LINKS.ondaMail}</a>. La fuga perfetta dal caldo estivo!</li>
       <li style="margin-bottom: 12px;">Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret Bar, immerso nel verde e con una vista mozzafiato, dove potrai gustare cocktail esclusivi che renderanno la passeggiata davvero memorabile.
-      Scopri <strong>EdEra Secret Bar</strong> su <a href="https://www.ederapositano.com" style="color: ${accentColor};">www.ederapositano.com</a> o su Instagram <a href="https://www.instagram.com/ederapositano" style="color: ${accentColor};">@ederapositano</a>. Non è necessaria la prenotazione.</li>
-      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="http://www.poeseaboats.com/" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
+      Scopri <strong>EdEra Secret Bar</strong> su <a href="${LINKS.edera}" style="color: ${accentColor};">www.ederapositano.com</a> o su Instagram <a href="${LINKS.ederaIg}" style="color: ${accentColor};">@ederapositano</a>. Non è necessaria la prenotazione.</li>
+      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="${LINKS.poesea}" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
     </ul>
     <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
     <p>Cordiali saluti,<br><strong>Il team del Tridente</strong></p>
     <p style="font-size: 13px; color: #888;">
-      <a href="https://iltridentepositano.com" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      <a href="http://www.instagram.com/hotelposeidonpositano" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
+      <a href="${LINKS.site}" style="color: ${accentColor};">iltridentepositano.com</a><br>
+      <a href="${LINKS.tridenteIg}" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
     </p>
   `;
 
-  return `
+  const html = `
     <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background-color: ${accentColor}; padding: 20px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 24px;">Il Tridente</h1>
@@ -133,6 +188,56 @@ function buildWaitlistConfirmHTML(
       </div>
     </div>
   `;
+
+  const text = isEn
+    ? `Dear ${name},
+
+Thank you for filling in this form! You have been placed on the waitlist.
+
+We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for ${service} on ${formattedDate}.
+
+If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again: ${LINKS.site}
+
+MAKE YOUR STAY ON THE AMALFI COAST MEMORABLE
+
+* Take some time to relax at L'Onda Beauty Centre! With a wide range of treatments and massages available, let yourself be truly pampered. Full list of treatments and online booking: ${LINKS.onda} - or contact us at ${LINKS.ondaMail}. The perfect escape from the summer heat!
+
+* Looking for a place to have a drink or two? Positano now has its very own Secret Bar, surrounded by greens and offering the best views, with Signature Cocktails that make the walk worth it. Have a look at EdEra Secret Bar: ${LINKS.edera} - or on Instagram: ${LINKS.ederaIg}. No reservations needed.
+
+* As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out Poesea Boats: ${LINKS.poesea} - a reliable company with great boat and tour options.
+
+Many thanks for your patience, and we hope to meet you at Il Tridente soon!
+
+Best Regards,
+Il Tridente team
+
+${LINKS.site}
+${LINKS.tridenteIg}`
+    : `Caro/a ${name},
+
+Grazie per aver compilato il modulo! Sei stato inserito nella lista d'attesa.
+
+Ci dispiace che non abbia trovato disponibilita' nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilita' per ${service} in data ${formattedDate}.
+
+Se desideri iscriverti alla lista d'attesa per piu' date o servizi, compila nuovamente il modulo sul sito: ${LINKS.site}
+
+RENDI INDIMENTICABILE IL TUO SOGGIORNO SULLA COSTIERA AMALFITANA
+
+* Prenditi del tempo per rilassarti all'Onda Beauty Centre! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Elenco completo e prenotazioni online: ${LINKS.onda} - oppure scrivici a ${LINKS.ondaMail}. La fuga perfetta dal caldo estivo!
+
+* Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret Bar, immerso nel verde e con una vista mozzafiato, dove potrai gustare cocktail esclusivi che renderanno la passeggiata davvero memorabile. Scopri EdEra Secret Bar: ${LINKS.edera} - o su Instagram: ${LINKS.ederaIg}. Non e' necessaria la prenotazione.
+
+* Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a Poesea Boats: ${LINKS.poesea} - un'azienda affidabile con ottime opzioni di barche e tour.
+
+Grazie mille per la pazienza, speriamo di vederti presto al Tridente!
+
+Cordiali saluti,
+Il team del Tridente
+
+${LINKS.site}
+${LINKS.tridenteIg}`;
+
+  return { html, text };
 }
 
 const emailLabels = {
@@ -354,9 +459,6 @@ export async function POST(request) {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
     });
 
     const emailHeader =
@@ -379,7 +481,7 @@ export async function POST(request) {
             : "#a61932";
 
     // Email a te
-    await transporter.sendMail({
+    const infoInternal = await transporter.sendMail({
       from: `"Il Tridente Positano" <${process.env.SMTP_USER}>`,
       to:
         formType === "waitlist"
@@ -387,8 +489,10 @@ export async function POST(request) {
           : process.env.CONTACT_EMAIL,
       replyTo: email.trim(),
       subject,
+      text: buildEmailText(emailHeader, fields),
       html: buildEmailHTML(emailHeader, fields, accentColor),
     });
+    logDelivery("notifica interna", infoInternal);
 
     if (formType === "waitlist") {
       const transporter2 = nodemailer.createTransport({
@@ -399,27 +503,35 @@ export async function POST(request) {
           user: process.env.WAITLIST_EMAIL,
           pass: process.env.WAITLIST_EMAIL_PASS,
         },
-        tls: { rejectUnauthorized: false },
       });
       const confirmSubject =
         locale === "en"
           ? "Il Tridente, Positano - You have been placed on the waitlist!"
           : "Il Tridente, Positano - Sei stato inserito nella lista d'attesa!";
 
-      const confirmHTML = buildWaitlistConfirmHTML(
+      const confirm = buildWaitlistConfirm(
         locale,
-        sanitize(`${body.name?.trim()} ${body.surname?.trim()}`.trim()),
-        sanitize(body.requestedService?.trim()),
-        formatDate(sanitize(body.date?.trim())),
+        `${body.name?.trim()} ${body.surname?.trim()}`.trim(),
+        body.requestedService?.trim(),
+        formatDate(body.date?.trim()),
         accentColor,
       );
 
-      await transporter2.sendMail({
+      const infoConfirm = await transporter2.sendMail({
         from: `"Il Tridente Positano" <${process.env.WAITLIST_EMAIL}>`,
         to: email.trim(),
+        replyTo: process.env.WAITLIST_EMAIL,
         subject: confirmSubject,
-        html: confirmHTML,
+        text: confirm.text,
+        html: confirm.html,
+        headers: {
+          // Segnale richiesto da Apple/Gmail/Yahoo per la posta "bulk": questa
+          // email è transazionale nell'oggetto ma promozionale nel corpo, e
+          // senza questo header viene classificata come bulk non conforme.
+          "List-Unsubscribe": `<mailto:${process.env.WAITLIST_EMAIL}?subject=unsubscribe>`,
+        },
       });
+      logDelivery("conferma waitlist al cliente", infoConfirm);
     }
 
     return Response.json({ success: true });
