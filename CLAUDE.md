@@ -99,3 +99,92 @@ Il cuore del sito è il pattern **headless WP → blocchi → componenti React**
 - Performance/CLS: vedi `CLS_AND_ANIMATION_FIXES.md` per la checklist di riferimento.
   Il sito già rispetta i punti principali (next/image ovunque, `priority` sugli
   hero, nessun SplitText).
+
+## Deliverability email — indagine del 25/08/2026
+
+### Il problema
+
+Le conferme automatiche della waitlist (`app/api/contact/route.js`, `formType
+=== "waitlist"`) venivano **rifiutate da iCloud/Apple** con errore permanente:
+
+```
+554 5.7.1 [CS01] Message rejected due to local policy
+```
+
+Non filtraggio in Junk: rifiuto secco a livello SMTP, dopo `end of data`.
+
+### Diagnosi finale
+
+**È il dominio `iltridentepositano.com` presente nei link del corpo.** Apple lo
+ha marcato nella propria reputazione interna degli URL. Il blocco vale per il
+**dominio registrato**, quindi copre anche i sottodomini, indipendentemente
+dall'hosting.
+
+Isolato con 8 test controllati: stesso mittente, stesso IP, stesso contenuto,
+variando **solo** il link.
+
+| Variabile | Verdetto |
+|---|---|
+| IP di invio SiteGround (PTR generico `googleusercontent.com`) | innocente |
+| Contenuto, testo promozionale, template grafico | innocente |
+| Link a terze parti (L'Onda, EdEra, Poesea) | innocenti |
+| Hosting Vercel | innocente |
+| **Link a `iltridentepositano.com`** | **causa del blocco** |
+
+Esiti: nessun link ✅ · `wikipedia.org` ✅ · `ederapositano.com` ✅ ·
+`iltridentepositano.com` ❌ 3/3 · `www.` ❌ · `test.` su SiteGround ❌
+
+Non serve a nulla: migrare a Resend/Postmark (il problema viaggia col dominio
+linkato, non con l'IP), cambiare hosting, riscrivere il testo.
+
+### Stato DNS verificato
+
+- **SPF** valido — `include:_spf.mailspamprotection.com`
+- **DKIM** valido — selettore `default`, chiave RSA presente
+- **DMARC** — `p=quarantine; aspf=r; adkim=r; rua=mailto:dmarc@iltridentepositano.com`
+  (il `rua` è stato aggiunto il 25/08/2026; verificare che la casella esista)
+- Blocklist pubbliche (Spamhaus DBL, SURBL, URIBL): **tutte pulite**
+- Wayback: dominio attivo dal 2018, sempre lo stesso sito, nessun passaggio di
+  proprietà sospetto
+
+`WAITLIST_EMAIL` = `team@iltridentepositano.com` — stesso dominio del `d=` DKIM,
+allineamento DMARC corretto. Il dominio nel `From` **non** è un problema: tutti
+i test andati a buon fine partivano da quell'indirizzo.
+
+### Fix già applicati a `route.js` (commit 77ab985, c94e0c3)
+
+Migliorie corrette e utili, ma **non risolutive** del blocco Apple:
+
+- parte `text/plain` su tutte le email (prima erano HTML-only, forte segnale spam)
+- tutti i link in HTTPS (erano `http://` Poesea e Instagram)
+- header `List-Unsubscribe`
+- rimosso `tls.rejectUnauthorized: false`
+- `logDelivery()` — logga `accepted`/`rejected`/`response` di ogni invio
+- **righe pre-mandate a capo sotto i 76 caratteri e ogni URL isolato**: il
+  quoted-printable spezzava gli URL a metà (`https://www.=\ninstagram.com/...`),
+  che i filtri leggono come offuscamento. Il testo esce ora come `7bit`.
+  L'helper `a(href, label)` in `buildWaitlistConfirm` emette gli anchor con
+  `href` su riga propria. **Non allungare quelle righe.**
+
+Punteggio mail-tester dopo i fix: **10/10** (che però non dice nulla su Apple —
+`[CS01]` è policy proprietaria, non SpamAssassin).
+
+### Cosa resta da fare
+
+1. **Tampone**: togliere dal corpo della conferma waitlist le due occorrenze di
+   `iltridentepositano.com` (link "here" + riga footer). Va rimossa **la stringa
+   del dominio**, non solo l'`<a>`: gli scanner estraggono URL anche dal testo.
+   Richiede l'ok della cliente.
+2. **Segnalazione ad Apple** — unica via di delisting, tempi non garantiti.
+3. **Leggere i report DMARC** (dmarcian o Postmark, piano free) per capire se il
+   dominio è spoofato. Limite noto: DMARC vede solo lo spoofing del `From`, non
+   chi mette link al sito dentro il proprio spam.
+
+### Insidie da ricordare
+
+- Il rate limit in `route.js` è **1 invio al minuto per IP**: durante i test un
+  429 non è un problema di deliverability.
+- Non comporre email di test dalla webmail Roundcube senza la vista sorgente:
+  riscrive l'HTML e invalida il test.
+- La notifica interna a `team@` resta dentro SiteGround e non attraversa mai
+  iCloud: un `250 OK` lì non dimostra nulla sulla consegna al cliente.
