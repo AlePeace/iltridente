@@ -135,43 +135,50 @@ function buildWaitlistConfirm(
   // name/service/formattedDate arrivano grezzi: l'HTML li escapa, il text no.
   const s = { name: sanitize(name), service: sanitize(service), date: sanitize(formattedDate) };
 
+  // Ogni anchor esce con href e style su righe separate. Il quoted-printable
+  // taglia le righe a 76 caratteri e, se il taglio cade dentro un URL, i
+  // filtri antispam lo leggono come offuscamento deliberato. Tenendo l'href
+  // da solo su una riga corta il taglio non può mai finirci dentro.
+  const a = (href, label) =>
+    `<a\nhref="${href}"\nstyle="color: ${accentColor};"\n>${label}</a>`;
+
   const content = isEn
     ? `
     <p>Dear <strong>${s.name}</strong>,</p>
     <p>Thank you for filling in this form! You have been placed on the waitlist.</p>
     <p>We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for <strong>${s.service}</strong> on <strong>${s.date}</strong>.</p>
-    <p>If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again <a href="${LINKS.site}" style="color: ${accentColor};">here</a>.</p>
+    <p>If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again ${a(LINKS.site, "here")}.</p>
     <p><strong>Make your stay on the Amalfi Coast memorable:</strong></p>
     <ul style="padding-left: 20px;">
-      <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on <a href="${LINKS.onda}" style="color: ${accentColor};">www.londapositano.com</a> – or contact us by email at <a href="mailto:${LINKS.ondaMail}" style="color: ${accentColor};">${LINKS.ondaMail}</a>. The perfect escape from the summer heat!</li>
+      <li style="margin-bottom: 12px;">Take some time to relax at <strong>L'Onda Beauty Centre</strong>! With a wide range of treatments and massages available, let yourself be truly pampered. You can view the full list of treatments and book online on ${a(LINKS.onda, "www.londapositano.com")} – or contact us by email at ${a("mailto:" + LINKS.ondaMail, LINKS.ondaMail)}. The perfect escape from the summer heat!</li>
       <li style="margin-bottom: 12px;">Looking for a place to have a drink or two? Positano now has its very own Secret Bar, surrounded by greens and offering the best views, with Signature Cocktails that make the walk worth it.
-      Have a look at <strong>EdEra Secret Bar</strong> on <a href="${LINKS.edera}" style="color: ${accentColor};">www.ederapositano.com</a> or on Instagram on <a href="${LINKS.ederaIg}" style="color: ${accentColor};">@ederapositano</a>. No reservations needed.</li>
-      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out <a href="${LINKS.poesea}" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: a reliable company with great boat and tour options.</li>
+      Have a look at <strong>EdEra Secret Bar</strong> on ${a(LINKS.edera, "www.ederapositano.com")} or on Instagram on ${a(LINKS.ederaIg, "@ederapositano")}. No reservations needed.</li>
+      <li style="margin-bottom: 12px;">As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out ${a(LINKS.poesea, "<strong>Poesea Boats</strong>")}: a reliable company with great boat and tour options.</li>
     </ul>
     <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
     <p>Best Regards,<br><strong>Il Tridente team</strong></p>
     <p style="font-size: 13px; color: #888;">
-      <a href="${LINKS.site}" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      <a href="${LINKS.tridenteIg}" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
+      ${a(LINKS.site, "iltridentepositano.com")}<br>
+      ${a(LINKS.tridenteIg, "@hotelposeidonpositano")}<br>
     </p>
   `
     : `
     <p>Caro/a <strong>${s.name}</strong>,</p>
     <p>Grazie per aver compilato il modulo! Sei stato inserito nella lista d'attesa.</p>
     <p>Ci dispiace che non abbia trovato disponibilità nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilità per <strong>${s.service}</strong> in data <strong>${s.date}</strong>.</p>
-    <p>Se desideri iscriverti alla lista d'attesa per più date o servizi, compila nuovamente il modulo sul sito <a href="${LINKS.site}" style="color: ${accentColor};">qui</a>.</p>
+    <p>Se desideri iscriverti alla lista d'attesa per più date o servizi, compila nuovamente il modulo sul sito ${a(LINKS.site, "qui")}.</p>
     <p><strong>Rendi indimenticabile il tuo soggiorno sulla Costiera Amalfitana:</strong></p>
     <ul style="padding-left: 20px;">
-      <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su <a href="${LINKS.onda}" style="color: ${accentColor};">www.londapositano.com</a> – oppure scrivici a <a href="mailto:${LINKS.ondaMail}" style="color: ${accentColor};">${LINKS.ondaMail}</a>. La fuga perfetta dal caldo estivo!</li>
+      <li style="margin-bottom: 12px;">Prenditi del tempo per rilassarti all'<strong>L'Onda Beauty Centre</strong>! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Puoi consultare l'elenco completo e prenotare online su ${a(LINKS.onda, "www.londapositano.com")} – oppure scrivici a ${a("mailto:" + LINKS.ondaMail, LINKS.ondaMail)}. La fuga perfetta dal caldo estivo!</li>
       <li style="margin-bottom: 12px;">Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret Bar, immerso nel verde e con una vista mozzafiato, dove potrai gustare cocktail esclusivi che renderanno la passeggiata davvero memorabile.
-      Scopri <strong>EdEra Secret Bar</strong> su <a href="${LINKS.edera}" style="color: ${accentColor};">www.ederapositano.com</a> o su Instagram <a href="${LINKS.ederaIg}" style="color: ${accentColor};">@ederapositano</a>. Non è necessaria la prenotazione.</li>
-      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a <a href="${LINKS.poesea}" style="color: ${accentColor};"><strong>Poesea Boats</strong></a>: un'azienda affidabile con ottime opzioni di barche e tour.</li>
+      Scopri <strong>EdEra Secret Bar</strong> su ${a(LINKS.edera, "www.ederapositano.com")} o su Instagram ${a(LINKS.ederaIg, "@ederapositano")}. Non è necessaria la prenotazione.</li>
+      <li style="margin-bottom: 12px;">Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a ${a(LINKS.poesea, "<strong>Poesea Boats</strong>")}: un'azienda affidabile con ottime opzioni di barche e tour.</li>
     </ul>
     <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
     <p>Cordiali saluti,<br><strong>Il team del Tridente</strong></p>
     <p style="font-size: 13px; color: #888;">
-      <a href="${LINKS.site}" style="color: ${accentColor};">iltridentepositano.com</a><br>
-      <a href="${LINKS.tridenteIg}" style="color: ${accentColor};">@hotelposeidonpositano</a><br>
+      ${a(LINKS.site, "iltridentepositano.com")}<br>
+      ${a(LINKS.tridenteIg, "@hotelposeidonpositano")}<br>
     </p>
   `;
 
@@ -189,24 +196,51 @@ function buildWaitlistConfirm(
     </div>
   `;
 
+  // NOTA: righe pre-mandate a capo sotto i 76 caratteri e ogni URL da solo
+  // sulla propria riga. Il quoted-printable spezza le righe lunghe a 76 con un
+  // soft break: se cade dentro un URL, i filtri antispam lo leggono come
+  // offuscamento deliberato. Non allungare queste righe.
   const text = isEn
     ? `Dear ${name},
 
-Thank you for filling in this form! You have been placed on the waitlist.
+Thank you for filling in this form! You have been placed on the
+waitlist.
 
-We are sorry you have not found availability on your preferred date and time. We will contact you by phone or email in case there is availability for ${service} on ${formattedDate}.
+We are sorry you have not found availability on your preferred date
+and time. We will contact you by phone or email in case there is
+availability for ${service} on ${formattedDate}.
 
-If you would like to place yourself on the waitlist for more than one date or service, please fill in the website form again: ${LINKS.site}
+If you would like to place yourself on the waitlist for more than one
+date or service, please fill in the website form again:
+${LINKS.site}
 
 MAKE YOUR STAY ON THE AMALFI COAST MEMORABLE
 
-* Take some time to relax at L'Onda Beauty Centre! With a wide range of treatments and massages available, let yourself be truly pampered. Full list of treatments and online booking: ${LINKS.onda} - or contact us at ${LINKS.ondaMail}. The perfect escape from the summer heat!
+* Take some time to relax at L'Onda Beauty Centre! With a wide range
+  of treatments and massages available, let yourself be truly
+  pampered. Full list of treatments and online booking:
+  ${LINKS.onda}
+  Or contact us at ${LINKS.ondaMail}
+  The perfect escape from the summer heat!
 
-* Looking for a place to have a drink or two? Positano now has its very own Secret Bar, surrounded by greens and offering the best views, with Signature Cocktails that make the walk worth it. Have a look at EdEra Secret Bar: ${LINKS.edera} - or on Instagram: ${LINKS.ederaIg}. No reservations needed.
+* Looking for a place to have a drink or two? Positano now has its
+  very own Secret Bar, surrounded by greens and offering the best
+  views, with Signature Cocktails that make the walk worth it.
+  Have a look at EdEra Secret Bar:
+  ${LINKS.edera}
+  Or on Instagram:
+  ${LINKS.ederaIg}
+  No reservations needed.
 
-* As anyone from Positano would say: nothing beats a boat tour! There are several boat companies by the main beach in Positano, but if you'd like to book with instant confirmation, check out Poesea Boats: ${LINKS.poesea} - a reliable company with great boat and tour options.
+* As anyone from Positano would say: nothing beats a boat tour! There
+  are several boat companies by the main beach in Positano, but if
+  you'd like to book with instant confirmation, check out Poesea
+  Boats:
+  ${LINKS.poesea}
+  A reliable company with great boat and tour options.
 
-Many thanks for your patience, and we hope to meet you at Il Tridente soon!
+Many thanks for your patience, and we hope to meet you at Il Tridente
+soon!
 
 Best Regards,
 Il Tridente team
@@ -215,19 +249,40 @@ ${LINKS.site}
 ${LINKS.tridenteIg}`
     : `Caro/a ${name},
 
-Grazie per aver compilato il modulo! Sei stato inserito nella lista d'attesa.
+Grazie per aver compilato il modulo! Sei stato inserito nella lista
+d'attesa.
 
-Ci dispiace che non abbia trovato disponibilita' nella data e nell'orario preferiti. Ti contatteremo per telefono o email nel caso si liberasse disponibilita' per ${service} in data ${formattedDate}.
+Ci dispiace che non abbia trovato disponibilita' nella data e
+nell'orario preferiti. Ti contatteremo per telefono o email nel caso
+si liberasse disponibilita' per ${service} in data ${formattedDate}.
 
-Se desideri iscriverti alla lista d'attesa per piu' date o servizi, compila nuovamente il modulo sul sito: ${LINKS.site}
+Se desideri iscriverti alla lista d'attesa per piu' date o servizi,
+compila nuovamente il modulo sul sito:
+${LINKS.site}
 
 RENDI INDIMENTICABILE IL TUO SOGGIORNO SULLA COSTIERA AMALFITANA
 
-* Prenditi del tempo per rilassarti all'Onda Beauty Centre! Con un'ampia gamma di trattamenti e massaggi, lasciati coccolare. Elenco completo e prenotazioni online: ${LINKS.onda} - oppure scrivici a ${LINKS.ondaMail}. La fuga perfetta dal caldo estivo!
+* Prenditi del tempo per rilassarti all'Onda Beauty Centre! Con
+  un'ampia gamma di trattamenti e massaggi, lasciati coccolare.
+  Elenco completo e prenotazioni online:
+  ${LINKS.onda}
+  Oppure scrivici a ${LINKS.ondaMail}
+  La fuga perfetta dal caldo estivo!
 
-* Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret Bar, immerso nel verde e con una vista mozzafiato, dove potrai gustare cocktail esclusivi che renderanno la passeggiata davvero memorabile. Scopri EdEra Secret Bar: ${LINKS.edera} - o su Instagram: ${LINKS.ederaIg}. Non e' necessaria la prenotazione.
+* Cerchi un posto dove bere qualcosa? Positano ora ha il suo Secret
+  Bar, immerso nel verde e con una vista mozzafiato, dove potrai
+  gustare cocktail esclusivi che renderanno la passeggiata davvero
+  memorabile. Scopri EdEra Secret Bar:
+  ${LINKS.edera}
+  O su Instagram:
+  ${LINKS.ederaIg}
+  Non e' necessaria la prenotazione.
 
-* Come direbbero i positanesi: niente batte un giro in barca! Ci sono diverse compagnie sulla spiaggia principale, ma per prenotare con conferma immediata dai un'occhiata a Poesea Boats: ${LINKS.poesea} - un'azienda affidabile con ottime opzioni di barche e tour.
+* Come direbbero i positanesi: niente batte un giro in barca! Ci sono
+  diverse compagnie sulla spiaggia principale, ma per prenotare con
+  conferma immediata dai un'occhiata a Poesea Boats:
+  ${LINKS.poesea}
+  Un'azienda affidabile con ottime opzioni di barche e tour.
 
 Grazie mille per la pazienza, speriamo di vederti presto al Tridente!
 
