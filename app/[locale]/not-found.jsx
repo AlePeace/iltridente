@@ -6,7 +6,10 @@ import { Link } from "i18n/navigation";
 export default async function NotFound() {
   const t = await getTranslations("notFound");
 
-  const result = await getPage("/", "it");
+  // Best-effort: la 404 deve renderizzarsi comunque anche se WPGraphQL non
+  // risponde (getPage lancia in quel caso, vedi utils/getPage.js), il footer
+  // è solo un arricchimento opzionale.
+  const result = await getPage("/", "it").catch(() => null);
   const footerBlock = result?.blocks?.find(
     (block) =>
       block.name === "core/group" &&
