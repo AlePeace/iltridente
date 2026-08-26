@@ -137,6 +137,16 @@ Esiti: nessun link ✅ · `wikipedia.org` ✅ · `ederapositano.com` ✅ ·
 Non serve a nulla: migrare a Resend/Postmark (il problema viaggia col dominio
 linkato, non con l'IP), cambiare hosting, riscrivere il testo.
 
+**Test 9 (26/08/2026)** — mittente completamente estraneo all'infrastruttura
+del ristorante: da `alesparano@gmail.com` (Gmail, non SiteGround) a un
+indirizzo iCloud, corpo in **solo testo semplice** (nessun tag `<a>`, nessun
+HTML) contenente unicamente la stringa nuda `iltridentepositano.com`. Esito:
+**bloccato**. Questo esclude ogni residua variabile legata a IP mittente,
+SPF/DKIM/DMARC del dominio, formattazione HTML o tag di link — Apple blocca
+sulla base della sola **stringa/dominio testuale** presente nel corpo,
+indipendentemente da come viene veicolata. Rende la causa "reputazione URL
+proprietaria Apple sul dominio" pressoché certa.
+
 ### Stato DNS verificato
 
 - **SPF** valido — `include:_spf.mailspamprotection.com`

@@ -64,8 +64,15 @@ function logDelivery(label, info) {
 // corpo, più il messaggio somiglia a spam/affiliate — iCloud è severissimo su
 // questo. La soluzione è far puntare i consigli a UNA pagina su
 // iltridentepositano.com: basta valorizzare RECOMMENDATIONS_PAGE qui sotto.
+//
+// NOTA APPLE/iCLOUD: iltridentepositano.com è bloccato a livello SMTP da
+// iCloud (554 5.7.1 [CS01]) per reputazione del dominio — vedi CLAUDE.md,
+// sezione "Deliverability email". `site` punta quindi a iltridentepositano.it
+// (redirect permanente verso .com), testato e confermato funzionante verso
+// iCloud. Non usare mai la stringa "iltridentepositano.com" nel corpo delle
+// email: basta la sua sola presenza testuale a far scattare il blocco.
 const LINKS = {
-  site: "https://iltridentepositano.com",
+  site: "https://iltridentepositano.it",
   onda: "https://www.londapositano.com",
   ondaMail: "info@londapositano.com",
   edera: "https://www.ederapositano.com",
@@ -158,7 +165,7 @@ function buildWaitlistConfirm(
     <p>Many thanks for your patience, and we hope to meet you at Il Tridente soon!</p>
     <p>Best Regards,<br><strong>Il Tridente team</strong></p>
     <p style="font-size: 13px; color: #888;">
-      ${a(LINKS.site, "iltridentepositano.com")}<br>
+      ${a(LINKS.site, "Il Tridente Positano")}<br>
       ${a(LINKS.tridenteIg, "@hotelposeidonpositano")}<br>
     </p>
   `
@@ -177,7 +184,7 @@ function buildWaitlistConfirm(
     <p>Grazie mille per la pazienza, speriamo di vederti presto al Tridente!</p>
     <p>Cordiali saluti,<br><strong>Il team del Tridente</strong></p>
     <p style="font-size: 13px; color: #888;">
-      ${a(LINKS.site, "iltridentepositano.com")}<br>
+      ${a(LINKS.site, "Il Tridente Positano")}<br>
       ${a(LINKS.tridenteIg, "@hotelposeidonpositano")}<br>
     </p>
   `;
