@@ -7,6 +7,17 @@ import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import { Link } from "i18n/navigation";
 
+// Modalità fine stagione (temporanea): niente testo introduttivo, il "No" apre
+// direttamente il widget Guestplan, niente pulsante Eventi e niente orari del
+// Cocktail Bar. Rimettere a false per tornare alla pagina completa: i contenuti
+// in WordPress non sono stati toccati.
+const END_OF_SEASON = true;
+
+// Toglie dal paragrafo "Orari di apertura" la riga del Cocktail Bar e la nota
+// con l'asterisco che la segue (è l'ultima voce del paragrafo in WordPress).
+const removeCocktailBarHours = (html = "") =>
+  html.replace(/(\s*<br\s*\/?>)*\s*<strong>\s*Cocktail Bar[\s\S]*$/i, "");
+
 export const ReservationPage = ({ blocks }) => {
   const t = useTranslations("reservation");
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +35,8 @@ export const ReservationPage = ({ blocks }) => {
   const titleForm = headings[0];
   const introText = paragraphs[0];
   const titlePolicyRestaurant = headings[1];
+
+  const openGuestplan = () => window._gstpln?.openWidget();
 
   const listTitles = innerBlocks.filter(
     (block) =>
@@ -69,7 +82,7 @@ export const ReservationPage = ({ blocks }) => {
               content={titleForm.attributes?.content}
             />
           )}
-          {introText && (
+          {introText && !END_OF_SEASON && (
             <Paragraph
               key={introText.id}
               className="font-nunito text-text leading-relaxed mb-4 text-[15px]"
@@ -97,6 +110,7 @@ export const ReservationPage = ({ blocks }) => {
                   onClick={() => {
                     setShowQuestion(false);
                     setShowOptions(true);
+                    if (END_OF_SEASON) openGuestplan();
                   }}
                   className="bg-buttonno text-white px-10 py-3 rounded-md hover:bg-[#2a3a4f] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm min-w-[120px] w-full cursor-pointer"
                 >
@@ -109,12 +123,14 @@ export const ReservationPage = ({ blocks }) => {
           {showOptions && (
             <div className="mt-8 rounded-lg p-8 text-center animate-fadeIn">
               <div className="flex w-full gap-4 justify-center flex-col sm:flex-row">
-                <button
-                  onClick={() => window._gstpln?.openWidget()}
-                  className="bg-buttonno text-white px-10 py-3 rounded-md hover:bg-[#2a3a4f] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer"
-                >
-                  {t("bookNow")}
-                </button>
+                {!END_OF_SEASON && (
+                  <button
+                    onClick={openGuestplan}
+                    className="bg-buttonno text-white px-10 py-3 rounded-md hover:bg-[#2a3a4f] transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer"
+                  >
+                    {t("bookNow")}
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     setShowOptions(false);
@@ -124,12 +140,14 @@ export const ReservationPage = ({ blocks }) => {
                 >
                   {t("waitlist")}
                 </button>
-                <Link
-                  href={t("eventsSlug")}
-                  className="bg-ocean text-white px-10 py-3 rounded-md hover:bg-lightblue transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer flex items-center justify-center"
-                >
-                  {t("events")}
-                </Link>
+                {!END_OF_SEASON && (
+                  <Link
+                    href={t("eventsSlug")}
+                    className="bg-ocean text-white px-10 py-3 rounded-md hover:bg-lightblue transition-colors duration-300 font-semibold tracking-wider uppercase text-sm w-full cursor-pointer flex items-center justify-center"
+                  >
+                    {t("events")}
+                  </Link>
+                )}
               </div>
               <div className="text-center mt-4">
                 <button
@@ -202,7 +220,13 @@ export const ReservationPage = ({ blocks }) => {
                   />
                   {listParagraphs[index] && (
                     <Paragraph
-                      content={listParagraphs[index].attributes?.content}
+                      content={
+                        END_OF_SEASON
+                          ? removeCocktailBarHours(
+                              listParagraphs[index].attributes?.content,
+                            )
+                          : listParagraphs[index].attributes?.content
+                      }
                       className="font-nunito text-text font-light text-sm lg:text-base"
                     />
                   )}

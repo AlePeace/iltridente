@@ -2,15 +2,13 @@
   "cookieConsent": {
     "manageConsent": "Manage Consent"
   },
-  "ederaPopup": {
-    "titleLine1": "EDERA",
-    "titleLine2": "SECRET BAR",
-    "isOpen": "IS NOW OPEN",
-    "description": "A brand new cocktail bar in Positano offering the best views and incredible cocktails. Just steps away from the centre of town.",
-    "timeframe": "AFTERNOON INTO SUNSET",
-    "infoLine": "information and opening hours on",
-    "cta": "@ederapositano",
-    "website": "www.ederapositano.com",
+  "seasonPopup": {
+    "text": "Hotel Poseidon, Il Tridente Restaurant & Cocktail Bar and L’Onda Wellness Centre will remain open until Saturday 14 November 2026.",
+    "bookNow": "Book now:",
+    "hotel": "Hotel Poseidon",
+    "tridente": "Il Tridente",
+    "onda": "L’Onda Wellness Centre",
+    "bookingSlug": "/reservations",
     "closeLabel": "Close"
   },
   "reservation": {
