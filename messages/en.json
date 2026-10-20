@@ -9,7 +9,8 @@
     "tridente": "Il Tridente",
     "onda": "L’Onda Wellness Centre",
     "bookingSlug": "/reservations",
-    "closeLabel": "Close"
+    "closeLabel": "Close",
+    "imageAlt": "Table set on Il Tridente's terrace overlooking Positano and the sea"
   },
   "reservation": {
     "hotelQuestion": "Do you have a reservation at Hotel Poseidon?",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { FiX } from "react-icons/fi";
 import { Link } from "i18n/navigation";
 
@@ -14,6 +15,8 @@ const SHOW_DELAY = 3000; // ms prima della comparsa
 const HIDE_AFTER = new Date("2026-11-15T00:00:00+01:00");
 const HOTEL_URL = "https://www.hotelposeidonpositano.it/";
 const ONDA_URL = "https://www.londapositano.com/";
+// Immagine statica in /public (nessun media WordPress): foto a sinistra.
+const POPUP_IMG = "/season/pranzo-il-tridente-positano.webp";
 
 const buttonClasses =
   "inline-flex items-center justify-center w-full py-3 px-6 rounded-md font-nunito font-semibold tracking-wider uppercase text-sm transition-colors duration-300";
@@ -71,54 +74,69 @@ export default function SeasonPopup() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative w-full max-w-xl max-h-[calc(100svh-2rem)] overflow-y-auto bg-white border-4 border-cardspranzo rounded-lg shadow-2xl px-6 py-12 sm:px-12 text-center transition-all duration-300 ease-out ${
+        className={`relative w-full max-w-275 max-h-[calc(100svh-2rem)] overflow-y-auto lg:overflow-hidden bg-white border-4 border-cardspranzo rounded-lg shadow-2xl flex flex-col lg:flex-row transition-all duration-300 ease-out ${
           open ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
-        {/* Bottone chiudi */}
+        {/* Bottone chiudi (sfondo bianco: su mobile sta sopra la foto) */}
         <button
           onClick={close}
           aria-label={t("closeLabel")}
-          className="absolute top-4 right-4 grid place-items-center w-10 h-10 rounded-full border border-text/30 text-text hover:bg-cardspranzo transition-colors duration-300 cursor-pointer"
+          className="absolute top-4 right-4 z-20 grid place-items-center w-10 h-10 rounded-full border border-text/30 bg-white/90 text-text hover:bg-cardspranzo transition-colors duration-300 cursor-pointer"
         >
           <FiX className="w-5 h-5" />
         </button>
 
-        <p
-          id="season-popup-text"
-          className="font-cinzel text-red text-xl sm:text-2xl leading-snug"
-        >
-          {t("text")}
-        </p>
+        {/* Colonna immagine */}
+        <div className="relative w-full lg:w-1/2 h-[22svh] sm:h-[38svh] lg:h-auto lg:min-h-175 shrink-0">
+          <Image
+            src={POPUP_IMG}
+            alt={t("imageAlt")}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
 
-        <p className="mt-8 mb-4 font-nunito font-semibold text-text uppercase tracking-wider text-sm">
-          {t("bookNow")}
-        </p>
+        {/* Colonna testo */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 py-10 sm:px-12 sm:py-12 text-center">
+          <p
+            id="season-popup-text"
+            className="font-cinzel text-red text-xl sm:text-2xl leading-snug"
+          >
+            {t("text")}
+          </p>
 
-        <div className="flex flex-col gap-3">
-          <a
-            href={HOTEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${buttonClasses} bg-buttonno text-white hover:bg-[#2a3a4f]`}
-          >
-            {t("hotel")}
-          </a>
-          <Link
-            href={t("bookingSlug")}
-            onClick={close}
-            className={`${buttonClasses} bg-red text-white hover:bg-[#8a5a63]`}
-          >
-            {t("tridente")}
-          </Link>
-          <a
-            href={ONDA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${buttonClasses} bg-ocean text-white hover:bg-lightblue`}
-          >
-            {t("onda")}
-          </a>
+          <p className="mt-8 mb-4 font-nunito font-semibold text-text uppercase tracking-wider text-sm">
+            {t("bookNow")}
+          </p>
+
+          <div className="flex flex-col gap-3">
+            <a
+              href={HOTEL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${buttonClasses} bg-buttonno text-white hover:bg-[#2a3a4f]`}
+            >
+              {t("hotel")}
+            </a>
+            <Link
+              href={t("bookingSlug")}
+              onClick={close}
+              className={`${buttonClasses} bg-red text-white hover:bg-[#8a5a63]`}
+            >
+              {t("tridente")}
+            </Link>
+            <a
+              href={ONDA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${buttonClasses} bg-ocean text-white hover:bg-lightblue`}
+            >
+              {t("onda")}
+            </a>
+          </div>
         </div>
       </div>
     </div>

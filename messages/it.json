@@ -9,7 +9,8 @@
     "tridente": "Il Tridente",
     "onda": "Centro Benessere L’Onda",
     "bookingSlug": "/prenotazioni",
-    "closeLabel": "Chiudi"
+    "closeLabel": "Chiudi",
+    "imageAlt": "Tavolo apparecchiato sulla terrazza del Tridente con vista su Positano e sul mare"
   },
   "reservation": {
     "hotelQuestion": "Hai una prenotazione all'Hotel Poseidon?",
