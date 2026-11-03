@@ -64,6 +64,7 @@
     "disclaimerPrivacy2": "le politiche del ristorante e la"
   },
   "eventForm": {
+    "closedMessage": "Richieste di eventi per la prossima stagione saranno accettate a partire dal mese di gennaio 2027.",
     "titleFormEvent": "Richieste di prenotazione Evento",
     "name": "Nome",
     "surname": "Cognome",

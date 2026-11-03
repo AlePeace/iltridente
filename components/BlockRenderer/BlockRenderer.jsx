@@ -23,8 +23,18 @@ import { IntroPranzoRisto } from "components/IntroPranzoRisto";
 import { ParagraphGroup } from "components/ParagraphGroup/ParagraphGroup";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
 import { ReservationPage } from "components/ReservationPage";
+import { HIDE_RESTAURANT_MENUS } from "utils/seasonFlags";
+
+const groupNameOf = (block) =>
+  block.attributes?.metadata?.name || block.attributes?.className;
 
 export const BlockRenderer = ({ blocks }) => {
+  // La pagina "Il Ristorante" è l'unica con HeroRisto: lì i menu vanno nascosti,
+  // mentre gli AccordionMenu delle pagine gateway restano visibili.
+  const hideMenus =
+    HIDE_RESTAURANT_MENUS &&
+    blocks.some((b) => b.name === "core/group" && groupNameOf(b) === "HeroRisto");
+
   return blocks.map((block) => {
     switch (block.name) {
       case "core/group": {
@@ -80,6 +90,7 @@ export const BlockRenderer = ({ blocks }) => {
             return <IntroEasyBar key={block.id} blocks={block} />;
 
           case "AccordionMenu":
+            if (hideMenus) return null;
             return <AccordionMenu key={block.id} blocks={block} />;
 
           case "ReservationPage":

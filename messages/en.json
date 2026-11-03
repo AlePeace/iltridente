@@ -64,6 +64,7 @@
     "disclaimerPrivacy2": "the restaurant's policies and the"
   },
   "eventForm": {
+    "closedMessage": "Event information and brochures for next season will be available starting from January 2027. We look forward to hearing from you!",
     "titleFormEvent": "Event Reservation Requests",
     "name": "Name",
     "surname": "Surname",

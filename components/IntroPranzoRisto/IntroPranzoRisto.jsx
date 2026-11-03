@@ -5,6 +5,7 @@ import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import { HIDE_RESTAURANT_MENUS } from "utils/seasonFlags";
 
 export const IntroPranzoRisto = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -18,7 +19,7 @@ export const IntroPranzoRisto = ({ blocks }) => {
   const titleSection = headings[0];
   const titleOpenHours = headings[1];
 
-  const buttonMenu = buttons[0];
+  const buttonMenu = HIDE_RESTAURANT_MENUS ? null : buttons[0];
   const buttonPrenota = buttons[1];
 
   return (
