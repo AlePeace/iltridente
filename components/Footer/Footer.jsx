@@ -2,6 +2,7 @@ import { Heading } from "components/Heading";
 import { List } from "components/List";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 export const Footer = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -50,7 +51,11 @@ export const Footer = ({ blocks }) => {
 
   return (
     <footer className="bg-red">
-      <div className="w-full px-5 py-10 lg:px-16 lg:py-20 lg:grid lg:grid-cols-4 lg:gap-10">
+      <div
+        className={`w-full px-5 py-10 lg:px-16 lg:py-20 lg:grid lg:gap-10 ${
+          SEASON_CLOSED ? "lg:grid-cols-3" : "lg:grid-cols-4"
+        }`}
+      >
         <div className="w-full space-y-5">
           <div className="w-3/4 mx-auto">
             {blocksByType.image && (
@@ -215,89 +220,92 @@ export const Footer = ({ blocks }) => {
             )}
           </div>
         </div>
-        <div className="pt-10">
-          <div>
-            {headingMap.titleHours && (
-              <Heading
-                level={headingMap.titleHours.attributes?.level}
-                content={headingMap.titleHours.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
+        {/* Chiusura invernale: niente orari nel footer (SEASON_CLOSED) */}
+        {!SEASON_CLOSED && (
+          <div className="pt-10">
+            <div>
+              {headingMap.titleHours && (
+                <Heading
+                  level={headingMap.titleHours.attributes?.level}
+                  content={headingMap.titleHours.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-5">
+              {headingMap.titleBreak && (
+                <Heading
+                  level={headingMap.titleBreak.attributes?.level}
+                  content={headingMap.titleBreak.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-2">
+              {headingMap.hoursBreak && (
+                <Heading
+                  level={headingMap.hoursBreak.attributes?.level}
+                  content={headingMap.hoursBreak.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-5">
+              {headingMap.titleLunch && (
+                <Heading
+                  level={headingMap.titleLunch.attributes?.level}
+                  content={headingMap.titleLunch.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-2">
+              {headingMap.hoursLunch && (
+                <Heading
+                  level={headingMap.hoursLunch.attributes?.level}
+                  content={headingMap.hoursLunch.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-5">
+              {headingMap.titleDinner && (
+                <Heading
+                  level={headingMap.titleDinner.attributes?.level}
+                  content={headingMap.titleDinner.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-2">
+              {headingMap.hoursDinner && (
+                <Heading
+                  level={headingMap.hoursDinner.attributes?.level}
+                  content={headingMap.hoursDinner.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-5">
+              {headingMap.titleBar && (
+                <Heading
+                  level={headingMap.titleBar.attributes?.level}
+                  content={headingMap.titleBar.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
+            <div className="pt-2">
+              {headingMap.hoursBar && (
+                <Heading
+                  level={headingMap.hoursBar.attributes?.level}
+                  content={headingMap.hoursBar.attributes?.content}
+                  className="font-nunito text-base font-medium text-white"
+                />
+              )}
+            </div>
           </div>
-          <div className="pt-5">
-            {headingMap.titleBreak && (
-              <Heading
-                level={headingMap.titleBreak.attributes?.level}
-                content={headingMap.titleBreak.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-2">
-            {headingMap.hoursBreak && (
-              <Heading
-                level={headingMap.hoursBreak.attributes?.level}
-                content={headingMap.hoursBreak.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-5">
-            {headingMap.titleLunch && (
-              <Heading
-                level={headingMap.titleLunch.attributes?.level}
-                content={headingMap.titleLunch.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-2">
-            {headingMap.hoursLunch && (
-              <Heading
-                level={headingMap.hoursLunch.attributes?.level}
-                content={headingMap.hoursLunch.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-5">
-            {headingMap.titleDinner && (
-              <Heading
-                level={headingMap.titleDinner.attributes?.level}
-                content={headingMap.titleDinner.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-2">
-            {headingMap.hoursDinner && (
-              <Heading
-                level={headingMap.hoursDinner.attributes?.level}
-                content={headingMap.hoursDinner.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-5">
-            {headingMap.titleBar && (
-              <Heading
-                level={headingMap.titleBar.attributes?.level}
-                content={headingMap.titleBar.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-          <div className="pt-2">
-            {headingMap.hoursBar && (
-              <Heading
-                level={headingMap.hoursBar.attributes?.level}
-                content={headingMap.hoursBar.attributes?.content}
-                className="font-nunito text-base font-medium text-white"
-              />
-            )}
-          </div>
-        </div>
+        )}
       </div>
       <div className="h-px bg-white w-full"></div>
       <div className="py-10 px-5 space-y-5 lg:space-y-0 lg:flex lg:justify-between">

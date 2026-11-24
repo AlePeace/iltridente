@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 export const ButtonHeader = ({ menuData, menus, onClose }) => {
   const data = menuData ?? menus;
@@ -26,7 +27,8 @@ export const ButtonHeader = ({ menuData, menus, onClose }) => {
     return false;
   });
 
-  if (!ctaItem) return null;
+  // Chiusura invernale: nasconde la CTA "Prenota" dell'header (desktop e mobile).
+  if (!ctaItem || SEASON_CLOSED) return null;
 
   return (
     <div>

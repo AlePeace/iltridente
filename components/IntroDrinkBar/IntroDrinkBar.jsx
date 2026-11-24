@@ -5,8 +5,11 @@ import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 export const IntroDrinkBar = ({ blocks }) => {
+  const tSeason = useTranslations("seasonPopup");
   const innerBlocks = blocks?.innerBlocks || [];
   const image = innerBlocks.find((block) => block.name === "core/image");
   const headings = innerBlocks.filter((block) => block.name === "core/heading");
@@ -76,7 +79,12 @@ export const IntroDrinkBar = ({ blocks }) => {
                 </div>
                 <Heading
                   level={titleOpenHours.attributes?.level}
-                  content={titleOpenHours.attributes?.content}
+                  content={
+                    // Chiusura invernale: al posto dell'orario "Adesso chiuso"
+                    SEASON_CLOSED
+                      ? tSeason("closedHours")
+                      : titleOpenHours.attributes?.content
+                  }
                   className="font-nunito text-text font-medium text-base"
                 />
               </div>

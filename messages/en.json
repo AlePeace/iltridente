@@ -3,14 +3,15 @@
     "manageConsent": "Manage Consent"
   },
   "seasonPopup": {
-    "text": "Hotel Poseidon, Il Tridente Restaurant & Cocktail Bar and L’Onda Wellness Centre will remain open until Saturday 14 November 2026.",
-    "bookNow": "Book now:",
-    "hotel": "Hotel Poseidon",
-    "tridente": "Il Tridente",
-    "onda": "L’Onda Wellness Centre",
-    "bookingSlug": "/reservations",
+    "title": "We are taking a break!",
+    "text": "Il Tridente will reopen during the spring: menus and booking information will be available on this website starting from March 2027.",
+    "closing": "Thank you, and see you soon.",
+    "hotelInstagram": "@hotelposeidonpositano",
+    "ederaText": "Positano’s Secret Bar will be open too! Have a look at",
+    "ederaButton": "EdEra Secret Bar",
     "closeLabel": "Close",
-    "imageAlt": "Table set on Il Tridente's terrace overlooking Positano and the sea"
+    "imageAlt": "Table set on Il Tridente's terrace overlooking Positano and the sea",
+    "closedHours": "Now closed"
   },
   "reservation": {
     "hotelQuestion": "Do you have a reservation at Hotel Poseidon?",

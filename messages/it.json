@@ -3,14 +3,13 @@
     "manageConsent": "Gestisci Consenso"
   },
   "seasonPopup": {
-    "text": "L’Hotel Poseidon, Il Tridente Ristorante e Cocktail Bar e il Centro Benessere L’Onda resteranno aperti fino a sabato 14 novembre 2026.",
-    "bookNow": "Prenota ora:",
-    "hotel": "Hotel Poseidon",
-    "tridente": "Il Tridente",
-    "onda": "Centro Benessere L’Onda",
-    "bookingSlug": "/prenotazioni",
+    "title": "Siamo chiusi!",
+    "text": "Il Tridente riaprirà nella primavera 2027. I menu e tutte le informazioni per prenotare saranno disponibili su questo sito a partire dal mese di marzo.",
+    "closing": "A presto!",
+    "hotelInstagram": "@hotelposeidonpositano",
     "closeLabel": "Chiudi",
-    "imageAlt": "Tavolo apparecchiato sulla terrazza del Tridente con vista su Positano e sul mare"
+    "imageAlt": "Tavolo apparecchiato sulla terrazza del Tridente con vista su Positano e sul mare",
+    "closedHours": "Adesso chiuso"
   },
   "reservation": {
     "hotelQuestion": "Hai una prenotazione all'Hotel Poseidon?",

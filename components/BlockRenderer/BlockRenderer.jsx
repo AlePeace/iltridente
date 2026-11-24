@@ -23,7 +23,11 @@ import { IntroPranzoRisto } from "components/IntroPranzoRisto";
 import { ParagraphGroup } from "components/ParagraphGroup/ParagraphGroup";
 import { PrenotazioniHome } from "components/PrenotazioniHome";
 import { ReservationPage } from "components/ReservationPage";
-import { HIDE_RESTAURANT_MENUS } from "utils/seasonFlags";
+import {
+  HIDE_CASUAL_DINNER,
+  HIDE_RESTAURANT_MENUS,
+  SEASON_CLOSED,
+} from "utils/seasonFlags";
 
 const groupNameOf = (block) =>
   block.attributes?.metadata?.name || block.attributes?.className;
@@ -34,6 +38,12 @@ export const BlockRenderer = ({ blocks }) => {
   const hideMenus =
     HIDE_RESTAURANT_MENUS &&
     blocks.some((b) => b.name === "core/group" && groupNameOf(b) === "HeroRisto");
+
+  // La pagina "Cocktail Bar" è l'unica con HeroBar: lì si nascondono la sezione
+  // "Aperitivo e Cena Informale" e il menu Casual Dining.
+  const hideCasualDinner =
+    HIDE_CASUAL_DINNER &&
+    blocks.some((b) => b.name === "core/group" && groupNameOf(b) === "HeroBar");
 
   return blocks.map((block) => {
     switch (block.name) {
@@ -57,6 +67,8 @@ export const BlockRenderer = ({ blocks }) => {
             return <BarHome key={block.id} blocks={block} />;
 
           case "PrenotazioniHome":
+            // Sezione "Prenotazione obbligatoria": senza bottone non ha senso.
+            if (SEASON_CLOSED) return null;
             return <PrenotazioniHome key={block.id} blocks={block} />;
 
           case "GalleryHome":
@@ -87,10 +99,11 @@ export const BlockRenderer = ({ blocks }) => {
             return <IntroDrinkBar key={block.id} blocks={block} />;
 
           case "IntroEasyBar":
+            if (hideCasualDinner) return null;
             return <IntroEasyBar key={block.id} blocks={block} />;
 
           case "AccordionMenu":
-            if (hideMenus) return null;
+            if (hideMenus || hideCasualDinner) return null;
             return <AccordionMenu key={block.id} blocks={block} />;
 
           case "ReservationPage":

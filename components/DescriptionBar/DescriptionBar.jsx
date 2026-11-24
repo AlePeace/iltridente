@@ -2,14 +2,24 @@ import { Buttons } from "components/Buttons";
 import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { HIDE_LIVE_MUSIC, SEASON_CLOSED } from "utils/seasonFlags";
+
+// Toglie dal paragrafo la frase sulla chitarra del Maestro Giuseppe Rapicano
+// (IT "La chitarra…", EN "The guitar…"): è l'ultima frase del paragrafo in
+// WordPress, preceduta da uno o più <br>.
+const removeLiveMusicSentence = (html = "") =>
+  html.replace(/(\s*<br\s*\/?>)*\s*(La chitarra|The guitar)[\s\S]*$/i, "");
 
 export const DescriptionBar = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
   const headings = innerBlocks.filter((block) => block.name === "core/heading");
   const titleSection = headings[0];
   const titleView = headings[1];
-  const titleGlutine = headings[2];
-  const titleVegan = headings[3];
+  // headings[2] è "Musica dal vivo" (con l'icona della chitarra)
+  const titleGlutine = HIDE_LIVE_MUSIC ? null : headings[2];
+  // headings[3] è "Orari" (icona orologio): nascosto durante la chiusura
+  const titleVegan = SEASON_CLOSED ? null : headings[3];
+  const iconCount = [titleView, titleGlutine, titleVegan].filter(Boolean).length;
 
   const paragraph = innerBlocks.find(
     (block) => block.name === "core/paragraph",
@@ -31,12 +41,22 @@ export const DescriptionBar = ({ blocks }) => {
       {paragraph && (
         <div className="pt-6 lg:pt-10 max-w-5xl mx-auto text-center text-text font-nunito text-lg">
           <Paragraph
-            content={paragraph.attributes?.content}
+            content={
+              HIDE_LIVE_MUSIC
+                ? removeLiveMusicSentence(paragraph.attributes?.content)
+                : paragraph.attributes?.content
+            }
             className="font-nunito text-lg text-text font-light text-center"
           />
         </div>
       )}
-      <div className="pt-10 lg:pt-20 max-w-lg mx-auto grid grid-cols-[1fr_auto_1fr] items-start">
+      <div
+        className={`pt-10 lg:pt-20 mx-auto items-start ${
+          iconCount === 3
+            ? "grid max-w-lg grid-cols-[1fr_auto_1fr]"
+            : "w-fit flex justify-center gap-16"
+        }`}
+      >
         {titleView && (
           <div className="justify-self-start">
             <div className="flex flex-col items-center gap-3">
@@ -190,7 +210,7 @@ export const DescriptionBar = ({ blocks }) => {
           </div>
         )}
       </div>
-      {button && (
+      {button && !SEASON_CLOSED && (
         <div className="pt-6 lg:pt-10 w-full flex justify-center items-center">
           <GuestplanButton innerBlocks={button.innerBlocks} variant="border" />
         </div>

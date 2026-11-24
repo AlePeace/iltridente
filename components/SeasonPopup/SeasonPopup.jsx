@@ -4,22 +4,16 @@ import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { FiX } from "react-icons/fi";
-import { Link } from "i18n/navigation";
+import { SeasonClosedNotice } from "components/SeasonClosedNotice";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
-// Popup di fine stagione: compare una sola volta per sessione del browser
+// Popup di chiusura invernale: compare una sola volta per sessione del browser
 // (non si ripete navigando tra le pagine, riappare alla prossima visita).
-const SESSION_KEY = "season_popup_seen";
-const SHOW_DELAY = 3000; // ms prima della comparsa
-// Dopo la chiusura stagionale il popup smette di comparire da solo
-// (fine giornata di sabato 14/11/2026, ora italiana).
-const HIDE_AFTER = new Date("2026-11-15T00:00:00+01:00");
-const HOTEL_URL = "https://www.hotelposeidonpositano.it/";
-const ONDA_URL = "https://www.londapositano.com/";
+// Attivo finché SEASON_CLOSED (utils/seasonFlags.js) è true.
+const SESSION_KEY = "season_closed_popup_seen";
+const SHOW_DELAY = 1000; // ms prima della comparsa (subito all'accesso)
 // Immagine statica in /public (nessun media WordPress): foto a sinistra.
 const POPUP_IMG = "/season/pranzo-il-tridente-positano.webp";
-
-const buttonClasses =
-  "inline-flex items-center justify-center w-full py-3 px-6 rounded-md font-nunito font-semibold tracking-wider uppercase text-sm transition-colors duration-300";
 
 export default function SeasonPopup() {
   const t = useTranslations("seasonPopup");
@@ -35,7 +29,7 @@ export default function SeasonPopup() {
   // Comparsa ritardata, una volta per sessione
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (Date.now() >= HIDE_AFTER.getTime()) return;
+    if (!SEASON_CLOSED) return;
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
     const timer = setTimeout(() => {
@@ -66,7 +60,7 @@ export default function SeasonPopup() {
       data-lenis-prevent
       role="dialog"
       aria-modal="true"
-      aria-labelledby="season-popup-text"
+      aria-labelledby="season-popup-title"
       onClick={close}
       className={`fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/60 transition-opacity duration-300 ease-out ${
         open ? "opacity-100" : "opacity-0"
@@ -100,43 +94,8 @@ export default function SeasonPopup() {
         </div>
 
         {/* Colonna testo */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 py-10 sm:px-12 sm:py-12 text-center">
-          <p
-            id="season-popup-text"
-            className="font-cinzel text-red text-xl sm:text-2xl leading-snug"
-          >
-            {t("text")}
-          </p>
-
-          <p className="mt-8 mb-4 font-nunito font-semibold text-text uppercase tracking-wider text-sm">
-            {t("bookNow")}
-          </p>
-
-          <div className="flex flex-col gap-3">
-            <a
-              href={HOTEL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${buttonClasses} bg-buttonno text-white hover:bg-[#2a3a4f]`}
-            >
-              {t("hotel")}
-            </a>
-            <Link
-              href={t("bookingSlug")}
-              onClick={close}
-              className={`${buttonClasses} bg-red text-white hover:bg-[#8a5a63]`}
-            >
-              {t("tridente")}
-            </Link>
-            <a
-              href={ONDA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${buttonClasses} bg-ocean text-white hover:bg-lightblue`}
-            >
-              {t("onda")}
-            </a>
-          </div>
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 py-10 sm:px-12 sm:py-12">
+          <SeasonClosedNotice titleId="season-popup-title" />
         </div>
       </div>
     </div>

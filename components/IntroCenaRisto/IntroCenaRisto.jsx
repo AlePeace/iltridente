@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
 import { Buttons } from "components/Buttons";
 import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
-import { HIDE_RESTAURANT_MENUS } from "utils/seasonFlags";
+import { SEASON_CLOSED, HIDE_RESTAURANT_MENUS } from "utils/seasonFlags";
+import { useTranslations } from "next-intl";
 
 export const IntroCenaRisto = ({ blocks }) => {
+  const tSeason = useTranslations("seasonPopup");
   const innerBlocks = blocks?.innerBlocks || [];
   const image = innerBlocks.find((block) => block.name === "core/image");
   const headings = innerBlocks.filter((block) => block.name === "core/heading");
@@ -59,7 +61,7 @@ export const IntroCenaRisto = ({ blocks }) => {
             {titleOpenHours && (
               <div className="flex gap-3 items-center">
                 <div>
-                   <svg
+                  <svg
                     width="27"
                     height="27"
                     viewBox="0 0 27 27"
@@ -77,7 +79,12 @@ export const IntroCenaRisto = ({ blocks }) => {
                 </div>
                 <Heading
                   level={titleOpenHours.attributes?.level}
-                  content={titleOpenHours.attributes?.content}
+                  content={
+                    // Chiusura invernale: al posto dell'orario "Adesso chiuso"
+                    SEASON_CLOSED
+                      ? tSeason("closedHours")
+                      : titleOpenHours.attributes?.content
+                  }
                   className="font-nunito text-text font-medium text-base"
                 />
               </div>

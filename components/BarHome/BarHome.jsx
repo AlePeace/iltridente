@@ -2,8 +2,11 @@ import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 export const BarHome = ({ blocks }) => {
+  const tSeason = useTranslations("seasonPopup");
   const innerBlocks = blocks?.innerBlocks || [];
   const headings = innerBlocks.filter((block) => block.name === "core/heading");
   const barLabel = headings[0];
@@ -183,7 +186,12 @@ export const BarHome = ({ blocks }) => {
               {descriptionOpenHour && (
                 <div>
                   <Paragraph
-                    content={descriptionOpenHour.attributes?.content}
+                    content={
+                      // Chiusura invernale: al posto dell'orario "Adesso chiuso"
+                      SEASON_CLOSED
+                        ? tSeason("closedHours")
+                        : descriptionOpenHour.attributes?.content
+                    }
                     className="font-nunito font-light text-text text-sm lg:text-base"
                   />
                 </div>

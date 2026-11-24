@@ -6,6 +6,8 @@ import { WaitlistForm } from "../WaitlistForm/WaitlistForm";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import { Link } from "i18n/navigation";
+import { SeasonClosedNotice } from "components/SeasonClosedNotice";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 // Modalità fine stagione (temporanea): niente testo introduttivo, il "No" apre
 // direttamente il widget Guestplan, niente pulsante Eventi e niente orari del
@@ -48,6 +50,18 @@ export const ReservationPage = ({ blocks }) => {
       block.name === "core/paragraph" &&
       block.attributes?.className?.includes("parapograph-list-prenotazioni"),
   );
+
+  // Chiusura invernale: al posto di domanda, form e policy mostra lo stesso
+  // messaggio del popup (SEASON_CLOSED in utils/seasonFlags.js).
+  if (SEASON_CLOSED) {
+    return (
+      <section className="py-24 lg:py-28 px-5 lg:px-40 relative overflow-hidden">
+        <div className="relative mx-auto max-w-2xl mt-10 lg:mt-20 bg-cardspranzo/50 border-cardspranzo border-4 py-12 px-6 sm:px-12 rounded-lg">
+          <SeasonClosedNotice titleAs="h1" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 lg:py-28 px-5 lg:px-40 relative overflow-hidden">

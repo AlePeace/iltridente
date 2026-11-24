@@ -2,6 +2,7 @@ import { Buttons } from "components/Buttons";
 import { GuestplanButton } from "components/GuestplanButton";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { SEASON_CLOSED } from "utils/seasonFlags";
 
 export const DescriptionHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -50,7 +51,7 @@ export const DescriptionHome = ({ blocks }) => {
           />
         </div>
       )}
-      {buttons && (
+      {buttons && !SEASON_CLOSED && (
         <div className="pt-6 lg:pt-10 w-full flex justify-center items-center">
           <GuestplanButton innerBlocks={buttons.innerBlocks} variant="border" />
         </div>
